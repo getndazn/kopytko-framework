@@ -1,0 +1,14 @@
+{
+  "extends": "plugin:@dazn/kopytko/recommended",
+  "plugins": ["@dazn/kopytko"],
+  "rules": {
+    "@dazn/kopytko/dependencies-order": "error",
+    "@dazn/kopytko/missing-trailing-comma": "error",
+    "@dazn/kopytko/indent": ["error", 2],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
+    "roku/no-print": "off",
+    "roku/no-stop": "error",
+    "roku/sub-to-function": "error",
+    "roku/function-no-return": "error"
+  }
+}

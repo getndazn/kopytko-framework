@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="Router" extends="Node">
+  <interface>
+    <field id="renderedPath" type="string" value="/" />
+    <field id="routing" type="array" />
+    <!-- Read-only -->
+    <field id="activatedRoute" type="node" />
+    <field id="previousRoute" type="node" />
+    <field id="url" type="string" value="/" alwaysNotify="true" />
+
+    <function name="back" />
+    <function name="navigate" />
+    <function name="resetHistory" />
+    <function name="updateActivatedRoute" />
+  </interface>
+
+  <script type="text/brightscript" uri="Router.brs" />
+</component>

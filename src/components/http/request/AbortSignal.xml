@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- based on https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal -->
+<component name="AbortSignal" extends="Node">
+	<interface>
+    <!-- Events -->
+		<field id="abort" type="boolean" />
+	</interface>
+</component>

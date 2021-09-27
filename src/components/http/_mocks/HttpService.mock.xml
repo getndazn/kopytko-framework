@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="HttpServiceMock" extends="Group">
+  <interface>
+    <field id="abort" type="string" />
+    <field id="requestOptions" type="assocarray" />
+    <field id="response" type="node" />
+  </interface>
+</component>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="RequestErrorModel" extends="Node">
+  <interface>
+    <field id="code" type="string" />
+    <field id="message" type="string" />
+    <field id="wasAborted" type="boolean" />
+  </interface>
+</component>

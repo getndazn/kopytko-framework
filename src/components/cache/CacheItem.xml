@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="CacheItem" extends="Node">
+  <interface>
+    <field id="cachingPolicyType" type="string" />
+    <!-- type of data field is dynamic that's why it's not here -->
+  </interface>
+</component>

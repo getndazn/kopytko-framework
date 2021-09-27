@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="KopytkoLayoutGroup" extends="LayoutGroup">
+  <interface>
+    <function name="initKopytko" />
+    <function name="destroyKopytko" />
+    <function name="updateProps" />
+  </interface>
+
+  <script type="text/brightscript" uri="KopytkoDOM.brs" />
+  <script type="text/brightscript" uri="KopytkoDiffUtility.brs" />
+  <script type="text/brightscript" uri="KopytkoUpdater.brs" />
+
+  <script type="text/brightscript" uri="Kopytko.brs" />
+</component>

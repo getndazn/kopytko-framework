@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="Cache" extends="Node">
+  <interface>
+    <field id="scopes" type="node" />
+  </interface>
+
+  <script type="text/brightscript" uri="Cache.brs" />
+</component>

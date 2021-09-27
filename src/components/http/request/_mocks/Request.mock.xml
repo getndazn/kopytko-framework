@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="RequestMock" extends="Node">
+  <interface>
+    <field id="data" type="assocarray" />
+    <field id="response" type="node" />
+  </interface>
+
+  <script type="text/brightscript" uri="Request.mock.brs" />
+</component>

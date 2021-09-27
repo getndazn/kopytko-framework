@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="Modal" extends="KopytkoGroup">
+  <interface>
+    <!-- Inputs -->
+    <field id="backdropColor" type="color" />
+  </interface>
+
+  <script type="text/brightscript" uri="Modal.template.brs" />
+  <script type="text/brightscript" uri="Modal.component.brs" />
+</component>

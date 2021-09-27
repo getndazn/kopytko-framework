@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="KopytkoGroupMock" extends="KopytkoMock">
+  <interface>
+    <field id="customProp" type="string" />
+
+    <function name="getMock" />
+    <function name="initKopytko" />
+  </interface>
+
+  <script type="text/brightscript" uri="KopytkoGroup.mock.brs" />
+</component>

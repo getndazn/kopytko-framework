@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="ActivatedRoute" extends="Node">
+  <interface>
+    <field id="backJourneyData" type="assocarray" />
+    <field id="isBackJourney" type="boolean" />
+    <field id="params" type="assocarray" value="{}" />
+    <field id="path" type="string" value="/" />
+    <field id="renderedUrl" type="string" />
+    <field id="routeConfig" type="assocarray" />
+    <field id="shouldSkip" type="boolean" />
+    <field id="virtualPath" type="string" />
+  </interface>
+</component>

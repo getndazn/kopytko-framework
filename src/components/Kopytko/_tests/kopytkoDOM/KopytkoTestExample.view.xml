@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="KopytkoTestExample" extends="KopytkoGroup">
+  <interface>
+    <field id="wasDestroyed" type="boolean" />
+  </interface>
+
+  <script type="text/brightscript" uri="KopytkoTestExample.view.brs" />
+</component>

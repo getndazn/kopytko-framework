@@ -1,0 +1,8 @@
+{
+  "baseManifest": "./node_modules/@dazn/kopytko-unit-testing-framework/manifest.js",
+  "sourceDir": "./src",
+  "pluginDefinitions": {
+    "generate-tests": "./node_modules/@dazn/kopytko-unit-testing-framework/plugins/generate-tests"
+  },
+  "plugins": ["kopytko-copy-external-dependencies", "generate-tests"]
+}

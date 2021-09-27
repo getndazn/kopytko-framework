@@ -1,0 +1,45 @@
+{
+  "name": "@dazn/kopytko-framework",
+  "version": "0.0.1",
+  "description": "A modern Roku's Brightscript framework",
+  "keywords": [
+    "brightscript",
+    "kopytko",
+    "roku",
+    "kopytko-module"
+  ],
+  "contributors": [
+    "Paweł Hertman <pawel@hertman.eu>",
+    "Tomasz Rejment <trejment@gmail.com>",
+    "Błażej Chełkowski <blazej.chelkowski@outlook.com>",
+    "Radosław Zambrowski <radekzam@gmail.com>",
+    "Mauricio Dziedzinski <d.mauriciofarias@gmail.com>"
+  ],
+  "files": [
+    "src",
+    "!**/_tests"
+  ],
+  "scripts": {
+    "lint": "eslint --ext .brs src/",
+    "test": "node node_modules/@dazn/kopytko-unit-testing-framework/scripts/test.js"
+  },
+  "dependencies": {
+    "@dazn/kopytko-utils": "^1.1.1"
+  },
+  "devDependencies": {
+    "@dazn/eslint-plugin-kopytko": "^1.0.0",
+    "@dazn/kopytko-packager": "^1.0.3",
+    "@dazn/kopytko-unit-testing-framework": "^1.0.0",
+    "eslint": "5.6.0",
+    "eslint-plugin-roku": "^1.5.3"
+  },
+  "license": "MIT",
+  "kopytkoModuleDir": "src/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getndazn/kopytko-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/getndazn/kopytko-framework/issues"
+  }
+}

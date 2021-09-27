@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="Theme" extends="Node">
+  <interface>
+    <function name="getFont" />
+    <function name="rgba" />
+    <function name="setAppTheme" />
+  </interface>
+
+  <script type="text/brightscript" uri="Theme.brs" />
+</component>

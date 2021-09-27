@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="RouterOutlet" extends="KopytkoGroup">
+  <interface>
+    <!-- Write-only -->
+    <field id="outletName" type="string" />
+  </interface>
+
+  <script type="text/brightscript" uri="RouterOutlet.template.brs" />
+  <script type="text/brightscript" uri="RouterOutlet.component.brs" />
+</component>
