@@ -1,6 +1,6 @@
-' @import /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
+' @import /components/utils/KopytkoGlobalNode.brs
 function ThemeFacade() as Object
-  _global = GlobalNode()
+  _global = KopytkoGlobalNode()
 
   if (_global.theme = Invalid)
     print "[ThemeFacade] Theme is not defined in GlobalNode"

@@ -1,10 +1,10 @@
+' @import /components/buildUrl.brs from @dazn/kopytko-utils
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/NodeUtils.brs from @dazn/kopytko-utils
 ' @import /components/ternary.brs from @dazn/kopytko-utils
-' @import /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
-' @import /components/utils/buildUrl.brs
+' @import /components/utils/KopytkoGlobalNode.brs
 sub init()
-  _global = GlobalNode()
+  _global = KopytkoGlobalNode()
   _global.addFields({
     router: m.top,
   })

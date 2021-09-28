@@ -1,7 +1,7 @@
 ' @import /components/ArrayUtils.brs from @dazn/kopytko-utils
-' @import /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
+' @import /components/utils/KopytkoGlobalNode.brs
 function EventBusFacade() as Object
-  _global = GlobalNode()
+  _global = KopytkoGlobalNode()
   if (NOT _global.hasField("eventBus"))
     _global.addFields({
       eventBus: CreateObject("roSGNode", "Node"),

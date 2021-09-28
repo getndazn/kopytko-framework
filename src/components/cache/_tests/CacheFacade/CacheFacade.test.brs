@@ -1,8 +1,8 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
-' @mock /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
 ' @mock /components/cache/CacheCleaner.brs
 ' @mock /components/cache/CacheReader.brs
 ' @mock /components/cache/CacheWriter.brs
+' @mock /components/utils/KopytkoGlobalNode.brs
 function CacheFacadeTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
