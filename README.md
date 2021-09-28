@@ -58,7 +58,12 @@ in the component, where in `init()` you don't since it's called right after the 
 
 ### Render method
 The `render` method is the most important method in a Kopytko component, and it must always be defined.
-It must return an object implementing the Element interface:
+It must return 1 of 3 values:
+- `Invalid` - results in rendering no children elements,
+- an object implementing the Element interface,
+- an array of Element objects.
+
+The Element interface:
 - `name` - name of the component to be rendered (required),
 - `props` - defines static fields and custom props of the element; any change of these values won't update the element
 - `dynamicProps` - defines fields and custom props with dynamic values, their every change will trigger `componentDidUpdate` lifecycle method,
@@ -139,6 +144,7 @@ DOM tree with the new one (containing the updated prop value now) and update the
 for a practical use case of this method.
 
 ```brightscript
+' Assuming the component extends KopytkoGroup
 sub init()
   initKopytko({
     width: m.top.width,
@@ -223,6 +229,9 @@ these methods are called lifecycle methods:
       m.store.remove("signUpData")
     end sub
   ```
+
+Creating a tree of elements results in calling `constructor` method starting from the parent to children
+and then `componentDidMount` in the opposite order - from children to the parent.
 
 Remember that if you use `setState()` inside the `componentDidUpdate` method it will cause it to eventually be called
 again, which can lead to infinite loops, so make sure to wrap state changes in conditionals when setting it inside
