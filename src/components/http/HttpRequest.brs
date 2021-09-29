@@ -16,7 +16,7 @@
 ' Request logic.
 ' @class
 ' @param {HttpRequest~Options} options
-' @param {HttpInterceptor[]} httpInterceptors
+' @param {HttpInterceptor[]} [httpInterceptors=[]]
 function HttpRequest(options as Object, httpInterceptors = [] as Object) as Object
   prototype = {}
 

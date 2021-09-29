@@ -5,7 +5,7 @@
 ' WARNING: the service must be used on the Task threads.
 ' @class
 ' @param {ifMessagePort} port
-' @param {HttpInterceptor[]} httpInterceptors
+' @param {HttpInterceptor[]} [httpInterceptors=[]]
 function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   prototype = {}
 
