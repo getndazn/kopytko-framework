@@ -1,8 +1,8 @@
+' @import /components/buildUrl.brs from @dazn/kopytko-utils
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/ternary.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/Timespan.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/UrlTransfer.brs from @dazn/kopytko-utils
-' @import /components/utils/buildUrl.brs
 
 ' @typedef {Object} HttpRequest~Options
 ' @property {String} id

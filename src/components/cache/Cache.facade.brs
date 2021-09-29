@@ -1,9 +1,9 @@
 ' @import /components/isFalsy.brs from @dazn/kopytko-utils
 ' @import /components/ternary.brs from @dazn/kopytko-utils
-' @import /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
 ' @import /components/cache/CacheCleaner.brs
 ' @import /components/cache/CacheReader.brs
 ' @import /components/cache/CacheWriter.brs
+' @import /components/utils/KopytkoGlobalNode.brs
 
 ' Cache facade.
 ' WARNING: it pollutes component scope (m._cacheFacadeSingleton).
@@ -13,7 +13,7 @@ function CacheFacade() as Object
     return m._cacheFacadeSingleton
   end if
 
-  _global = GlobalNode()
+  _global = KopytkoGlobalNode()
   if (NOT _global.hasField("cache"))
     _global.addFields({
       cache: CreateObject("roSGNode", "Cache"),
