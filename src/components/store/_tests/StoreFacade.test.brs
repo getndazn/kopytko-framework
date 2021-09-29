@@ -1,6 +1,6 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/getType.brs from @dazn/kopytko-utils
-' @mock /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
+' @mock /components/utils/KopytkoGlobalNode.brs
 function StoreFacadeTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 

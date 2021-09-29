@@ -1,11 +1,11 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
-' @import /components/rokuComponents/GlobalNode.brs from @dazn/kopytko-utils
+' @import /components/utils/KopytkoGlobalNode.brs
 function StoreFacade() as Object
   if (m._store <> Invalid)
     return m._store
   end if
 
-  _global = GlobalNode()
+  _global = KopytkoGlobalNode()
   if (NOT _global.hasField("store"))
     _global.addFields({
       store: CreateObject("roSGNode", "Node"),

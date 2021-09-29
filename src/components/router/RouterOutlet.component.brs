@@ -1,6 +1,5 @@
 ' @import /components/router/Routes.brs
 ' @import /components/router/utils/buildPath.brs
-' @import /components/utils/mergeObjects.brs
 sub constructor()
   ' dependencies
   m._router = Invalid

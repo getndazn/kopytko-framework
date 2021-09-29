@@ -1,8 +1,8 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+' @mock /components/buildUrl.brs from @dazn/kopytko-utils
 ' @mock /components/rokuComponents/Timespan.brs from @dazn/kopytko-utils
 ' @mock /components/rokuComponents/UrlTransfer.brs from @dazn/kopytko-utils
 ' @mock /components/http/HttpInterceptor.brs
-' @mock /components/utils/buildUrl.brs
 function TestSuite__HttpRequest() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "HttpRequest"
