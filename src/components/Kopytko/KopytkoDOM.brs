@@ -4,9 +4,8 @@ function KopytkoDOM() as Object
   prototype.componentsMapping = {}
 
   ' Renders an element based on the given virtual node
-  '
-  ' @param {Object} vNode The virtual node
-  ' @param {Object} parentElement The parent element where the element will be rendered
+  ' @param {Object} vNode - The virtual node
+  ' @param {Object} parentElement - The parent element where the element will be rendered
   prototype.renderElement = sub (vNode as Object, parentElement = Invalid as Object)
     if (Type(vNode) = "roArray")
       m._renderElementChildren(vNode, parentElement)
@@ -50,17 +49,17 @@ function KopytkoDOM() as Object
   end sub
 
   ' Updates the DOM based on the passed diffResult param, updating, rendering and removing elements where needed
-  '
-  ' @param {Object} diffResult The diff result containing the elements to be rendered, removed and updated
-  ' @param {Object[]} diffResult.elementsToRender An array of vNodes to render
-  ' @param {Object} diffResult.elementsToUpdate An associative array of vNodes containing the props that needs to be updated
-  ' @param {String[]} diffResult.elementsToRemove An array of strings with the IDs of elements to remove from the DOM
+  ' @param {Object} diffResult - The diff result containing the elements to be rendered, removed and updated
+  ' @param {Object[]} diffResult.elementsToRender - An array of vNodes to render
+  ' @param {Object} diffResult.elementsToUpdate - An associative array of vNodes containing the props that needs to be updated
+  ' @param {String[]} diffResult.elementsToRemove - An array of strings with the IDs of elements to remove from the DOM
   prototype.updateDOM = sub (diffResult as Object)
     m._removeElements(diffResult.elementsToRemove)
     m._renderElements(diffResult.elementsToRender)
     m._updateElements(diffResult.elementsToUpdate)
   end sub
 
+  ' @private
   prototype._renderElements = sub (elements as Object)
     rootElement = m._getRootComponent()
 
@@ -75,6 +74,7 @@ function KopytkoDOM() as Object
     end for
   end sub
 
+  ' @private
   prototype._updateElements = sub (elements as Object)
     rootElement = m._getRootComponent()
 
@@ -89,6 +89,7 @@ function KopytkoDOM() as Object
     end for
   end sub
 
+  ' @private
   prototype._removeElements = sub (elements as Object)
     rootElement = m._getRootComponent()
 
@@ -104,6 +105,7 @@ function KopytkoDOM() as Object
     end for
   end sub
 
+  ' @private
   prototype._destroyKopytkoElement = sub (element as Object)
     if (m._isKopytkoBasedType(element))
       element.callFunc("destroyKopytko", {})
@@ -115,6 +117,7 @@ function KopytkoDOM() as Object
     end if
   end sub
 
+  ' @private
   prototype._setElementEventListeners = sub (element as Object, events as Object)
     if (events = Invalid)
       return
@@ -126,6 +129,7 @@ function KopytkoDOM() as Object
     end for
   end sub
 
+  ' @private
   prototype._setElementSelector = sub (element as Object)
     rootElement = m._getRootComponent()
     rootElement[element.id] = element
@@ -135,6 +139,7 @@ function KopytkoDOM() as Object
     end if
   end sub
 
+  ' @private
   prototype._renderElementChildren = sub (children as Object, parentElement as Object)
     if (children = Invalid)
       return
@@ -147,10 +152,12 @@ function KopytkoDOM() as Object
     end for
   end sub
 
+  ' @private
   prototype._getRootComponent = function () as Object
     return GetGlobalAA()
   end function
 
+  ' @private
   prototype._isVNodeValid = function (vNode as Object) as Boolean
     if (Type(vNode) = "roAssociativeArray" AND vNode.count() = 0)
       return false ' Let render empty component without printing any warning
@@ -165,6 +172,7 @@ function KopytkoDOM() as Object
     return true
   end function
 
+  ' @private
   prototype._isNodeValid = function (node as Object) as Boolean
     if (node = Invalid OR Type(node) <> "roSGNode")
       print "You must define a valid parent element to render the vNode!"
@@ -175,6 +183,7 @@ function KopytkoDOM() as Object
     return true
   end function
 
+  ' @private
   prototype._createNode = function (nodeName as String) as Object
     if (nodeName = Invalid OR nodeName = "")
       print "You must define a valid component name in the 'name' property in order to render the vNode!"
@@ -200,6 +209,7 @@ function KopytkoDOM() as Object
     return element
   end function
 
+  ' @private
   prototype._isKopytkoBasedType = function (element as Object) as Boolean
     if (NOT element.isSubtype("Group"))
       return false

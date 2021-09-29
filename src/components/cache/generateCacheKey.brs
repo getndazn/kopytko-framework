@@ -1,4 +1,8 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
+
+' Casts value to string. If AA is passed it is encoded to json string
+' @param {Object|String} keyData - When AA is passed it is encoded to json string. Otherwise the value must implement isToString interface.
+' @returns {String}
 function generateCacheKey(keyData as Object) as String
   keyDataType = getType(keyData)
   if (keyDataType = "roAssociativeArray")

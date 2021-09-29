@@ -1,21 +1,25 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/http/HttpRequest.brs
 ' @import /components/http/HttpResponse.brs
+
+' WARNING: the service must be used on the Task threads.
+' @class
+' @param {ifMessagePort} port
+' @param {HttpInterceptor[]} httpInterceptors
 function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   prototype = {}
+
+  prototype._HTTP_REQUEST_COMPLETED = 1
+  prototype._TIMEOUT_INTERVAL_CHECK = 1000
+  ' For reference see https://sdkdocs.roku.com/display/sdkdoc/roUrlEvent
+  prototype._TIMEOUT_ERROR_CODE = -28
 
   prototype._httpInterceptors = httpInterceptors
   prototype._port = port
 
-  _constructor = function (m as Object) as Object
-    m._HTTP_REQUEST_COMPLETED = 1
-    m._TIMEOUT_INTERVAL_CHECK = 1000
-    ' For reference see https://sdkdocs.roku.com/display/sdkdoc/roUrlEvent
-    m._TIMEOUT_ERROR_CODE = -28
-
-    return m
-  end function
-
+  ' Performs HTTP request
+  ' @param {HttpRequest~Options} options
+  ' @returns {HttpResponse|Invalid}
   prototype.fetch = function (options as Object) as Object
     request = HttpRequest(options, m._httpInterceptors).setMessagePort(m._port)
     request.send()
@@ -23,6 +27,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     return m._waitForResponse(request)
   end function
 
+  ' @private
   prototype._waitForResponse = function (request as Object) as Object
     while (true)
       message = m._waitForMessage()
@@ -41,10 +46,12 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     end while
   end function
 
+  ' @private
   prototype._waitForMessage = function () as Object
     return Wait(m._TIMEOUT_INTERVAL_CHECK, m._port)
   end function
 
+  ' @private
   prototype._handleResponse = function (request as Object, urlEvent as Object) as Object
     for each interceptor in m._httpInterceptors
       interceptor.interceptResponse(request, urlEvent)
@@ -60,6 +67,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     }).toNode()
   end function
 
+  ' @private
   prototype._getTimeoutResponse = function (request as Object) as Object
     return HttpResponse({
       httpStatusCode: m._TIMEOUT_ERROR_CODE,
@@ -67,5 +75,5 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     }).toNode()
   end function
 
-  return _constructor(prototype)
+  return prototype
 end function

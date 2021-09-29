@@ -2,6 +2,9 @@
 ' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @import /components/cache/policies/CachingPolicies.const.brs
 ' @import /components/cache/policies/DefaultCachingPolicy.brs
+
+' @class
+' @augments DefaultCachingPolicy
 function ExpirableCachingPolicy() as Object
   prototype = DefaultCachingPolicy()
 

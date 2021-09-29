@@ -1,6 +1,9 @@
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/cache/policies/CachingPolicies.const.brs
 ' @import /components/cache/policies/DefaultCachingPolicy.brs
+
+' @class
+' @augments DefaultCachingPolicy
 function ExhaustibleCachingPolicy() as Object
   prototype = DefaultCachingPolicy()
 

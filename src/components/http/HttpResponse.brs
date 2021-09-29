@@ -1,4 +1,24 @@
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
+
+' The HttpResponse object
+' @typedef {Object} HttpResponse~HttpResponseNode
+' @property {String} id
+' @property {Integer} httpStatusCode
+' @property {Object} rawData
+' @property {Object} requestOptions
+' @property {Node} data
+' @property {String} ?failureReason
+
+' The class parses response to JSON when application/json mimetype is detected.
+' WARNING: the class must be used on the Task threads.
+' @class
+' @param {Object} response
+' @param {String} response.id
+' @param {String} response.rawData
+' @param {Integer} response.httpStatusCode
+' @param {String} response.failureReason
+' @param {Object} response.headers
+' @param {Object} response.requestOptions
 function HttpResponse(response as Object) as Object
   prototype = {}
 
@@ -15,6 +35,9 @@ function HttpResponse(response as Object) as Object
   prototype._isSuccess = Invalid
   prototype._failureReason = "OK"
 
+  ' @constructor
+  ' @param {Object} m - instance reference
+  ' @param {Object} response
   _constructor = function (m as Object, response as Object) as Object
     if (Type(response.headers) = "roAssociativeArray")
       m._headers = response.headers
@@ -38,6 +61,8 @@ function HttpResponse(response as Object) as Object
     return m
   end function
 
+  ' Casts response object to node.
+  ' @returns {HttpResponse~HttpResponseNode}
   prototype.toNode = function () as Object
     responseNode = CreateObject("roSGNode", "Node")
     responseNode.id = m._id
@@ -56,6 +81,7 @@ function HttpResponse(response as Object) as Object
     return responseNode
   end function
 
+  ' @private
   prototype._checkSuccess = function () as Boolean
     return (m._httpStatusCode >= m._HTTP_SUCCESS AND m._httpStatusCode < m._HTTP_FAILURE)
   end function
