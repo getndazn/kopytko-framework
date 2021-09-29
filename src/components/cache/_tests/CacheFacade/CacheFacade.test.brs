@@ -8,7 +8,7 @@ function CacheFacadeTestSuite() as Object
 
   ts.setBeforeEach(sub (ts as Object)
     m.__mocks = {}
-    m.__mocks.globalNode = {
+    m.__mocks.kopytkoGlobalNode = {
       fields: {
         cache: CreateObject("roSGNode", "Cache"),
       },
