@@ -117,7 +117,7 @@ This abort logic works exactly like in JavaScript. The request still exists but 
 
 It is possible to intercept an HTTP request made by HttpAgent.
 Sometimes you need it for example for reporting reasons.
-To do it, you need to create an interceptor (you can extend our HttpInterceptor).
+To do it, you need to create an interceptor (you can extend our `HttpInterceptor`).
 
 It contains 2 methods:
 - interceptRequest which will be called when the request is sent
