@@ -25,6 +25,6 @@ and used in apps configured by Kopytko Packager.
 - HTTP: easy way to send HTTP requests
 - Modal: global UI component. Full documentation available in [docs/modal.md](docs/modal.md)
 - Registry: a facade over native Roku's registry. Full documentation available in [docs/registry.md](docs/registry.md)
-- Store: a mechanism to store reusable data
+- Store: a mechanism to store reusable data. Docs available in [docs/store.md](docs/store.md)
 - Theme: manages UI configuration and allows easy use in any place
 
