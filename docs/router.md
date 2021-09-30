@@ -77,7 +77,7 @@ A `Route` is an object implementing specific interface:
 ## RouterOutlet and nested routes
 
 `RouterOutlet` is a Kopytko component that automatically renders a proper view based on the current URL. The main Kopytko
-component, an always-rendered component, should contain RouterOutlet. One component should contain max 1 RouterOutlet.
+component, an always-rendered component, should contain `RouterOutlet`. One component should contain max one `RouterOutlet`.
 In the whole components tree there can be multiple RouterOutlets to allow rendering nested routes.
 
 Example:
