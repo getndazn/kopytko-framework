@@ -95,7 +95,7 @@ It will return a `Promise`.
 
 ## Abort Request
 
-If you know that request is not needed anymore you can easily abort it by adding the AbortController signal to your request and by calling `abort` method on that instance of AbortController.
+If you know that request is not needed anymore you can easily abort it by adding the `AbortController` signal to your request and by calling `abort` method on that instance of `AbortController`.
 
 To do that you can pass your instance of abort controller in the options of createRequest.
 
