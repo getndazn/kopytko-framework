@@ -45,7 +45,7 @@ end sub
 ```
 
 In such example, when launching your app, `RouterOutlet` will automatically render `InitView` because it's assigned
-to the default path. You can trigger rendering BrowseView in place of InitView by calling
+to the default path. You can trigger rendering `BrowseView` in place of `InitView` by calling
 `RouterFacade().navigate("/browse")` (firstly you need to import RouterFacade:
 `@import /components/router/Router.facade.brs from @dazn/kopytko-framework`).
 
