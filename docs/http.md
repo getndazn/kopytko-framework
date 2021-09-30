@@ -82,7 +82,7 @@ end function
 
 ## Send Request
 
-To send defined requests you need to use createRequest function (maybe in the future renamed to sendRequest).
+To send defined requests you need to use `createRequest` function (maybe in the future renamed to `sendRequest`).
 
 As a first argument, it takes the Request component name defined by you in the application.
 
