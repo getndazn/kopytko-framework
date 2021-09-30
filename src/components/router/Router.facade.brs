@@ -6,7 +6,7 @@ function RouterFacade() as Object
 
   ' Changes path in global Router service
   ' @param {String} path - URL
-  ' @param {Object} params - query params, allow to pass additional values when changing the route
+  ' @param {Object} [params={}] - query params, allow to pass additional values when changing the route
   prototype.navigate = sub (path as String, params = {} as Object)
     m._router.callFunc("navigate", {
       path: path,
