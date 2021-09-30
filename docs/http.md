@@ -87,6 +87,16 @@ To send defined requests you need to use `createRequest` function (maybe in the 
 As a first argument, it takes the `Request` component name defined by you in the application.
 
 ```brightscript
+data = {
+  url: "https://my-service.com/endpoint",
+  method: "POST",
+  headers: {
+    header1: "header-value",
+  },
+  body: {
+    fieldA: 2,
+  },
+}
 createRequest("RequestName", data)
 ```
 
