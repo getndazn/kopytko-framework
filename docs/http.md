@@ -109,7 +109,7 @@ createRequest("RequestName", {}, {
 myAbortController.abort()
 ```
 
-AbortController contains also isAborted method which will return a boolean indicating if abort was called on it.
+`AbortController` contains also `isAborted` method which will return a boolean indicating if abort was called on it.
 
 This abort logic works exactly like in JavaScript. The request still exists but it is ignored by the app.
 
