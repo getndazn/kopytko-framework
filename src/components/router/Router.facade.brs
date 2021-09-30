@@ -28,7 +28,7 @@ function RouterFacade() as Object
 
   ' Appends changes to the additional data of the current route which can be used on back journey,
   ' e.g. to mark the previously focused element
-  ' @param {Object} backJourneyData
+  ' @param {Object} backJourneyData - data to append into the current route's backJourneyData
   prototype.appendBackJourneyData = sub (backJourneyData as Object)
     currentBackJourneyData = m._router.activatedRoute.backJourneyData
     if (currentBackJourneyData = Invalid)
@@ -40,7 +40,7 @@ function RouterFacade() as Object
   end sub
 
   ' Completely overwrites additional data of the current route
-  ' @param {Object} backJourneyData
+  ' @param {Object} backJourneyData - data to overwrite the current route's backJourneyData
   prototype.updateBackJourneyData = sub (backJourneyData as Object)
     m._router.activatedRoute.backJourneyData = backJourneyData
   end sub

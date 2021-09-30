@@ -3,7 +3,7 @@
 ' @param {Object} navigationData
 ' @param {String} navigationData.path - new URL
 ' @param {Object} navigationData.params - query params
-' @param {Boolean=false} [resetHistory] - determines if the routes history should be reset
+' @param {Boolean} [resetHistory=false] - determines if the routes history should be reset
 sub redirect(navigationData as Object, resetHistory = false as Boolean)
   m._redirectionData = navigationData
   m._resetHistory = resetHistory
