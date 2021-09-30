@@ -95,7 +95,7 @@ function getAppRouting() as Object
 end function
 ```
 
-In such case BrowseView should also render a RouterOutlet - for URL `/browse/subroute` it will render SubView and
+In such case `BrowseView` should also render a `RouterOutlet` - for URL `/browse/subroute` it will render `SubView` and
 for `/browse` it wouldn't render anything.
 
 ## Middlewares
