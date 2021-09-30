@@ -22,7 +22,7 @@ and used in apps configured by Kopytko Packager.
   [docs/renderer.md](docs/renderer.md)
 - Router: enables building an app with multiple views and allows navigation between them
 - Cache: a mechanism to store expirable external data
-- Event Bus: implementation of Event Bus simplifying the communication between components
+- Event Bus: implementation of Event Bus simplifying the communication between components. Full documentation available in [docs/event-bus.md](docs/event-bus.md)
 - HTTP: easy way to send HTTP requests
 - Modal: global UI component
 - Registry: a facade over native Roku's registry. Full documentation available in
