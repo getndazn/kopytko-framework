@@ -141,16 +141,16 @@ httpAgent = HttpAgent(port, [interceptor])
 
 ### Intercept Request
 
-You can intercept requests by adding your custom interceptors to the HttpAgent. Each time the request is made, the interceptor will be invoked with arguments: requestOptions and urlTransfer.
+You can intercept requests by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
-interceptRequest has 2 arguments:
-- requestOptions - these are options with which request was sent
-- urlTransfer - an instance of roUrlTransfer that is handling this request
+`interceptRequest` has two arguments:
+- `requestOptions` - these are options with which request was sent
+- `urlTransfer` - an instance of `roUrlTransfer` that is handling this request
 
 ### Intercept Response
 
-You can intercept response by adding your custom interceptors to the HttpAgent. Each time the request is made, the interceptor will be invoked with arguments: requestOptions and urlTrnsfer.
+You can intercept response by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
-interceptResponse has 2 arguments:
-- requestOptions - these are options with which request was sent
-- urlEvent - an instance of roUrlEvent that is returned on request fulfill
+`interceptResponse` has two arguments:
+- `requestOptions` - these are options with which request was sent
+- `urlEvent` - an instance of roUrlEvent that is returned on request fulfill
