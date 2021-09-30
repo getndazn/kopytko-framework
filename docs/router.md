@@ -38,6 +38,7 @@ sub constructor()
   router = CreateObject("roSGNode", "Router")
   router.routing = getAppRouting()
 end sub
+
 sub componentDidMount()
   m.routerOutlet.setFocus(true)
 end sub
