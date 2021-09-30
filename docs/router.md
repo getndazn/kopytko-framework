@@ -100,7 +100,7 @@ for `/browse` it wouldn't render anything.
 
 ## Middlewares
 
-Middleware is a special node with `execute(route as Object)` public method (which should be reimplemented in specific middlewares)
+`Middleware` is a special node with `execute(route as Object)` public method (which should be reimplemented in specific middlewares)
 and `canActivate` public property. Every route can have assigned multiple middlewares - before entering such route
 they will be executed one by one once each `canActivate` property will be set to `true`.
 If the last of route's middlewares will set `true` `canActivate` property, the view assigned to the route will be rendered.
