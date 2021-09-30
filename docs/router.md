@@ -30,7 +30,7 @@ function render() as Object
 end function
 ```
 
-Initialize global Router service and set default focus to RouterOutlet in you main Kopytko component:
+Initialize global `Router` service and set default focus to `RouterOutlet` in you main Kopytko component:
 ```brightscript
 ' src/components/App.view.brs
 ' @import /components/App.routing.brs
