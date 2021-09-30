@@ -91,7 +91,7 @@ createRequest("RequestName", data)
 ```
 
 The `data` is passed as an argument to `getRequestOptions` method in `RequestName` component.
-It will return a Promise.
+It will return a `Promise`.
 
 ## Abort Request
 
