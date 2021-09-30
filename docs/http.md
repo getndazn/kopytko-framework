@@ -19,7 +19,7 @@ To create such a service you will need to import `HttpService` (`@import /compon
 - port - required - instance of `roMessagePort`
 - interceptors - optional - an array of [interceptors](#intercepting)
 
-```
+```brightscript
 port = CreateObject("roMessagePort")
 
 httpAgent = HttpAgent(port)
