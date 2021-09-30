@@ -67,7 +67,7 @@ Its public methods:
 
 ## Route
 
-A collection of Route objects creates a Routing which should be passed to the Router service (see: Quick Start).
+A collection of `Route` objects creates a routing which should be passed to the `Router` service (see: Quick Start).
 A Route is an object implementing specific interface:
 - {String} path - path of route, e.g. `"browse"`,
 - {String} view - name of Kopytko component assigned to the route, e.g. `"BrowseView"`,
