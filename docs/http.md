@@ -21,7 +21,6 @@ To create such a service you will need to import `HttpService` (`@import /compon
 
 ```brightscript
 port = CreateObject("roMessagePort")
-
 httpAgent = HttpAgent(port)
 ```
 
