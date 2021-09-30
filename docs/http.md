@@ -120,10 +120,10 @@ Sometimes you need it for example for reporting reasons.
 To do it, you need to create an interceptor (you can extend our `HttpInterceptor`).
 
 It contains 2 methods:
-- interceptRequest which will be called when the request is sent
-- interceptResponse which will be called when the response is sent
+- `interceptRequest` which will be called when the request is sent
+- `interceptResponse` which will be called when the response is sent
 
-```
+```brightscript
 port = CreateObject("roMessagePort")
 
 interceptor = HttpInterceptor()
