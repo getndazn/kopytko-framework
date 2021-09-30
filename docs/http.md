@@ -99,7 +99,7 @@ If you know that request is not needed anymore you can easily abort it by adding
 
 To do that you can pass your instance of abort controller in the options of `createRequest`.
 
-```
+```brightscript
 myAbortController = AbortController()
 
 createRequest("RequestName", {}, {
