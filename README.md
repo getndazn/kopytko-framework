@@ -19,7 +19,7 @@ and used in apps configured by Kopytko Packager.
 ## Modules
 
 - Renderer: main module, inspired by JS React library, rendering components. Full documentation available in [docs/renderer.md](docs/renderer.md)
-- Router: enables building an app with multiple views and allows navigation between them
+- Router: enables building an app with multiple views and allows navigation between them. Docs available in [docs/router.md](docs/router.md)
 - Cache: a mechanism to store expirable external data
 - EventBus: implementation of Event Bus simplifying the communication between components
 - HTTP: easy way to send HTTP requests
