@@ -25,7 +25,8 @@ and used in apps configured by Kopytko Packager.
 - Event Bus: implementation of Event Bus simplifying the communication between components
 - HTTP: easy way to send HTTP requests
 - Modal: global UI component
-- Registry: a facade over native Roku's registry
+- Registry: a facade over native Roku's registry. Full documentation available in
+  [docs/registry.md](docs/registry.md)
 - Store: a mechanism to store reusable data
 - Theme: manages UI configuration and allows easy use in any place
 
