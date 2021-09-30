@@ -86,7 +86,7 @@ To send defined requests you need to use `createRequest` function (maybe in the 
 
 As a first argument, it takes the `Request` component name defined by you in the application.
 
-```
+```brightscript
 createRequest("RequestName", data)
 ```
 
