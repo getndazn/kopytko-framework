@@ -84,7 +84,7 @@ end function
 
 To send defined requests you need to use `createRequest` function (maybe in the future renamed to `sendRequest`).
 
-As a first argument, it takes the Request component name defined by you in the application.
+As a first argument, it takes the `Request` component name defined by you in the application.
 
 ```
 createRequest("RequestName", data)
