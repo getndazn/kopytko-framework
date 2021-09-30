@@ -24,24 +24,24 @@ port = CreateObject("roMessagePort")
 httpAgent = HttpAgent(port)
 ```
 
-It has only one method - fetch - by calling it, the HttpService will create a request (HttpRequest) according to options passed to it and fulfill the response with HttpResponse.
+It has only one method - fetch - by calling it the `HttpService` will create a request (`HttpRequest`) according to options passed to it and fulfill the response with `HttpResponse`.
 
 Request options:
-- url - string - request URL
-- headers - associative array - headers fields
-- method - string - HTTP method
-- body - associative array - request body
-- queryParams - associative array - with  query params
-- compression - (defalt: true) boolean - indicating if the request should be compressed
-- timeout - integer - time after which request should be aborted
+- `url` - string - request URL
+- `headers` - associative array - headers fields
+- `method` - string - HTTP method
+- `body` - associative array - request body
+- `queryParams` - associative array - with  query params
+- `compression` - (defalt: true) boolean - indicating if the request should be compressed
+- `timeout` - integer - time after which request should be aborted
 
-The Response is a node with fields:
-- id
-- httpStatusCode
-- headers
-- requestOptions
-- rawData
-- failureReason
+The `HttpResponse` is a node with fields:
+- `id`
+- `httpStatusCode`
+- `headers`
+- `requestOptions`
+- `rawData`
+- `failureReason`
 
 The response will be `Invalid` if a request was aborted.
 
