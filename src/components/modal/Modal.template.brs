@@ -4,9 +4,9 @@ function render() as Object
       name: "Rectangle",
       props: {
         id: "backdrop",
-        width: m._resolution.width,
-        height: m._resolution.height,
-        opacity: 0.7,
+        width: m.top.width,
+        height: m.top.height,
+        opacity: m.top.opacity,
         color: m.top.backdropColor,
       },
     },
@@ -14,7 +14,7 @@ function render() as Object
       name: "Group",
       props: {
         id: "innerElementContainer",
-        width: m._resolution.width,
+        width: m.top.width,
       },
       children: [
         _renderInnerElement(),

@@ -1,12 +1,8 @@
-' @import /components/ArrayUtils.brs from @dazn/kopytko-utils
 ' @import /components/eventBus/EventBus.facade.brs
 ' @import /components/modal/ModalEvents.const.brs
 sub constructor()
-  m._arrayUtils = ArrayUtils()
   m._eventBus = EventBusFacade()
   m._modalEvents = ModalEvents()
-
-  m._resolution = m.top.getScene().currentDesignResolution
 
   m.state = {
     elementToRender: Invalid,

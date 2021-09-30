@@ -1,5 +1,4 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
-' @mock /components/theme/Theme.facade.brs
 function TestSuite__Modal() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "Modal"
@@ -79,29 +78,29 @@ function TestSuite__Modal() as Object
 
   ts.addTest("it focuses the given element to focus when closing", function (ts as Object) as Object
     ' Given
-    dupaElement = CreateObject("roSGNode", "Group")
+    element = CreateObject("roSGNode", "Group")
     initKopytko()
     m._eventBus.trigger(m._modalEvents.OPEN_REQUESTED, {
       componentName: "Group",
       componentProps: {},
-      elementToFocusOnClose: dupaElement,
+      elementToFocusOnClose: element,
     })
 
     ' When
     m._eventBus.trigger(m._modalEvents.CLOSE_REQUESTED)
 
     ' Then
-    return ts.assertTrue(dupaElement.hasFocus(), "The element was not focused properly")
+    return ts.assertTrue(element.hasFocus(), "The element was not focused properly")
   end function)
 
   ts.addTest("it closes and focuses the given element to focus on close when pressing the 'back' key", function (ts as Object) as Object
     ' Given
-    dupaElement = CreateObject("roSGNode", "Group")
+    element = CreateObject("roSGNode", "Group")
     initKopytko()
     m._eventBus.trigger(m._modalEvents.OPEN_REQUESTED, {
       componentName: "Group",
       componentProps: {},
-      elementToFocusOnClose: dupaElement,
+      elementToFocusOnClose: element,
     })
 
     ' When
@@ -115,7 +114,7 @@ function TestSuite__Modal() as Object
       return ts.fail("The modal was not closed")
     end if
 
-    return ts.assertTrue(dupaElement.hasFocus(), "The element was not focused properly")
+    return ts.assertTrue(element.hasFocus(), "The element was not focused properly")
   end function)
 
   return ts
