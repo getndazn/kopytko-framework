@@ -15,7 +15,7 @@ The logic for handling HTTP requests.
 `HttpService` is needed to fetch a request that you have created.
 To create such a service you will need to import `HttpService` (`@import /components/http/HttpService.brs from @dazn/kopytko-framework`).
 
-HttpService has 2 arguments:
+`HttpService` has 2 arguments:
 - port - required - instance of roMessagePort
 - interceptors - optional - an array of [interceptors](#intercepting)
 
