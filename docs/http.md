@@ -66,7 +66,7 @@ The request contains the following methods:
 </component>
 ```
 
-```brs
+```brightscript
 sub init()
   m._httpService = m.global.httpService
 end sub
