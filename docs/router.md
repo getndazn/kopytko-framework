@@ -51,7 +51,7 @@ to the default path. You can trigger rendering `BrowseView` in place of `InitVie
 
 ## Router and RouterFacade
 
-Router node is a service node which should be initialized in your main component. It automatically sets its global
+`Router` node is a service node which should be initialized in your main component. It automatically sets its global
 reference, it just requires routing config to be passed as its `routing` field (check Quick Start section above).
 
 `RouterFacade` is a facade operating on global `Router` service, designed to be used in any place of your app.
