@@ -21,7 +21,7 @@ function RouterFacade() as Object
   end function
 
   ' Resets history of forward route navigations
-  ' @param {String} [rootPath] - the initial path to overwriting the full history
+  ' @param {String} [rootPath=""] - the initial path to overwriting the full history
   prototype.resetHistory = sub (rootPath = "" as String)
     m._router.callFunc("resetHistory", rootPath)
   end sub
