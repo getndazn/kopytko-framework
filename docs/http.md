@@ -47,7 +47,7 @@ The response will be `Invalid` if a request was aborted.
 
 ## Define Request
 
-To create your own request create a new component that extends Request (`/component/http/request/Request`).
+To create your own request create a new component that extends `Request` (`/component/http/request/Request`).
 
 You can always create a component that will aggregate the common logic of your requests and extend that component (MyRequest -extends-> MyCommonRequest -extends-> Request).
 
