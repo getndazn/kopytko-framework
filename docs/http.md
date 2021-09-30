@@ -52,11 +52,11 @@ To create your own request create a new component that extends `Request` (`/comp
 You can always create a component that will aggregate the common logic of your requests and extend that component (MyRequest -extends-> MyCommonRequest -extends-> Request).
 
 The request contains the following methods:
-- initRequest - that will be run when the request is initialised. It is recommended to get all data from other nodes here, as exchanging the data between nodes will result in rendezvous in further process.
-- runRequest - If you are using HttpAgent, you will invoke httpSercice.fetch here.
-- getRequestOptions - this needs to return response options like URL, headers, method, body, timeout.
-- parseResponseData - this method will parse response data, you can for example create a new node, add data there and return it.
-- generateErrorData - here you can generate your custom error data that should be thrown on request failure.
+- `initRequest` - that will be run when the request is initialized. It is recommended to get all data from other nodes here, as exchanging the data between nodes will result in rendezvous in further process. The method is executed on `render` thread.
+- `runRequest` - If you are using `HttpService`, you will invoke `httpService.fetch` here.
+- `getRequestOptions` - this needs to return response options like URL, headers, method, body, timeout.
+- `parseResponseData` - this method will parse response data, you can for example create a new node, add data there and return it. The method is executed on the `Task` thread.
+- `generateErrorData` - here you can generate your custom error data that should be thrown on request failure. The method is executed on the `Task` thread.
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
