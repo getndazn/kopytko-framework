@@ -17,7 +17,7 @@ function getAppRouting() as Object
 end function
 ```
 
-Render RouterOutlet in your main Kopytko component, e.g.:
+Render `RouterOutlet` in your main Kopytko component, e.g.:
 ```brightscript
 ' src/components/App.template.brs
 function render() as Object
