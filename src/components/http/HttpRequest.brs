@@ -3,6 +3,20 @@
 ' @import /components/ternary.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/Timespan.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/UrlTransfer.brs from @dazn/kopytko-utils
+
+' @typedef {Object} HttpRequest~Options
+' @property {String} id
+' @property {String} url
+' @property {Object} queryParams
+' @property {String} method
+' @property {Object} headers
+' @property {Integer} timeout
+' @property {Object} body
+
+' Request logic.
+' @class
+' @param {HttpRequest~Options} options
+' @param {HttpInterceptor[]} [httpInterceptors=[]]
 function HttpRequest(options as Object, httpInterceptors = [] as Object) as Object
   prototype = {}
 
@@ -18,6 +32,8 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
   prototype._urlTransfer = UrlTransfer()
   prototype._timer = Timespan()
 
+  ' @constructor
+  ' @param {Object} m - Instance reference
   _constructor = function (m as Object) as Object
     url = buildUrl(m._options.url, m._options.queryParams)
 
@@ -44,6 +60,8 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     return m
   end function
 
+  ' Performs actual request.
+  ' @returns {Object} - Returns instance
   prototype.send = function () as Object
     for each interceptor in m._httpInterceptors
       interceptor.interceptRequest(m, m._urlTransfer)
@@ -68,32 +86,41 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     return m
   end function
 
+  ' @param {ifMessagePort} port
+  ' @returns {Object} - Returns instance
   prototype.setMessagePort = function (port as Object) as Object
     m._urlTransfer.setMessagePort(port)
 
     return m
   end function
 
+  ' @returns {ifMessagePort}
   prototype.getMessagePort = function () as Object
     return m._urlTransfer.getMessagePort()
   end function
 
+  ' @returns {String}
   prototype.getId = function () as String
     return m._options.id
   end function
 
+  ' @returns {String}
   prototype.getIdentity = function () as String
     return m._urlTransfer.getIdentity().toStr()
   end function
 
+  ' @returns {HttpRequest~Options}
   prototype.getOptions = function () as Object
     return m._options
   end function
 
+  ' @returns {Object} - String object type.
   prototype.getUrl = function () as Object
     return m._urlTransfer.getUrl()
   end function
 
+  ' Cancels request that times out.
+  ' @returns {Boolean}
   prototype.isTimedOut = function () as Boolean
     isTimedOut = (m._timer.totalMilliseconds() >= m._timeout)
 
@@ -104,10 +131,12 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     return isTimedOut
   end function
 
+  ' Aborts active request.
   prototype.abort = sub ()
     m._urlTransfer.asyncCancel()
   end sub
 
+  ' @private
   prototype._isSecure = function () as Boolean
     return (Left(m._options.url, 5) = "https")
   end function

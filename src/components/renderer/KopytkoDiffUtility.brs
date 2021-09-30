@@ -5,14 +5,12 @@ function KopytkoDiffUtility() as Object
 
   ' Diffs the current virtual DOM against the new one, returning an object with the elements that need to be
   ' updated, rendered or removed.
-  '
-  ' @param {Object} currentVirtualDOM The current virtual DOM
-  ' @param {Object} newVirtualDOM The new virtual DOM
-  '
-  ' @return {Object} diffResult The diff result object
-  ' @return {Object} diffResult.elementsToUpdate vNodes containing the props that needs to be updated
-  ' @return {Object[]} diffResult.elementsToRender A list of vNodes to render
-  ' @return {String[]} diffResult.elementsToRemove A list of the IDs of elements to remove from the DOM
+  ' @param {Object} currentVirtualDOM - The current virtual DOM
+  ' @param {Object} newVirtualDOM - The new virtual DOM
+  ' @returns {Object} diffResult - The diff result object
+  ' @returns {Object} diffResult.elementsToUpdate - vNodes containing the props that needs to be updated
+  ' @returns {Object[]} diffResult.elementsToRender - A list of vNodes to render
+  ' @returns {String[]} diffResult.elementsToRemove - A list of the IDs of elements to remove from the DOM
   prototype.diffDOM = function (currentVirtualDOM as Object, newVirtualDOM as Object) as Object
     m._diffResult = {
       elementsToUpdate: {},
@@ -32,6 +30,7 @@ function KopytkoDiffUtility() as Object
     return diffResult
   end function
 
+  ' @private
   prototype._diffElement = sub (currentElement as Object, newElement as Object)
     if (currentElement = Invalid AND newElement = Invalid)
       return
@@ -70,6 +69,7 @@ function KopytkoDiffUtility() as Object
     m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
   end sub
 
+  ' @private
   prototype._markElementToBeRemoved = sub (element as Object)
     m._diffResult.elementsToRemove.push(element.props.id)
 
@@ -84,6 +84,7 @@ function KopytkoDiffUtility() as Object
     end for
   end sub
 
+  ' @private
   prototype._diffElementProps = sub (elementId as String, currentProps as Object, newProps as Object)
     for each newProp in newProps
       if (NOT m._assert.deepEqual(currentProps[newProp], newProps[newProp]))
@@ -98,6 +99,7 @@ function KopytkoDiffUtility() as Object
   end sub
 
   ' @todo Make it not rerender the whole children tree if they were only reordered
+  ' @private
   prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
     if (currentChildren = Invalid)
       currentChildren = []

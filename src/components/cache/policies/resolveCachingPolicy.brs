@@ -2,6 +2,12 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/cache/policies/CachingPolicies.const.brs
 ' @import /components/cache/policies/getCachingPolicies.brs
+
+' Determines which caching policy should be chosen.
+' @param {Object|String} policyTypeOrOptions - If AA is passed:
+' @param {Object|String} policyTypeOrOptions.expirationTimestamp
+' @param {Object|String} policyTypeOrOptions.remainingUses
+' @returns {Object} - Polic type. One of: DefaultCachingPolicy, ExhaustibleCachingPolicy, ExpirableCachingPolicy
 function resolveCachingPolicy(policyTypeOrOptions as Object) as Object
   policies = getCachingPolicies()
   paramType = getType(policyTypeOrOptions)
