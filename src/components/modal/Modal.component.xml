@@ -4,6 +4,9 @@
   <interface>
     <!-- Inputs -->
     <field id="backdropColor" type="color" />
+    <field id="height" type="float" />
+    <field id="opacity" type="float" />
+    <field id="width" type="float" />
   </interface>
 
   <script type="text/brightscript" uri="Modal.template.brs" />
