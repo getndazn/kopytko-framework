@@ -224,7 +224,7 @@ function TestSuite__KopytkoDOM_renderElement()
   ts.addTest("it does not render an element if its name is not a valid component", function (ts as Object) as String
     ' Given
     vNode = {
-      name: "Dupa",
+      name: "Element",
       props: { id: "root" },
     }
     parentElement = CreateObject("roSGNode", "Group")
