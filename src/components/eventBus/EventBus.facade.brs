@@ -1,5 +1,9 @@
 ' @import /components/ArrayUtils.brs from @dazn/kopytko-utils
 ' @import /components/utils/KopytkoGlobalNode.brs
+
+' Pub/Sub implementation
+' WARNING: it pollutes scope (m._eventBus)
+' @class
 function EventBusFacade() as Object
   _global = KopytkoGlobalNode()
   if (NOT _global.hasField("eventBus"))
@@ -18,6 +22,10 @@ function EventBusFacade() as Object
   prototype._eventBus = m.global.eventBus
   prototype._eventsMap = {}
 
+  ' Attach subscriber for an event
+  ' @param {String} eventName
+  ' @param {Function} handler
+  ' @param {Object} [context=Invalid] - Additional context in which the handler will be called
   prototype.on = sub (eventName as String, handler as Function, context = Invalid as Object)
     m._ensureEventExistence(eventName)
 
@@ -31,6 +39,9 @@ function EventBusFacade() as Object
     m.global.eventBus.observeFieldScoped(eventName, "EventBus_onEventFired")
   end sub
 
+  ' Detach subscriber for an event
+  ' @param {String} eventName
+  ' @param {Function} handlerToRemove
   prototype.off = sub (eventName as String, handlerToRemove as Function)
     callbacks = m._eventsMap[eventName]
 
@@ -46,11 +57,15 @@ function EventBusFacade() as Object
     end function, handlerToRemove)
   end sub
 
+  ' Trigger given event with given payload
+  ' @param {String} eventName
+  ' @param {Object} [payload={}]
   prototype.trigger = sub (eventName as String, payload = {} as Object)
     m._ensureEventExistence(eventName)
     m.global.eventBus[eventName] = payload
   end sub
 
+  ' @private
   prototype._ensureEventExistence = sub (eventName as String)
     if (NOT m.global.eventBus.hasField(eventName))
       fields = {}
@@ -64,6 +79,7 @@ function EventBusFacade() as Object
   return prototype
 end function
 
+' @private
 sub EventBus_onEventFired(event as Object)
   eventName = event.getField()
   callbacks = m._eventBus._eventsMap[eventName]
