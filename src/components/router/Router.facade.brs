@@ -46,13 +46,13 @@ function RouterFacade() as Object
   end sub
 
   ' Returns current active route
-  ' @returns {ActivatedRoute}
+  ' @returns {Node<ActivatedRoute>}
   prototype.getActivatedRoute = function () as Object
     return m._router.activatedRoute
   end function
 
   ' Returns previous route from the history
-  ' @returns {ActivatedRoute}
+  ' @returns {Node<ActivatedRoute>}
   prototype.getPreviousRoute = function () as Object
     return m._router.previousRoute
   end function

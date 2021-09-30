@@ -69,10 +69,10 @@ Its public methods:
 
 A collection of `Route` objects creates a routing which should be passed to the `Router` service (see: Quick Start).
 A `Route` is an object implementing specific interface:
-- {String} path - path of route, e.g. `"browse"`,
-- {String} view - name of Kopytko component assigned to the route, e.g. `"BrowseView"`,
-- {String[]} middlewares - list of middleware nodes names, e.g. `["CheckCountryMiddleware", "CheckSubscriptionMiddleware"]`,
-- {Route[]} children - list of child routes
+- `{String} path` - path of route, e.g. `"browse"`,
+- `{String} view` - name of Kopytko component assigned to the route, e.g. `"BrowseView"`,
+- `{String[]} middlewares` - list of middleware nodes names, e.g. `["CheckCountryMiddleware", "CheckSubscriptionMiddleware"]`,
+- `{Route[]} children` - list of child routes
 
 ## RouterOutlet and nested routes
 
