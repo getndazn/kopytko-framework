@@ -104,7 +104,7 @@ for `/browse` it wouldn't render anything.
 and `canActivate` public property. Every route can have assigned multiple middlewares - before entering such route
 they will be executed one by one once each `canActivate` property will be set to `true`.
 If the last of route's middlewares will set `true` `canActivate` property, the view assigned to the route will be rendered.
-Middlewares can be used for additional checks, e.g. authorization, or additional action, e.g. fetching data before
+Middlewares can be used for additional checks, e.g. authorization, or action, e.g. fetching data before
 entering view. If the validation code's result should be not allowing to enter specific route, it should call its
 `redirect(navigationData as Object, resetHistory = false as Boolean)` method - it will stop calling next route's
 middlewares and redirect to the new URL.
