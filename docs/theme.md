@@ -33,7 +33,7 @@ Now you can use the facade:
 
 ```brightscript
 theme = ThemeFacade()
-theme.getFont("regular") ' It corresonds to the font name defined in the getMyTheme function.
+theme.getFont("regular") ' It corresponds to the font name defined in the getMyTheme function.
 theme.getFontUri("regular")' It is the same as getFont but returns uri
 theme.rgba("0x00000000", 0.8) ' 1 represents "FF" and 0 - "00". All other values are between them.
 theme.colors.white ' Other data that is passed to theme node

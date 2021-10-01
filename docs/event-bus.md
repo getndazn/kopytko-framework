@@ -1,6 +1,7 @@
 # Kopytko Framework: EventBus
 
-The mechanism to communicate between various entities in the app. It uses global scope and implements Pub/Sub design pattern.
+The mechanism to communicate between various entities in the app. It uses global scope and implements `Pub/Sub` design pattern.
+
 Example of usage:
 ```brightscript
 sub init()
