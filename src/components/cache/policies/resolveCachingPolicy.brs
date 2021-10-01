@@ -5,8 +5,8 @@
 
 ' Determines which caching policy should be chosen.
 ' @param {Object|String} policyTypeOrOptions - If AA is passed:
-' @param {Object|String} policyTypeOrOptions.expirationTimestamp
-' @param {Object|String} policyTypeOrOptions.remainingUses
+' @param {Integer} policyTypeOrOptions.expirationTimestamp
+' @param {Integer} policyTypeOrOptions.remainingUses
 ' @returns {Object} - Polic type. One of: DefaultCachingPolicy, ExhaustibleCachingPolicy, ExpirableCachingPolicy
 function resolveCachingPolicy(policyTypeOrOptions as Object) as Object
   policies = getCachingPolicies()

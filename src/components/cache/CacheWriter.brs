@@ -15,9 +15,9 @@ function CacheWriter(cache as Object) as Object
   ' @param {Object|String} keyData - The key. When AA is passed it is encoded to json string.
   ' @param {Object} data - The data to be cached.
   ' @param {Object} options
-  ' @param {String} options.expirationTimestamp - The timestamp after which the cached value is invalid.
+  ' @param {Integer} options.expirationTimestamp - In seconds. The timestamp after which the cached value is invalid.
   ' @param {Boolean} options.isSingleUse - The data can be retrieved only once and than removed.
-  ' @param {String} options.scope - If not passed the "global" scope is used
+  ' @param {String} options.scope - If not passed the "global" scope is used.
   prototype.write = sub (keyData as Object, data as Object, options as Object)
     key = generateCacheKey(keyData)
     if (key = "" OR data = Invalid OR isFalsy(options.scope))
