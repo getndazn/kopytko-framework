@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/getndazn/kopytko-framework/compare/v1.0.0...v1.0.1) (2021-10-01)
+
+
+### Bug Fixes
+
+* Fixed Modal property ([#16](https://github.com/getndazn/kopytko-framework/issues/16)) ([ed36d04](https://github.com/getndazn/kopytko-framework/commit/ed36d04379b859afaa9411769554ee0ef2b3cd08))
+
 # 1.0.0 (2021-10-01)
 
 
