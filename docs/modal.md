@@ -53,8 +53,8 @@ Modal interface:
 ```xml
   <interface>
     <field id="backdropColor" type="color" />
+    <field id="backdropOpacity" type="float" />
     <field id="height" type="float" />
-    <field id="opacity" type="float" />
     <field id="width" type="float" />
   </interface>
 ```
