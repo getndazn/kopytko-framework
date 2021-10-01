@@ -20,9 +20,9 @@ and used in apps configured by Kopytko Packager.
 
 - Renderer: main module, inspired by JS React library, rendering components. Full documentation available in [docs/renderer.md](docs/renderer.md)
 - Router: enables building an app with multiple views and allows navigation between them. Docs available in [docs/router.md](docs/router.md)
-- Cache: a mechanism to store expirable external data
+- Cache: a mechanism to store expirable external data. Full documentation available in [docs/cache.md](docs/cache.md)
 - EventBus: implementation of Pub/Sub simplifying the communication between components. Full documentation available in [docs/event-bus.md](docs/event-bus.md)
-- HTTP: easy way to send HTTP requests
+- HTTP: easy way to send HTTP requests. Full documentation available in [docs/http.md](docs/http.md)
 - Modal: global UI component. Full documentation available in [docs/modal.md](docs/modal.md)
 - Registry: a facade over native Roku's registry. Full documentation available in [docs/registry.md](docs/registry.md)
 - Store: a mechanism to store reusable data. Docs available in [docs/store.md](docs/store.md)

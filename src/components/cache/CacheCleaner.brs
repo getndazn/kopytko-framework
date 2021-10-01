@@ -28,7 +28,7 @@ function CacheCleaner(cache as Object) as Object
   end sub
 
   ' Removes all invalid items of given scope.
-  ' @param {String} scopeName
+  ' @param {String} [scopeName=""]
   prototype.clearStaleItems = sub (scopeName = "" as String)
     scopes = m._nodeUtils.getCustomFields(m._cache.scopes)
     if (scopeName <> "")

@@ -40,7 +40,7 @@ function CacheFacade() as Object
   ' @param {Object|String} keyData - The key. When AA is passed it is encoded to json string.
   ' @param {Object} data - The data to be cached.
   ' @param {Object} [options={}]
-  ' @param {String} options.expirationTimestamp - The timestamp after which the cached value is invalid.
+  ' @param {Integer} options.expirationTimestamp - In seconds. The timestamp after which the cached value is invalid.
   ' @param {Boolean} options.isSingleUse - The data can be retrieved only once and than removed.
   ' @param {String} options.scope - If not passed the "global" scope is used
   prototype.write = sub (keyData as Object, data as Object, options = {} as Object)
@@ -54,13 +54,13 @@ function CacheFacade() as Object
   end sub
 
   ' Clears the given scope.
-  ' @param {String} scopeName - The given scope. Otherwise "global" scope is used.
+  ' @param {String} scopeName - The given scope.
   prototype.clearScope = sub (scopeName as String)
     m._cleaner.clearScope(scopeName)
   end sub
 
   ' Removes invalid items.
-  ' @param {String} scopeName - The given scope. Otherwise "global" scope is used.
+  ' @param {String} [scopeName=""] - The given scope. Otherwise "global" scope is used.
   prototype.clearStaleItems = sub (scopeName = "" as String)
     m._cleaner.clearStaleItems(scopeName)
   end sub
