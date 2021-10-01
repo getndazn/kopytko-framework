@@ -21,7 +21,7 @@ To create such a service you will need to import `HttpService` (`@import /compon
 
 ```brightscript
 port = CreateObject("roMessagePort")
-httpAgent = HttpAgent(port)
+httpService = HttpService(port)
 ```
 
 It has only one method - fetch - by calling it the `HttpService` will create a request (`HttpRequest`) according to options passed to it and fulfill the response with `HttpResponse`.
@@ -146,7 +146,7 @@ interceptor.interceptResponse = sub (requestOptions as Object, urlEvent as Objec
   ?urlEvent
 end sub
 
-httpAgent = HttpAgent(port, [interceptor])
+httpService = HttpService(port, [interceptor])
 ```
 
 ### Intercept Request
