@@ -6,8 +6,8 @@ function render() as Object
         id: "backdrop",
         width: m.top.width,
         height: m.top.height,
-        opacity: m.top.opacity,
         color: m.top.backdropColor,
+        opacity: m.top.backdropOpacity,
       },
     },
     {
