@@ -1,9 +1,9 @@
 # Kopytko Framework: Store
 
-StoreFacade is a mechanism to easily store and manage data in the app. StoreFacade keeps data in a global field.
+`StoreFacade` is a mechanism to easily store and manage data in the app. `StoreFacade` keeps data in a global field.
 Its public methods:
 - `set(key as String, value as Dynamic)` - stores a value under given key
-- `get(key as String)` - returns a stored value from given key; Invalid if doesn't exist
+- `get(key as String)` - returns a stored value from given key; `Invalid` if doesn't exist
 - `hasKey(key as String)` - checks if given key is stored
 - `consume(key as String)` - return a stored value from given key and removes it from the store
 - `remove(key as String)` - removes value and key from the store

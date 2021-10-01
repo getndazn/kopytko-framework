@@ -2,7 +2,7 @@
 
 The logic for handling HTTP requests.
 
-- [Http serice](#http-serice)
+- [Http Service](#http-service)
 - [Define Request](#define-request)
 - [Send Request](#send-request)
 - [Abort Request](#abort-request)
@@ -10,21 +10,20 @@ The logic for handling HTTP requests.
   - [Intercept Request](#intercept-request)
   - [Intercept Response](#intercept-response)
 
-## Http serice
+## Http Service
 
-`HttpService` is needed to fetch a request that you have created.
-To create such a service you will need to import `HttpService` (`@import /components/http/HttpService.brs from @dazn/kopytko-framework`).
+The service must operate on the `Task` thread. Each request should operate on new instance of `HttpService`.
 
-`HttpService` has 2 arguments:
-- port - required - instance of `roMessagePort`
-- interceptors - optional - an array of [interceptors](#intercepting)
+`HttpService` takes two arguments:
+- `port` - required - instance of `roMessagePort`
+- `interceptors` - optional - an array of [interceptors](#intercepting)
 
 ```brightscript
 port = CreateObject("roMessagePort")
-httpAgent = HttpAgent(port)
+httpService = HttpService(port)
 ```
 
-It has only one method - fetch - by calling it the `HttpService` will create a request (`HttpRequest`) according to options passed to it and fulfill the response with `HttpResponse`.
+It has only one method - `fetch` - by calling it the `HttpService` will create a request (`HttpRequest`) according to options passed to it and fulfill the response with `HttpResponse`.
 
 Request options:
 - `url` - string - request URL
@@ -36,71 +35,115 @@ Request options:
 - `timeout` - integer - time after which request should be aborted
 
 The `HttpResponse` is a node with fields:
-- `id`
-- `httpStatusCode`
-- `headers`
-- `requestOptions`
-- `rawData`
-- `failureReason`
-
-The response will be `Invalid` if a request was aborted.
+- `id` - string
+- `httpStatusCode` - integer
+- `headers` - associative array
+- `requestOptions` - associative array
+- `rawData` - dynamic
+- `failureReason` - string
 
 ## Define Request
 
 To create your own request create a new component that extends `Request` (`/component/http/request/Request`).
 
-You can always create a component that will aggregate the common logic of your requests and extend that component (MyRequest -extends-> MyCommonRequest -extends-> Request).
+You can always create a component that will aggregate the common logic of your requests and extend that component (`MyRequest` extends `MyCommonRequest` extends `Request`).
 
-The request contains the following methods:
+`Request` has the following interface that should be extended in your `Request` derived component:
 - `initRequest` - that will be run when the request is initialized. It is recommended to get all data from other nodes here, as exchanging the data between nodes will result in rendezvous in further process. The method is executed on `render` thread.
 - `runRequest` - If you are using `HttpService`, you will invoke `httpService.fetch` here.
 - `getRequestOptions` - this needs to return response options like URL, headers, method, body, timeout.
 - `parseResponseData` - this method will parse response data, you can for example create a new node, add data there and return it. The method is executed on the `Task` thread.
 - `generateErrorData` - here you can generate your custom error data that should be thrown on request failure. The method is executed on the `Task` thread.
 
+It is up to you how you handle your data. `parseResponseData` and `generateErrorData` should contain the appriopriate handlers.
+
+Let's create a minimal working example:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 
-<component name="MyRequest" extends="Request">
-  <script type="text/brightscript" uri="MyRequest.brs" />
+<component name="UpdateUserRequest" extends="Request">
+  <script type="text/brightscript" uri="GetUserRequest.brs" />
 </component>
 ```
 
 ```brightscript
 sub init()
-  m._httpService = m.global.httpService
+  m.top.observeFieldScoped("state", "_onStateChange")
 end sub
 
+' This is Request interface that child should implement
+' This function runs on Task thread
 sub runRequest()
-  m._httpService.fetch(m._requestOptions)
+  response = m._httpService.fetch(m._requestOptions)
+
+  ' Be aware that HttpService will parse response body to JSON when detected
+  if (response.isSuccess)
+    response.data = parseResponseData(response.rawData)
+  else
+    response.data = generateErrorData(response)
+  end if
+
+  ' This causes rendezvous so ideally you should call it once
+  m.top.response = response
 end sub
 
+' This is Request interface that child should implement
+' You can return the options or you can do any transformations on it
+function getRequestOptions(options as Object) as Object
+  return {
+    url: "https://my-user.com/endpoint",
+    method: "POST",
+    headers: {
+      header1: "header-value",
+    },
+    body: {
+      userID: options.userID,
+      username: options.username,
+    },
+  }
+end function
+
+' This is Request interface that child should implement
 function parseResponseData(data as Object) as Object
+  ' Do any transformations here
   return data
 end function
+
+' This is Request interface that child should implement
+function generateErrorData(response as Object) as Object
+  ' Do any transformations here
+  return { error: response.failureReason }
+end function
+
+sub _onStateChange(event as Object)
+  ' This allows to rerun the same instance of a task
+  if (LCase(event.getData()) = "run")
+    m._port = CreateObject("roMessagePort")
+    m._httpService = HttpService(m._port)
+  else
+    m._port = Invalid
+    m._httpService = Invalid
+  end if
+end sub
 ```
 
 ## Send Request
 
-To send defined requests you need to use `createRequest` function (maybe in the future renamed to `sendRequest`).
+To send defined requests you need to use `createRequest` function.
 
 As a first argument, it takes the `Request` component name defined by you in the application.
 
+Let's use an example from previous section:
 ```brightscript
 data = {
-  url: "https://my-service.com/endpoint",
-  method: "POST",
-  headers: {
-    header1: "header-value",
-  },
-  body: {
-    fieldA: 2,
-  },
+  userID: "UserID123",
+  username: "Joe Doe",
 }
-createRequest("RequestName", data)
+promiseChain = createRequest("UpdateUserRequest", data)
+promiseChain.then(sub (data as Object): ?data end sub, sub (error as Object): ?error end sub)
 ```
 
-The `data` is passed as an argument to `getRequestOptions` method in `RequestName` component.
+The `data` is passed as an argument to `getRequestOptions` method in `UpdateUserRequest` component.
 It will return a `Promise`.
 
 ## Abort Request
@@ -120,8 +163,7 @@ myAbortController.abort()
 ```
 
 `AbortController` contains also `isAborted` method which will return a boolean indicating if abort was called on it.
-
-This abort logic works exactly like in JavaScript. The request still exists but it is ignored by the app.
+The catch/rejected handler of the promise will be invoked when request is aborted.
 
 ## Intercepting
 
@@ -129,7 +171,7 @@ It is possible to intercept an HTTP request made by `HttpService`.
 Sometimes you need it for example for reporting reasons.
 To do it, you need to create an interceptor (you can extend our `HttpInterceptor`).
 
-It contains 2 methods:
+It contains two methods:
 - `interceptRequest` which will be called when the request is sent
 - `interceptResponse` which will be called when the response is sent
 
@@ -146,14 +188,14 @@ interceptor.interceptResponse = sub (requestOptions as Object, urlEvent as Objec
   ?urlEvent
 end sub
 
-httpAgent = HttpAgent(port, [interceptor])
+httpService = HttpService(port, [interceptor])
 ```
 
 ### Intercept Request
 
 You can intercept requests by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
-`interceptRequest` has two arguments:
+`interceptRequest` takes two arguments:
 - `requestOptions` - these are options with which request was sent
 - `urlTransfer` - an instance of `roUrlTransfer` that is handling this request
 
@@ -161,6 +203,6 @@ You can intercept requests by adding your custom interceptors to the `HttpServic
 
 You can intercept response by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
-`interceptResponse` has two arguments:
+`interceptResponse` takes two arguments:
 - `requestOptions` - these are options with which request was sent
-- `urlEvent` - an instance of roUrlEvent that is returned on request fulfill
+- `urlEvent` - an instance of `roUrlEvent` that is returned on request fulfill
