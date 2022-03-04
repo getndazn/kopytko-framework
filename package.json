@@ -13,7 +13,8 @@
     "Tomasz Rejment <trejment@gmail.com>",
     "Błażej Chełkowski <blazej.chelkowski@outlook.com>",
     "Radosław Zambrowski <radekzam@gmail.com>",
-    "Mauricio Dziedzinski <d.mauriciofarias@gmail.com>"
+    "Mauricio Dziedzinski <d.mauriciofarias@gmail.com>",
+    "Tomasz Bazelczuk <tbazelczuk@gmail.com>"
   ],
   "files": [
     "src",
@@ -24,14 +25,13 @@
     "test": "node node_modules/@dazn/kopytko-unit-testing-framework/scripts/test.js"
   },
   "dependencies": {
-    "@dazn/kopytko-utils": "^2.0.0"
+    "@dazn/kopytko-utils": "^2.0.1"
   },
   "devDependencies": {
-    "@dazn/eslint-plugin-kopytko": "^1.0.0",
-    "@dazn/kopytko-packager": "^1.0.3",
-    "@dazn/kopytko-unit-testing-framework": "^1.0.0",
-    "eslint": "5.6.0",
-    "eslint-plugin-roku": "^1.5.3"
+    "@dazn/eslint-plugin-kopytko": "^2.1.0",
+    "@dazn/kopytko-packager": "^1.2.0",
+    "@dazn/kopytko-unit-testing-framework": "^1.0.3",
+    "eslint": "^8.10.0"
   },
   "license": "MIT",
   "kopytkoModuleDir": "src/",
