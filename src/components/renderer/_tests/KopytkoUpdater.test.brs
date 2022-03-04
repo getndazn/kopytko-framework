@@ -1,7 +1,8 @@
-' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/_testUtils/fakeClock.brs from @dazn/kopytko-unit-testing-framework
+' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/Timer.brs from @dazn/kopytko-utils
+
 function TestSuite__KopytkoUpdater()
   ts = KopytkoFrameworkTestSuite()
   ts.name = "KopytkoUpdater"

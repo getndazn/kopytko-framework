@@ -1,10 +1,11 @@
-' @import /components/rokuComponents/_mocks/Event.mock.brs from @dazn/kopytko-utils
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
-' @import /components/http/_mocks/UrlEvent.mock.brs
+' @import /components/rokuComponents/_mocks/Event.mock.brs from @dazn/kopytko-utils
 ' @mock /components/getType.brs from @dazn/kopytko-utils
+' @import /components/http/_mocks/UrlEvent.mock.brs
 ' @mock /components/http/HttpInterceptor.brs
 ' @mock /components/http/HttpRequest.brs
 ' @mock /components/http/HttpResponse.brs
+
 function HttpServiceTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "HttpService"

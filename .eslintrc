@@ -5,10 +5,10 @@
     "@dazn/kopytko/dependencies-order": "error",
     "@dazn/kopytko/missing-trailing-comma": "error",
     "@dazn/kopytko/indent": ["error", 2],
-    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
-    "roku/no-print": "off",
-    "roku/no-stop": "error",
-    "roku/sub-to-function": "error",
-    "roku/function-no-return": "error"
+    "@dazn/kopytko/no-print": "off",
+    "@dazn/kopytko/no-stop": "error",
+    "@dazn/kopytko/sub-to-function": "error",
+    "@dazn/kopytko/function-no-return": "error",
+    "@dazn/kopytko/no-uninitialized-variables": "off"
   }
 }
