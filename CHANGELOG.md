@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/getndazn/kopytko-framework/compare/v1.0.3...v1.0.4) (2022-04-11)
+
+
+### Bug Fixes
+
+* active route should skip is omitted in history ([#24](https://github.com/getndazn/kopytko-framework/issues/24)) ([970ff96](https://github.com/getndazn/kopytko-framework/commit/970ff9662376a909f1018b452a04b4cf5378a446))
+
 ## [1.0.3](https://github.com/getndazn/kopytko-framework/compare/v1.0.2...v1.0.3) (2022-03-04)
 
 
