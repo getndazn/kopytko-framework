@@ -56,7 +56,7 @@ sub resetHistory(rootPath = "" as String)
 end sub
 
 sub _updateHistory()
-  if (m.top.url = "")
+  if (m.top.url = "" OR m.top.activatedRoute.shouldSkip)
     return
   end if
 
