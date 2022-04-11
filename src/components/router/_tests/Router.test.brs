@@ -143,6 +143,23 @@ function TestSuite__Router() as Object
     return ts.assertTrue(result)
   end function)
 
+  ts.addTest("navigate - doesn't update history if active route should be skipped", function (ts as Object) as String
+    ' Given
+    data = { path: "/new-path", params: { testParam: "testValue" } }
+    m.top.activatedRoute.path = "/previous-path"
+    m.top.activatedRoute.params = { previousParam: "previousValue" }
+    m.top.activatedRoute.shouldSkip = true
+
+    ' When
+    navigate(data)
+
+    ' Then
+    history = m._history
+    result = (history <> Invalid AND history.count() = 0)
+
+    return ts.assertTrue(result)
+  end function)
+
   ts.addTest("back - returns false if empty history", function (ts as Object) as String
     result = back()
 
