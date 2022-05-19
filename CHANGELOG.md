@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/getndazn/kopytko-framework/compare/v1.0.4...v1.0.5) (2022-05-19)
+
+
+### Bug Fixes
+
+* expose response headers in HttpResponse ([#26](https://github.com/getndazn/kopytko-framework/issues/26)) ([5517ff2](https://github.com/getndazn/kopytko-framework/commit/5517ff2eaff9d11a8d81ada9ea390288eb049d15))
+
 ## [1.0.4](https://github.com/getndazn/kopytko-framework/compare/v1.0.3...v1.0.4) (2022-04-11)
 
 
