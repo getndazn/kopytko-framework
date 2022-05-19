@@ -10,7 +10,7 @@ function KopytkoUpdater(baseStateUpdatedCallback as Function)
 
   ' State update callbacks are asynchronous to prevent multiple unnecessary rerenders
   ' when setState is called more than once in a function
-  prototype.enqueueStateUpdate = sub (partialState as Object, callback = Invalid as Dynamic)
+  prototype.enqueueStateUpdate = sub (partialState = {} as Object, callback = Invalid as Dynamic)
     m._appendPartialState(partialState)
     if (callback <> Invalid) then m._stateUpdatedCallbacks.push(callback)
 

@@ -61,6 +61,34 @@ function TestSuite__KopytkoGroup_Main()
     return ts.assertTrue(updateDOMWasCalled, "The updateDOM method was not called")
   end function)
 
+  ts.addTest("it does not call KopytkoDOM's updateDOM() method immediately when enqueueUpdate() is called", function (ts as Object) as String
+    ' When
+    initKopytko()
+    enqueueUpdate()
+
+    ' Then
+    updateDOMWasCalled = (m._kopytkoDOM.__spy.updateDOMCalls.count() > 0)
+
+    return ts.assertFalse(updateDOMWasCalled, "The updateDOM method was called")
+  end function)
+
+  ts.addTest("it calls KopytkoDOM's updateDOM() method once in the next tick when enqueueUpdate() is called multiple times", function (ts as Object) as String
+    ' When
+    initKopytko()
+    enqueueUpdate()
+    enqueueUpdate()
+    enqueueUpdate()
+    m.__clock.tick()
+
+    ' Then
+    updateDOMCallsCount = m._kopytkoDOM.__spy.updateDOMCalls.count()
+    if (updateDOMCallsCount = 0)
+      return ts.fail("The updateDOM method was not called")
+    end if
+
+    return ts.assertEqual(updateDOMCallsCount, 1, "The updateDOM method was called more than once")
+  end function)
+
   ts.addTest("it merges the new state with the old state when setting a new state", function (ts as Object) as String
     ' Given
     m.__initialState = {
