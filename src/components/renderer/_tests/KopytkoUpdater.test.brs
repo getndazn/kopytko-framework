@@ -48,7 +48,20 @@ function TestSuite__KopytkoUpdater()
     return ts.assertEqual(m.__state, {})
   end function)
 
-  ts.addTest("enqueueStateUpdate calls base callback in the next tick", function (ts as Object) as String
+  ts.addTest("enqueueStateUpdate calls base callback in the next tick if component mounted", function (ts as Object) as String
+    ' Given
+    updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.setComponentMounted(m.__state)
+    updater.enqueueStateUpdate({ test: "value" })
+
+    ' When
+    m.__clock.tick()
+
+    ' Then
+    return ts.assertMethodWasCalled("baseStateUpdatedCallback", {}, { times: 1 })
+  end function)
+
+  ts.addTest("enqueueStateUpdate does not call base callback in the next tick if component not mounted", function (ts as Object) as String
     ' Given
     updater = KopytkoUpdater(baseStateUpdatedCallback)
     updater.enqueueStateUpdate({ test: "value" })
@@ -57,7 +70,7 @@ function TestSuite__KopytkoUpdater()
     m.__clock.tick()
 
     ' Then
-    return ts.assertMethodWasCalled("baseStateUpdatedCallback", {}, { times: 1 })
+    return ts.assertMethodWasNotCalled("baseStateUpdatedCallback")
   end function)
 
   ts.addTest("enqueueStateUpdate does not call passed callback immediately", function (ts as Object) as String
@@ -71,9 +84,10 @@ function TestSuite__KopytkoUpdater()
     return ts.assertMethodWasNotCalled("setStateCallback")
   end function)
 
-  ts.addTest("enqueueStateUpdate calls passed callback in the next tick", function (ts as Object) as String
+  ts.addTest("enqueueStateUpdate calls passed callback in the next tick if component mounted", function (ts as Object) as String
     ' Given
     updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.setComponentMounted(m.__state)
     updater.enqueueStateUpdate({ test: "value" }, setStateCallback)
 
     ' When
@@ -83,9 +97,22 @@ function TestSuite__KopytkoUpdater()
     return ts.assertMethodWasCalled("setStateCallback", {}, { times: 1 })
   end function)
 
-  ts.addTest("it calls all enquequed callbacks in the next tick", function (ts as Object) as String
+  ts.addTest("enqueueStateUpdate does not call passed callback in the next tick if component not mounted", function (ts as Object) as String
     ' Given
     updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.enqueueStateUpdate({ test: "value" }, setStateCallback)
+
+    ' When
+    m.__clock.tick()
+
+    ' Then
+    return ts.assertMethodWasNotCalled("setStateCallback")
+  end function)
+
+  ts.addTest("it calls all enqueued callbacks in the next tick if component mounted", function (ts as Object) as String
+    ' Given
+    updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.setComponentMounted(m.__state)
     updater.enqueueStateUpdate({ test: "value" }, setStateCallback)
     updater.enqueueStateUpdate({ another: "value" }, anotherSetStateCallback)
 
@@ -98,6 +125,23 @@ function TestSuite__KopytkoUpdater()
     end if
 
     return ts.assertMethodWasCalled("anotherSetStateCallback", {}, { times: 1 })
+  end function)
+
+  ts.addTest("it does not call all enqueued callbacks in the next tick if component not mounted", function (ts as Object) as String
+    ' Given
+    updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.enqueueStateUpdate({ test: "value" }, setStateCallback)
+    updater.enqueueStateUpdate({ another: "value" }, anotherSetStateCallback)
+
+    ' When
+    m.__clock.tick()
+
+    ' Then
+    if (NOT ts.wasMethodCalled("setStateCallback", {}, { times: 0 }))
+      return ts.fail("setStateCallback was called")
+    end if
+
+    return ts.assertMethodWasNotCalled("anotherSetStateCallback")
   end function)
 
   ts.addTest("forceStateUpdate does not call base callback immediately if component is not mounted", function (ts as Object) as String
