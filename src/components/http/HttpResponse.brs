@@ -67,6 +67,7 @@ function HttpResponse(response as Object) as Object
     responseNode = CreateObject("roSGNode", "Node")
     responseNode.id = m._id
     responseNode.addFields({
+      headers: m._headers,
       httpStatusCode: m._httpStatusCode,
       isSuccess: m._isSuccess,
       rawData: m._data,

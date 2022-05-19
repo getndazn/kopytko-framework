@@ -13,6 +13,7 @@ function TestSuite__HttpResponse() as Object
       headers: { "Content-Type": "application/json" },
     }
     expectedResult = {
+      headers: { "Content-Type": "application/json" },
       id: props.id,
       httpStatusCode: props.httpStatusCode,
       rawData: ParseJSON(props.rawData),
@@ -23,6 +24,7 @@ function TestSuite__HttpResponse() as Object
     response = HttpResponse(props)
     result = response.toNode().getFields()
     result = {
+      headers: result.headers,
       httpStatusCode: result.httpStatusCode,
       id: result.id,
       rawData: result.rawData,
@@ -43,6 +45,7 @@ function TestSuite__HttpResponse() as Object
       headers: { "Content-Type": "application/json" },
     }
     expectedResult = {
+      headers: { "Content-Type": "application/json" },
       id: props.id,
       httpStatusCode: props.httpStatusCode,
       rawData: ParseJSON(props.rawData),
@@ -53,6 +56,7 @@ function TestSuite__HttpResponse() as Object
     response = HttpResponse(props)
     result = response.toNode().getFields()
     result = {
+      headers: result.headers,
       httpStatusCode: result.httpStatusCode,
       id: result.id,
       rawData: result.rawData,
