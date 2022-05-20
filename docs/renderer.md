@@ -119,13 +119,15 @@ component prop values instead of the state. In this example, text could be bound
 which is an interface field of the current component (a prop in Kopytko terminology), and the moment another parent
 component change the value of this field the same DOM update would happen again.
 
-### Force update method
-The `forceUpdate` method should be used when you need to use data from a source other than the component state or props.
+### Force update and enqueue update methods
+The `forceUpdate` or `enqueueUpdate` methods should be used when you need to use data from a source other than the component state or props.
 For example, your Kopytko component is used as a list item component, so it doesn't have automatic observers on its props
 (because its parent is not a Kopytko component and therefore wasn't initialized via Kopytko mechanisms).
 You can imperatively tell Kopytko to force an update when you know the value changed, which will check the current
-DOM tree with the new one (containing the updated prop value now) and update the UI where needed. You can check the example below
-for a practical use case of this method.
+DOM tree with the new one (containing the updated prop value now) and update the UI where needed. 
+The main difference between `forceUpdate` and `enqueueUpdate` is that the former is synchronous whilst the latter is asynchronous. In other words `enqueueUpdate` behaves the same way as `setState`, that's why it's safe to call it multiple times in a row and only a single DOM update will take place.
+
+You can check the example below for a practical use case of this method.
 
 ```brightscript
 ' Assuming the component extends KopytkoGroup
@@ -137,13 +139,8 @@ sub init()
 end sub
 
 sub componentDidMount()
-  m.top.observeFieldScoped("focusPercent", "_onDynamicPropChanged")
-  m.top.observeFieldScoped("gridHasFocus", "_onDynamicPropChanged")
-  m.top.observeFieldScoped("itemContent", "_onDynamicPropChanged")
-end sub
-
-sub _onDynamicPropChanged(event as Object)
-  forceUpdate()
+  m.top.observeFieldScoped("gridHasFocus", "enqueueUpdate")
+  m.top.observeFieldScoped("itemContent", "enqueueUpdate")
 end sub
 
 function render() as Object
@@ -157,8 +154,20 @@ function render() as Object
 end function
 ```
 
-See that all the function callback does is call `forceUpdate()`, which will cause Kopytko to run the `render` function
+See that all the function callback does is call `enqueueUpdate()`, which will cause Kopytko to run the `render` function
 again, this time getting the new value from `m.top.itemContent.labelText` and applying the change later on.
+
+To deal with fields of a component that are rapidly updated (e.g. `focusPercent` field of an item component assigned to a list/grid) it's not recommended to call `forceUpdate` or `enqueueUpdate` as it may generate a lot of CPU consumption. The proper way to tackle it would be to observe the field and update component manually.
+
+```brightscript
+sub componentDidMount()
+  m.top.observeFieldScoped("focusPercent", "_onFocusPercentChanged")
+end sub
+
+sub _onFocusPercentChanged(event as Object)
+  m.border.opacity= event.getData()
+end sub
+```
 
 ### Element selectors
 In the past we used to do something like `m.testLabel = m.top.findNode("testLabel")` in the `init` method of every component

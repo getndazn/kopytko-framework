@@ -45,6 +45,10 @@ function KopytkoGroupTestSuite()
         m.__super.updateDOM(diffResult)
       end sub,
     }
+    m._kopytkoUpdater._partialStateUpdate = Invalid
+    m._kopytkoUpdater._state = Invalid
+    m._kopytkoUpdater._stateUpdatedCallbacks = [m._kopytkoUpdater._stateUpdatedCallbacks[0]]
+    m._kopytkoUpdater._stateUpdateTimeoutId = Invalid
   end sub)
 
   ts.setAfterEach(sub (ts as Object)

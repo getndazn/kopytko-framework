@@ -82,6 +82,10 @@ sub forceUpdate()
   m._kopytkoUpdater.forceStateUpdate()
 end sub
 
+sub enqueueUpdate()
+  m._kopytkoUpdater.enqueueStateUpdate()
+end sub
+
 sub updateProps(props = {} as Object)
   m.top.update(props)
   _updateDOM()
