@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/getndazn/kopytko-framework/compare/v1.0.5...v1.0.6) (2022-05-20)
+
+
+### Bug Fixes
+
+* not calling state update callbacks if kopytko is not mounted ([#27](https://github.com/getndazn/kopytko-framework/issues/27)) ([27d5618](https://github.com/getndazn/kopytko-framework/commit/27d5618909e7fd266db71e88acfa63071b037921))
+
 ## [1.0.5](https://github.com/getndazn/kopytko-framework/compare/v1.0.4...v1.0.5) (2022-05-19)
 
 
