@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/getndazn/kopytko-framework/compare/v1.0.6...v1.1.0) (2022-05-20)
+
+
+### Features
+
+* added enqueueUpdate function to reduce number of rerenders ([#28](https://github.com/getndazn/kopytko-framework/issues/28)) ([4c80273](https://github.com/getndazn/kopytko-framework/commit/4c80273af7c20ded4bc41cdb94647142b209695f))
+
 ## [1.0.6](https://github.com/getndazn/kopytko-framework/compare/v1.0.5...v1.0.6) (2022-05-20)
 
 
