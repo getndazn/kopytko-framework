@@ -12,6 +12,8 @@ function KopytkoUpdater(baseStateUpdatedCallback as Function)
   ' when setState is called more than once in a function
   prototype.enqueueStateUpdate = sub (partialState as Object, callback = Invalid as Dynamic)
     m._appendPartialState(partialState)
+    if (NOT m._isMounted()) then return
+
     if (callback <> Invalid) then m._stateUpdatedCallbacks.push(callback)
 
     if (NOT m._isUpdating())
