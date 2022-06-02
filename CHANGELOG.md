@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/getndazn/kopytko-framework/compare/v1.1.0...v1.1.1) (2022-06-02)
+
+
+### Bug Fixes
+
+* validating parent when removing children from Kopytko component ([#29](https://github.com/getndazn/kopytko-framework/issues/29)) ([fefe313](https://github.com/getndazn/kopytko-framework/commit/fefe31360aa3d90ab7f97ecd5ac422530fe9351e))
+
 # [1.1.0](https://github.com/getndazn/kopytko-framework/compare/v1.0.6...v1.1.0) (2022-05-20)
 
 
