@@ -100,7 +100,7 @@ function KopytkoDOM() as Object
         m._destroyKopytkoElement(element)
         parent = element.getParent()
         ' parent may be invalid if it was removed from the view while in the middle of removing children elements
-        if parent <> invalid 
+        if (parent <> Invalid)
           parent.removeChild(element)
         end if
       end if
