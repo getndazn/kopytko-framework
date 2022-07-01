@@ -64,7 +64,7 @@ function KopytkoDOM() as Object
     rootElement = m._getRootComponent()
 
     for each element in elements
-      if (element.parentId = Invalid)
+      if (Type(element) = "roArray" OR element.parentId = Invalid)
         parentElement = rootElement.top
       else
         parentElement = rootElement[element.parentId]

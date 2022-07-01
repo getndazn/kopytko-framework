@@ -92,6 +92,34 @@ function TestSuite__KopytkoDOM_updateDOM()
     return ts.assertEqual(renderedElement.id, "root", "The element marked to be rendered was not rendered")
   end function)
 
+  ts.addTest("it renders an array of elements", function (ts as Object) as String
+    ' Given
+    vNodes = [
+      {
+        name: "LayoutGroup",
+        props: { id: "child1" },
+      },
+      {
+        name: "LayoutGroup",
+        props: { id: "child2" },
+      }
+    ]
+
+    diffResult = {
+      elementsToRender: [vNodes],
+      elementsToRemove: [],
+      elementsToUpdate: {},
+    }
+
+    ' When
+    ts.kopytkoDOM.updateDOM(diffResult)
+
+    ' Then
+    childCount = m.top.getChildCount()
+
+    return ts.assertEqual(childCount, vNodes.count(), "The elements marked to be rendered were not rendered")
+  end function)
+
   ts.addTest("it removes the elements marked to be removed", function (ts as Object) as String
     ' Given
     ts.kopytkoDOM.renderElement({
