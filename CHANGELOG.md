@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/getndazn/kopytko-framework/compare/v1.1.1...v1.1.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* allow to render array of elements in root component ([#30](https://github.com/getndazn/kopytko-framework/issues/30)) ([8609122](https://github.com/getndazn/kopytko-framework/commit/8609122e3008009802eaa1865f5ee7756392afa3))
+
 ## [1.1.1](https://github.com/getndazn/kopytko-framework/compare/v1.1.0...v1.1.1) (2022-06-02)
 
 

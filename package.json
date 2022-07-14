@@ -1,6 +1,6 @@
 {
   "name": "@dazn/kopytko-framework",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A modern Roku's Brightscript framework",
   "keywords": [
     "brightscript",
