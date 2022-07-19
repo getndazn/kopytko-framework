@@ -61,12 +61,53 @@ function KopytkoDiffUtility() as Object
       return
     end if
 
+    m._diffExistingElement(currentElement, newElement)
+  end sub
+
+  ' @todo Support elements reordering
+  ' @private
+  prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
+    if (newChildren = Invalid) then newChildren = []
+
+    currentChildrenMapped = {}
+    if (currentChildren <> Invalid)
+      for each currentChild in currentChildren
+        if (currentChild <> Invalid)
+          currentChildrenMapped[currentChild.props.id] = currentChild
+        end if
+      end for
+    end if
+
+    nonInvalidNewChildIndex = 0
+    for each newChild in newChildren
+      if (newChild <> Invalid)
+        newChild.index = nonInvalidNewChildIndex
+        nonInvalidNewChildIndex++
+        newChild.parentId = parentElementId
+
+        if (currentChildrenMapped[newChild.props.id] = Invalid)
+          m._diffResult.elementsToRender.push(newChild)
+        else
+          m._diffExistingElement(currentChildrenMapped[newChild.props.id], newChild)
+          currentChildrenMapped.delete(newChild.props.id)
+        end if
+      end if
+    end for
+
+    for each currentChildIdToRemove in currentChildrenMapped
+      m._markElementToBeRemoved(currentChildrenMapped[currentChildIdToRemove])
+    end for
+  end sub
+
+  prototype._diffExistingElement = sub (currentElement as Object, newElement as Object)
     if (newElement.dynamicProps = Invalid)
       newElement.dynamicProps = {}
     end if
 
     m._diffElementProps(currentElement.props.id, currentElement.dynamicProps, newElement.dynamicProps)
-    m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
+    if currentElement.children <> Invalid OR newElement.children <> Invalid
+      m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
+    end if
   end sub
 
   ' @private
@@ -95,37 +136,6 @@ function KopytkoDiffUtility() as Object
 
         m._diffResult.elementsToUpdate[elementId].props[newProp] = newProps[newProp]
       end if
-    end for
-  end sub
-
-  ' @todo Make it not rerender the whole children tree if they were only reordered
-  ' @private
-  prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
-    if (currentChildren = Invalid)
-      currentChildren = []
-    end if
-
-    if (newChildren = Invalid)
-      newChildren = []
-    end if
-
-    if (currentChildren.count() > newChildren.count())
-      biggestArray = currentChildren
-    else
-      biggestArray = newChildren
-    end if
-
-    for i = 0 to biggestArray.count() - 1
-      if (newChildren[i] <> Invalid)
-        newChildren[i].index = i
-        newChildren[i].parentId = parentElementId
-      end if
-
-      if (currentChildren[i] <> Invalid)
-        currentChildren[i].index = i
-      end if
-
-      m._diffElement(currentChildren[i], newChildren[i])
     end for
   end sub
 

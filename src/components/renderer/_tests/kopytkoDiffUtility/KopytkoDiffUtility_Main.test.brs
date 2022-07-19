@@ -7,18 +7,12 @@ function TestSuite__KopytkoDiffUtility_Main()
     ' Given
     vNode = {
       name: "Label",
-      props: {
-        id: "testLabel",
-      },
-      children: [],
+      props: { id: "testLabel" },
     }
 
     newVNode = {
       name: "Label",
-      props: {
-        id: "testLabel",
-      },
-      children: [],
+      props: { id: "testLabel" },
     }
 
     ' When
@@ -36,7 +30,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -44,7 +37,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -67,12 +59,10 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       {
         name: "Label",
         props: { id: "label2" },
-        children: [],
       },
     ])
 
@@ -80,7 +70,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -97,12 +86,10 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       {
         name: "Label",
         props: { id: "label2" },
-        children: [],
       },
     ])
 
@@ -110,7 +97,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       Invalid,
     ])
@@ -136,21 +122,18 @@ function TestSuite__KopytkoDiffUtility_Main()
               {
                 name: "Label",
                 props: { id: "label3" },
-                children: [],
               },
             ],
           },
           {
             name: "Label",
             props: { id: "label4" },
-            children: [],
           },
         ],
       },
       {
         name: "Label",
         props: { id: "label5" },
-        children: [],
       },
     ])
 
@@ -159,7 +142,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label5" },
-        children: [],
       },
     ])
 
@@ -179,7 +161,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -187,12 +168,10 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       {
         name: "Label",
         props: { id: "label2" },
-        children: [],
       },
     ])
 
@@ -203,7 +182,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       name: "Label",
       props: { id: "label2" },
       parentid: "root",
-      children: [],
       index: 1,
     }
 
@@ -217,7 +195,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       Invalid,
     ])
@@ -226,12 +203,10 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
       {
         name: "Label",
         props: { id: "label2" },
-        children: [],
       },
     ])
 
@@ -242,12 +217,42 @@ function TestSuite__KopytkoDiffUtility_Main()
       name: "Label",
       props: { id: "label2" },
       parentid: "root",
-      children: [],
       index: 1,
     }
 
     ' Then
     return ts.assertEqual(labelToRender, expectedLabelToRender, "The new element was not marked to be rendered")
+  end function)
+
+  ts.addTest("it ignores Invalid elements when calculating element's index", function (ts as Object) as String
+    ' Given
+    vNode = TestUtil_createRootElementWithChildren([
+      Invalid,
+      {
+        name: "Label",
+        props: { id: "label1" },
+      },
+      Invalid,
+    ])
+
+    newVNode = TestUtil_createRootElementWithChildren([
+      Invalid
+      {
+        name: "Label",
+        props: { id: "label1" },
+      },
+      {
+        name: "Label",
+        props: { id: "label2" },
+      },
+    ])
+
+    ' When
+    diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
+    labelToRender = diffResult.elementsToRender[0]
+
+    ' Then
+    return ts.assertEqual(labelToRender.index, 1)
   end function)
 
   ts.addTest("it marks an element to be removed and another to be rendered when they have the same name but different IDs", function (ts as Object) as String
@@ -256,7 +261,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -264,7 +268,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "newLabel" },
-        children: [],
       },
     ])
 
@@ -286,7 +289,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "Label",
         props: { id: "label1" },
-        children: [],
       },
     ])
 
@@ -294,7 +296,6 @@ function TestSuite__KopytkoDiffUtility_Main()
       {
         name: "DaznButton",
         props: { id: "button1" },
-        children: [],
       },
     ])
 
@@ -317,7 +318,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: Invalid },
-        children: [],
       },
     ])
 
@@ -326,7 +326,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: "some text" },
-        children: [],
       },
     ])
 
@@ -347,7 +346,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1", text: Invalid },
         dynamicProps: { visible: false },
-        children: [],
       },
     ])
 
@@ -356,7 +354,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1", text: "some text" },
         dynamicProps: { visible: true },
-        children: [],
       },
     ])
 
@@ -377,7 +374,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: "some text" },
-        children: [],
       },
     ])
 
@@ -386,7 +382,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: Invalid },
-        children: [],
       },
     ])
 
@@ -407,7 +402,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: "some text" },
-        children: [],
       },
     ])
 
@@ -416,7 +410,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { text: "different text" },
-        children: [],
       },
     ])
 
@@ -437,7 +430,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1", customProp: [1, 2, 3] },
         dynamicProps: { customProp: [1, 2, 3] },
-        children: [],
       },
     ])
 
@@ -446,7 +438,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [1, 2, 3, 4] },
-        children: [],
       },
     ])
 
@@ -467,7 +458,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [1, 2, 3] },
-        children: [],
       },
     ])
 
@@ -476,7 +466,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [4, 1, 3] },
-        children: [],
       },
     ])
 
@@ -497,7 +486,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [[1, 2], [2, 4]] },
-        children: [],
       },
     ])
 
@@ -506,7 +494,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [[2, 1], [6, 3]] },
-        children: [],
       },
     ])
 
@@ -527,7 +514,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [{ id: 1 }, { id: 2 }] },
-        children: [],
       },
     ])
 
@@ -536,7 +522,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: [{ id: 4 }, { id: 9 }] },
-        children: [],
       },
     ])
 
@@ -557,7 +542,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { key1: 1 } },
-        children: [],
       },
     ])
 
@@ -566,7 +550,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { key1: 1, key2: 2 } },
-        children: [],
       },
     ])
 
@@ -587,7 +570,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { id: 1 } },
-        children: [],
       },
     ])
 
@@ -596,7 +578,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { id: 4 } },
-        children: [],
       },
     ])
 
@@ -617,7 +598,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { arr: [1, 2, 3] } },
-        children: [],
       },
     ])
 
@@ -626,7 +606,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { arr: [1, 2] } },
-        children: [],
       },
     ])
 
@@ -647,7 +626,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { aa: { id: 1 } } },
-        children: [],
       },
     ])
 
@@ -656,7 +634,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: { aa: { id: 2 } } },
-        children: [],
       },
     ])
 
@@ -678,7 +655,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: currentNodeProp },
-        children: [],
       },
     ])
 
@@ -688,7 +664,6 @@ function TestSuite__KopytkoDiffUtility_Main()
         name: "Label",
         props: { id: "label1" },
         dynamicProps: { customProp: newNodeProp },
-        children: [],
       },
     ])
 
