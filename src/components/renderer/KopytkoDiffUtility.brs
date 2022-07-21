@@ -105,7 +105,7 @@ function KopytkoDiffUtility() as Object
     end if
 
     m._diffElementProps(currentElement.props.id, currentElement.dynamicProps, newElement.dynamicProps)
-    if currentElement.children <> Invalid OR newElement.children <> Invalid
+    if (currentElement.children <> Invalid OR newElement.children <> Invalid)
       m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
     end if
   end sub
