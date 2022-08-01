@@ -322,6 +322,11 @@ The example above can be also handled by importing the `kopytkoRoot.brs` in the 
 and automatically assigns observers.
 Whenever a dynamic prop is changed it calls `updateProps` function and this way it replicates the native Kopytko behavior.
 
+### destroyKopytkoRoot method
+In case `initKopytkoRoot` was used, a component should be destroyed by calling `destroyKopytkoRoot` instead
+of the regular `destroyKopytko`. Thanks to this, observers added during initialization will be removed and
+Kopytko component will be safely destroyed. There is no need to call both destroy methods in that case.
+
 
 ```brightscript
 sub init()
