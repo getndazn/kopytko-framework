@@ -2,8 +2,8 @@
 ' @import /components/renderer/kopytkoRoot.brs
 sub init()
   m.__mocks = {
-    initKopytko: invalid,
-    updateProps: invalid,
+    initKopytko: Invalid,
+    updateProps: Invalid,
   }
 
   m._mock = Mock({

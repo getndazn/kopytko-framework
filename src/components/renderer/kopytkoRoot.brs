@@ -18,7 +18,7 @@ sub destroyKopytkoRoot()
     m.top.unobserveFieldScoped(prop)
   end for
 
-  m._dynamicProps = invalid
+  m._dynamicProps = Invalid
 end sub
 
 sub kopytkoRoot_dynamicPropChanged(event as Object)
