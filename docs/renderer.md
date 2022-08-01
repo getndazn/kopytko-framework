@@ -157,6 +157,33 @@ end function
 See that all the function callback does is call `enqueueUpdate()`, which will cause Kopytko to run the `render` function
 again, this time getting the new value from `m.top.itemContent.labelText` and applying the change later on.
 
+### KopytkoRoot and initKopytkoRoot
+The example above can be also handled by importing the `KopytkoRoot.brs` in the root component and calling
+`initKopytkoRoot` instead of `initKopytko`.
+
+`initKopytkoRoot` takes an array of dynamic props names as an input parameter, calls `initKopytko` with proper values
+and automatically assigns observers.
+Whenever a dynamic prop is changed it calls `updateProps` function and this way it replicates the native Kopytko behavior.
+
+
+```brightscript
+sub init()
+  initKopytkoRoot(["height", "width", "itemContent"])
+end sub
+
+function render() as Object
+  return {
+    name: "Label",
+    props: {
+      id: "labelId",
+      text: m.top.itemContent.labelText,
+    },
+  }
+end function
+```
+
+### Rapidly updated fields
+
 To deal with fields of a component that are rapidly updated (e.g. `focusPercent` field of an item component assigned to a list/grid) it's not recommended to call `forceUpdate` or `enqueueUpdate` as it may generate a lot of CPU consumption. The proper way to tackle it would be to observe the field and update component manually.
 
 ```brightscript
