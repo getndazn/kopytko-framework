@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/getndazn/kopytko-framework/compare/v1.1.2...v1.2.0) (2022-08-01)
+
+
+### Features
+
+* introduced KopytkoRoot that makes integration easier ([#32](https://github.com/getndazn/kopytko-framework/issues/32)) ([11efb22](https://github.com/getndazn/kopytko-framework/commit/11efb228d1e75d0020e1279f61ef1075dcc0f3e4))
+
 ## [1.1.2](https://github.com/getndazn/kopytko-framework/compare/v1.1.1...v1.1.2) (2022-07-14)
 
 
