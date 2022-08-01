@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="KopytkoRootTestExample" extends="KopytkoGroup">
+  <interface>
+    <field id="prop1" type="string" />
+    <field id="prop2" type="string" />
+
+    <function name="initKopytkoRoot" />
+    <function name="destroyKopytkoRoot" />
+
+    <function name="getMocks" />
+  </interface>
+
+  <script type="text/brightscript" uri="KopytkoRootTestExample.component.brs" />
+</component>
