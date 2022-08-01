@@ -314,8 +314,8 @@ end function
 See that all the function callback does is call `enqueueUpdate()`, which will cause Kopytko to run the `render` function
 again, this time getting the new value from `m.top.itemContent.labelText` and applying the change later on.
 
-### KopytkoRoot and initKopytkoRoot
-The example above can be also handled by importing the `KopytkoRoot.brs` in the root component and calling
+### initKopytkoRoot method
+The example above can be also handled by importing the `kopytkoRoot.brs` in the root component and calling
 `initKopytkoRoot` instead of `initKopytko`.
 
 `initKopytkoRoot` takes an array of dynamic props names as an input parameter, calls `initKopytko` with proper values

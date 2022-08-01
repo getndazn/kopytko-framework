@@ -2,7 +2,7 @@ sub initKopytkoRoot(dynamicProps as Object)
   m._dynamicProps = dynamicProps
 
   for each prop in dynamicProps
-    m.top.observeFieldScoped(prop, "KopytkoRoot_dynamicPropChanged")
+    m.top.observeFieldScoped(prop, "kopytkoRoot_dynamicPropChanged")
   end for
 
   dynamicPropsValues = {}
@@ -21,7 +21,7 @@ sub destroyKopytkoRoot()
   m._dynamicProps = invalid
 end sub
 
-sub KopytkoRoot_dynamicPropChanged(event as Object)
+sub kopytkoRoot_dynamicPropChanged(event as Object)
   props = {}
   props[event.getField()] = event.getData()
   updateProps(props)

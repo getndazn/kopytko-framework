@@ -1,5 +1,5 @@
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
-' @import /components/renderer/KopytkoRoot.brs
+' @import /components/renderer/kopytkoRoot.brs
 sub init()
   m.__mocks = {
     initKopytko: invalid,
@@ -8,7 +8,7 @@ sub init()
 
   m._mock = Mock({
     testComponent: m,
-    name: "KopytkoRoot",
+    name: "kopytkoRoot",
     methods: {
       initKopytko: sub (dynamicProps as Object)
         m.initKopytkoMock("initKopytko", { dynamicProps: dynamicProps })

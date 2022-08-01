@@ -3,9 +3,9 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/Timer.brs from @dazn/kopytko-utils
 
-function TestSuite__KopytkoRoot()
+function TestSuite__kopytkoRoot()
   ts = KopytkoFrameworkTestSuite()
-  ts.name = "KopytkoRoot"
+  ts.name = "kopytkoRoot"
 
   ts.setBeforeEach(sub (ts as Object)
     m.__mocks = {}
