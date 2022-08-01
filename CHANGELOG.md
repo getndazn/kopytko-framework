@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/getndazn/kopytko-framework/compare/v1.2.0...v1.3.0) (2022-08-01)
+
+
+### Features
+
+* enhanced destroyKopytkoRoot to call destroyKopytko ([#34](https://github.com/getndazn/kopytko-framework/issues/34)) ([c21c2bb](https://github.com/getndazn/kopytko-framework/commit/c21c2bb61bae0f165d2a68341aa1cfb75d13a6b8))
+
 # [1.2.0](https://github.com/getndazn/kopytko-framework/compare/v1.1.2...v1.2.0) (2022-08-01)
 
 
