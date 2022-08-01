@@ -83,5 +83,19 @@ function TestSuite__kopytkoRoot()
     return ts.assertMethodWasNotCalled("kopytkoRoot.updateProps")
   end function)
 
+  ts.addTest("destroyKopytkoRoot destroys Kopytko", function (ts as Object) as String
+    ' Given
+    root = CreateObject("roSGNode", "KopytkoRootTestExample")
+    root.callFunc("initKopytkoRoot", ["prop1"])
+
+    ' When
+    root.callFunc("destroyKopytkoRoot")
+
+    ' Then
+    m.__mocks = root.callFunc("getMocks")
+
+    return ts.assertMethodWasCalled("kopytkoRoot.destroyKopytko")
+  end function)
+
   return ts
 end function

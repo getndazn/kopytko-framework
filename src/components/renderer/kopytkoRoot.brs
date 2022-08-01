@@ -19,6 +19,7 @@ sub destroyKopytkoRoot()
   end for
 
   m._dynamicProps = Invalid
+  destroyKopytko()
 end sub
 
 sub kopytkoRoot_dynamicPropChanged(event as Object)
