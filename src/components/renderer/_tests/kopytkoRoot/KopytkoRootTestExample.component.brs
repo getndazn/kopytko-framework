@@ -14,7 +14,7 @@ sub init()
         m.initKopytkoMock("initKopytko", { dynamicProps: dynamicProps })
       end sub,
       destroyKopytko: sub (data as Object)
-        m.initKopytkoMock("destroyKopytko", { data: data })
+        m.destroyKopytkoMock("destroyKopytko", { data: data })
       end sub,
       updateProps: sub (props as Object)
         m.updatePropsMock("updateProps", { props: props })
