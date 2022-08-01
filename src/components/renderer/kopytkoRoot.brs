@@ -1,4 +1,6 @@
 sub initKopytkoRoot(dynamicProps as Object)
+  m._dynamicProps = dynamicProps
+
   for each prop in dynamicProps
     m.top.observeFieldScoped(prop, "KopytkoRoot_dynamicPropChanged")
   end for
@@ -9,6 +11,14 @@ sub initKopytkoRoot(dynamicProps as Object)
   end for
 
   initKopytko(dynamicPropsValues)
+end sub
+
+sub destroyKopytkoRoot()
+  for each prop in m._dynamicProps
+    m.top.unobserveFieldScoped(prop)
+  end for
+
+  m._dynamicProps = invalid
 end sub
 
 sub KopytkoRoot_dynamicPropChanged(event as Object)
