@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/getndazn/kopytko-framework/compare/v1.3.0...v1.3.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* update dependencies ([#35](https://github.com/getndazn/kopytko-framework/issues/35)) ([7e317e0](https://github.com/getndazn/kopytko-framework/commit/7e317e0850cec411832318bf1491c8375c219cad))
+
 # [1.3.0](https://github.com/getndazn/kopytko-framework/compare/v1.2.0...v1.3.0) (2022-08-01)
 
 
