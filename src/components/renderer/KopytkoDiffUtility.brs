@@ -61,7 +61,12 @@ function KopytkoDiffUtility() as Object
       return
     end if
 
-    m._diffExistingElement(currentElement, newElement)
+    if (newElement.dynamicProps = Invalid)
+      newElement.dynamicProps = {}
+    end if
+
+    m._diffElementProps(currentElement.props.id, currentElement.dynamicProps, newElement.dynamicProps)
+    m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
   end sub
 
   ' @todo Support elements reordering
@@ -85,29 +90,14 @@ function KopytkoDiffUtility() as Object
         nonInvalidNewChildIndex++
         newChild.parentId = parentElementId
 
-        if (currentChildrenMapped[newChild.props.id] = Invalid)
-          m._diffResult.elementsToRender.push(newChild)
-        else
-          m._diffExistingElement(currentChildrenMapped[newChild.props.id], newChild)
-          currentChildrenMapped.delete(newChild.props.id)
-        end if
+        m._diffElement(currentChildrenMapped[newChild.props.id], newChild)
+        currentChildrenMapped.delete(newChild.props.id)
       end if
     end for
 
     for each currentChildIdToRemove in currentChildrenMapped
       m._markElementToBeRemoved(currentChildrenMapped[currentChildIdToRemove])
     end for
-  end sub
-
-  prototype._diffExistingElement = sub (currentElement as Object, newElement as Object)
-    if (newElement.dynamicProps = Invalid)
-      newElement.dynamicProps = {}
-    end if
-
-    m._diffElementProps(currentElement.props.id, currentElement.dynamicProps, newElement.dynamicProps)
-    if (currentElement.children <> Invalid OR newElement.children <> Invalid)
-      m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
-    end if
   end sub
 
   ' @private

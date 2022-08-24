@@ -311,6 +311,34 @@ function TestSuite__KopytkoDiffUtility_Main()
     return ts.assertEqual(diffResult, expectedResult, "The elements were not marked as expected")
   end function)
 
+  ts.addTest("it marks old element to be removed and new to be rendered when id remained the same but names are different", function (ts as Object) as String
+    ' Given
+    vNode = TestUtil_createRootElementWithChildren([
+      {
+        name: "Label",
+        props: { id: "child1" },
+      },
+    ])
+
+    newVNode = TestUtil_createRootElementWithChildren([
+      {
+        name: "DaznButton",
+        props: { id: "child1" },
+      },
+    ])
+
+    ' When
+    diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
+    expectedResult = {
+      elementsToUpdate: {},
+      elementsToRender: [newVNode.children[0]],
+      elementsToRemove: ["child1"],
+    }
+
+    ' Then
+    return ts.assertEqual(diffResult, expectedResult, "The elements were not marked as expected")
+  end function)
+
   ts.addTest("it marks the element invalid props to be updated if they changed to a valid value", function (ts as Object) as String
     ' Given
     vNode = TestUtil_createRootElementWithChildren([
