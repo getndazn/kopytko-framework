@@ -69,6 +69,20 @@ function KopytkoDiffUtility() as Object
     m._diffElementChildren(currentElement.children, newElement.children, newElement.props.id)
   end sub
 
+  ' @private
+  prototype._diffElementProps = sub (elementId as String, currentProps as Object, newProps as Object)
+    for each newProp in newProps
+      if (NOT m._assert.deepEqual(currentProps[newProp], newProps[newProp]))
+        ' Create element key in case it doesn't exist yet
+        if (m._diffResult.elementsToUpdate[elementId] = Invalid)
+          m._diffResult.elementsToUpdate[elementId] = { props: {} }
+        end if
+
+        m._diffResult.elementsToUpdate[elementId].props[newProp] = newProps[newProp]
+      end if
+    end for
+  end sub
+
   ' @todo Support elements reordering
   ' @private
   prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
@@ -111,20 +125,6 @@ function KopytkoDiffUtility() as Object
     for each child in element.children
       if (child <> Invalid)
         m._markElementToBeRemoved(child)
-      end if
-    end for
-  end sub
-
-  ' @private
-  prototype._diffElementProps = sub (elementId as String, currentProps as Object, newProps as Object)
-    for each newProp in newProps
-      if (NOT m._assert.deepEqual(currentProps[newProp], newProps[newProp]))
-        ' Create element key in case it doesn't exist yet
-        if (m._diffResult.elementsToUpdate[elementId] = Invalid)
-          m._diffResult.elementsToUpdate[elementId] = { props: {} }
-        end if
-
-        m._diffResult.elementsToUpdate[elementId].props[newProp] = newProps[newProp]
       end if
     end for
   end sub
