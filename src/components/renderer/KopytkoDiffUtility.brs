@@ -70,21 +70,6 @@ function KopytkoDiffUtility() as Object
   end sub
 
   ' @private
-  prototype._markElementToBeRemoved = sub (element as Object)
-    m._diffResult.elementsToRemove.push(element.props.id)
-
-    if (element.children = Invalid OR element.children.count() = 0)
-      return
-    end if
-
-    for each child in element.children
-      if (child <> Invalid)
-        m._markElementToBeRemoved(child)
-      end if
-    end for
-  end sub
-
-  ' @private
   prototype._diffElementProps = sub (elementId as String, currentProps as Object, newProps as Object)
     for each newProp in newProps
       if (NOT m._assert.deepEqual(currentProps[newProp], newProps[newProp]))
@@ -98,34 +83,49 @@ function KopytkoDiffUtility() as Object
     end for
   end sub
 
-  ' @todo Make it not rerender the whole children tree if they were only reordered
+  ' @todo Support elements reordering
   ' @private
   prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
-    if (currentChildren = Invalid)
-      currentChildren = []
+    if (newChildren = Invalid) then newChildren = []
+
+    currentChildrenMapped = {}
+    if (currentChildren <> Invalid)
+      for each currentChild in currentChildren
+        if (currentChild <> Invalid)
+          currentChildrenMapped[currentChild.props.id] = currentChild
+        end if
+      end for
     end if
 
-    if (newChildren = Invalid)
-      newChildren = []
-    end if
+    nonInvalidNewChildIndex = 0
+    for each newChild in newChildren
+      if (newChild <> Invalid)
+        newChild.index = nonInvalidNewChildIndex
+        nonInvalidNewChildIndex++
+        newChild.parentId = parentElementId
 
-    if (currentChildren.count() > newChildren.count())
-      biggestArray = currentChildren
-    else
-      biggestArray = newChildren
-    end if
-
-    for i = 0 to biggestArray.count() - 1
-      if (newChildren[i] <> Invalid)
-        newChildren[i].index = i
-        newChildren[i].parentId = parentElementId
+        m._diffElement(currentChildrenMapped[newChild.props.id], newChild)
+        currentChildrenMapped.delete(newChild.props.id)
       end if
+    end for
 
-      if (currentChildren[i] <> Invalid)
-        currentChildren[i].index = i
+    for each currentChildIdToRemove in currentChildrenMapped
+      m._markElementToBeRemoved(currentChildrenMapped[currentChildIdToRemove])
+    end for
+  end sub
+
+  ' @private
+  prototype._markElementToBeRemoved = sub (element as Object)
+    m._diffResult.elementsToRemove.push(element.props.id)
+
+    if (element.children = Invalid OR element.children.count() = 0)
+      return
+    end if
+
+    for each child in element.children
+      if (child <> Invalid)
+        m._markElementToBeRemoved(child)
       end if
-
-      m._diffElement(currentChildren[i], newChildren[i])
     end for
   end sub
 
