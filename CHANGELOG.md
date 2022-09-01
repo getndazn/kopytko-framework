@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/getndazn/kopytko-framework/compare/v1.3.1...v1.3.2) (2022-09-01)
+
+
+### Bug Fixes
+
+* Ignoring Invalid elements when calculating elements' index in children array ([#31](https://github.com/getndazn/kopytko-framework/issues/31)) ([73aed6e](https://github.com/getndazn/kopytko-framework/commit/73aed6e2e7ba38b946c81fe18ceecf414f7bbcf2))
+
 ## [1.3.1](https://github.com/getndazn/kopytko-framework/compare/v1.3.0...v1.3.1) (2022-08-05)
 
 
