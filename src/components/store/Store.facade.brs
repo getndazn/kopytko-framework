@@ -1,4 +1,5 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
+' @import /components/uuid.brs from @dazn/kopytko-utils
 ' @import /components/utils/KopytkoGlobalNode.brs
 function StoreFacade() as Object
   if (m._store <> Invalid)
@@ -15,7 +16,7 @@ function StoreFacade() as Object
   prototype = {}
 
   prototype._store = _global.store
-  prototype._subscriptions = []
+  prototype._subscriptions = {}
 
   prototype.updateNode = sub (key as String, value as Dynamic)
     data = m.get(key)
@@ -94,20 +95,20 @@ function StoreFacade() as Object
 
   prototype.subscribeOnce = sub (key as String, callback as Function)
     m._handleSubscriber(key)
-    m._subscriptions.push({ key: key, callback: [callback], once: true })
+    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], once: true }
   end sub
 
   prototype.subscribe = sub (key as String, callback as Function)
     m._handleSubscriber(key)
-    m._subscriptions.push({ key: key, callback: [callback], once: false })
+    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], once: false }
   end sub
 
   prototype.unsubscribe = sub (key as String, callback as Function)
-    for i = 0 to m._subscriptions.count() - 1
-      listener = m._subscriptions[i]
+    for each subscriptionKey in m._subscriptions
+      listener = m._subscriptions[subscriptionKey]
 
       if (listener <> Invalid AND listener.key = key AND listener.callback[0] = callback)
-        m._subscriptions.delete(i)
+        m._subscriptions.delete(subscriptionKey)
       end if
     end for
   end sub
@@ -139,14 +140,14 @@ function StoreFacade() as Object
   prototype._notify = sub (key as String, data as Object)
     value = data.value
 
-    for i = 0 to m._subscriptions.count() - 1
-      listener = m._subscriptions[i]
+    for each subscriptionKey in m._subscriptions
+      listener = m._subscriptions[subscriptionKey]
 
-      if (listener.key = key)
+      if (listener <> Invalid AND listener.key = key)
         listener.callback[0](value)
 
         if (listener.once)
-          m._subscriptions.delete(i)
+          m._subscriptions.delete(subscriptionKey)
         end if
       end if
     end for
@@ -163,6 +164,10 @@ function StoreFacade() as Object
       m._store[key].removeField("value")
     end if
   end sub
+
+  prototype._getRandomizedKey = function (key as String) as String
+    return key + "_" + uuid()
+  end function
 
   m._store = prototype
 
