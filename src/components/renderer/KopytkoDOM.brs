@@ -3,6 +3,8 @@ function KopytkoDOM() as Object
 
   prototype.componentsMapping = {}
 
+  prototype._renderedElements = {}
+
   ' Renders an element based on the given virtual node
   ' @param {Object} vNode - The virtual node
   ' @param {Object} parentElement - The parent element where the element will be rendered
@@ -44,6 +46,8 @@ function KopytkoDOM() as Object
     else
       parentElement.appendChild(element)
     end if
+
+    m._renderedElements[element.id] = element
 
     m._setElementSelector(element)
   end sub
@@ -94,7 +98,7 @@ function KopytkoDOM() as Object
     rootElement = m._getRootComponent()
 
     for each elementId in elements
-      element = rootElement.top.findNode(elementId)
+      element = m._renderedElements[elementId]
 
       if (element <> Invalid)
         m._destroyKopytkoElement(element)
@@ -106,6 +110,7 @@ function KopytkoDOM() as Object
       end if
 
       rootElement.delete(elementId)
+      m._renderedElements.delete(elementId)
     end for
   end sub
 
