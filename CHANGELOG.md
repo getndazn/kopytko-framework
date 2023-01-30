@@ -1,3 +1,12 @@
+## [1.3.4](https://github.com/getndazn/kopytko-framework/compare/v1.3.3...v1.3.4) (2023-01-30)
+
+
+### Bug Fixes
+
+* not using findNode when removing component's children ([#37](https://github.com/getndazn/kopytko-framework/issues/37)) ([d82d2b2](https://github.com/getndazn/kopytko-framework/commit/d82d2b2ef4fa4b99dcbcb475feaf0ed6a4c3f4d3))
+* update workflow files ([#38](https://github.com/getndazn/kopytko-framework/issues/38)) ([1e56ba8](https://github.com/getndazn/kopytko-framework/commit/1e56ba8a90942890b3c46f1e5f5264016940aed5))
+* workflow ms-teams-deploy-card action version ([#39](https://github.com/getndazn/kopytko-framework/issues/39)) ([d60abe6](https://github.com/getndazn/kopytko-framework/commit/d60abe6e82942fa1373d0be3399c605a5ebcacad))
+
 ## [1.3.3](https://github.com/getndazn/kopytko-framework/compare/v1.3.2...v1.3.3) (2022-12-09)
 
 
