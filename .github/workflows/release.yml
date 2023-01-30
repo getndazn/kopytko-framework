@@ -9,23 +9,24 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Semantic Release
         id: release
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.OSS_NPM_TOKEN }}
         with:
           extra_plugins: |
-            @semantic-release/changelog@5.0.1
-            @semantic-release/git@9.0.0
+            @semantic-release/changelog@6
+            @semantic-release/git@10
       - name: Teams notification
-        uses: toko-bifrost/ms-teams-deploy-card@3.1.2
+        uses: toko-bifrost/ms-teams-deploy-card@3
         if: always()
         with:
           github-token: ${{ github.token }}
