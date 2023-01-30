@@ -26,7 +26,7 @@ jobs:
             @semantic-release/changelog@6
             @semantic-release/git@10
       - name: Teams notification
-        uses: toko-bifrost/ms-teams-deploy-card@3
+        uses: toko-bifrost/ms-teams-deploy-card@3.1.2
         if: always()
         with:
           github-token: ${{ github.token }}
