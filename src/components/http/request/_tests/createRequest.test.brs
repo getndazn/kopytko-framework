@@ -3,6 +3,7 @@
 ' @import /components/promise/PromiseReject.brs from @dazn/kopytko-utils
 ' @import /components/promise/PromiseResolve.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/_mocks/Event.mock.brs from @dazn/kopytko-utils
+' @mock /components/http/HttpCache.brs
 
 function TestSuite__createRequest() as Object
   ts = KopytkoFrameworkTestSuite()
@@ -11,6 +12,21 @@ function TestSuite__createRequest() as Object
   ts.setBeforeEach(sub (ts as Object)
     m.__returnedResponse = {}
     m._requests = {}
+
+    m.__cachedParsedResponseValue = { parsed: "response" }
+    m.__cachedParsedResponseUrl = "http://test.url"
+
+    m.__mocks.httpCache = {
+      readParsed: {
+        getReturnValue: function (params as Object, m as Object) as Object
+          if (params.url = m.__cachedParsedResponseUrl)
+            return m.__cachedParsedResponseValue
+          end if
+
+          return Invalid
+        end function,
+      },
+    }
   end sub)
 
   ts.addTest("should return Invalid for unknown task", function (ts as Object) as String
@@ -98,6 +114,43 @@ function TestSuite__createRequest() as Object
 
     ' Then
     return ts.assertTrue(m.__returnedResponse.wasAborted)
+  end function)
+
+  ts.addTest("should return a cached parsed response of GET request if stored", function (ts as Object) as String
+    ' When
+    testedPromise = createRequest("RequestMock", { url: m.__cachedParsedResponseUrl, method: "GET" }, { cache: { enable: true, parsedData: true }})
+    testedPromise.then(onResolve)
+
+    ' Then
+    return ts.assertEqual(m.__returnedResponse, m.__cachedParsedResponseValue)
+  end function)
+
+  ts.addTest("should not return a cached parsed response of default request even if stored", function (ts as Object) as String
+    ' When
+    testedPromise = createRequest("RequestMock", { url: m.__cachedParsedResponseUrl }, { cache: { enable: true, parsedData: true }})
+    testedPromise.then(onResolve)
+
+    ' Then
+    return ts.assertNotEqual(m.__returnedResponse, m.__cachedParsedResponseValue)
+  end function)
+
+  ts.addTest("should not return a cached parsed response of non-GET request even if stored", function (ts as Object) as String
+    ' When
+    testedPromise = createRequest("RequestMock", { url: m.__cachedParsedResponseUrl, method: "POST" }, { cache: { enable: true, parsedData: true }})
+    testedPromise.then(onResolve)
+
+    ' Then
+    return ts.assertNotEqual(m.__returnedResponse, m.__cachedParsedResponseValue)
+  end function)
+
+  ts.addTest("should set task flag if non-parsed cache is allowed", function (ts as Object) as String
+    ' When
+    testedPromise = createRequest("RequestMock", { url: m.__cachedParsedResponseUrl }, { cache: { enable: true, parsedData: false }})
+
+    ' Then
+    requestId = m._requests.keys()[0]
+
+    return ts.assertTrue(m._requests[requestId].task.allowCaching)
   end function)
 
   return ts

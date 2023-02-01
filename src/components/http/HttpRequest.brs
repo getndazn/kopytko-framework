@@ -67,9 +67,10 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
       interceptor.interceptRequest(m, m._urlTransfer)
     end for
 
-    if (m._options.method = "GET")
+    method = m.getMethod()
+    if (method = "GET")
       m._urlTransfer.asyncGetToString()
-    else if (m._options.method = "POST" OR m._options.method = "PUT" OR m._options.method = "DELETE")
+    else if (method = "POST" OR method = "PUT" OR method = "DELETE")
       body = ""
 
       if (m._options.body <> Invalid)
@@ -119,6 +120,16 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     return m._urlTransfer.getUrl()
   end function
 
+  ' @returns {String}
+  prototype.getEscapedUrl = function () as String
+    return m._urlTransfer.escape(m.getUrl())
+  end function
+
+  ' @returns {String}
+  prototype.getMethod = function () as String
+    return m._options.method
+  end function
+
   ' Cancels request that times out.
   ' @returns {Boolean}
   prototype.isTimedOut = function () as Boolean
@@ -129,6 +140,16 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     end if
 
     return isTimedOut
+  end function
+
+  ' @returns {Boolean}
+  prototype.isCachingEnabled = function () as Boolean
+    return getProperty(m.options, "cache.enable", false)
+  end function
+
+  ' @returns {Boolean}
+  prototype.shouldReparseCachedData = function () as Boolean
+    return getProperty(m.options, "cache.reparse", false)
   end function
 
   ' Aborts active request.

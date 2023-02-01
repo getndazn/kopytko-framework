@@ -57,14 +57,27 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
       interceptor.interceptResponse(request, urlEvent)
     end for
 
-    return HttpResponse({
+    response = HttpResponse({
       rawData: urlEvent.getString(),
       httpStatusCode: urlEvent.getResponseCode(),
       failureReason: urlEvent.getFailureReason(),
       id: request.getId(),
       headers: urlEvent.getResponseHeaders(),
       requestOptions: request.getOptions(),
-    }).toNode()
+    })
+    responseNode = response.toNode()
+
+    responseCode = response.getStatusCode()
+    if (responseCode > response.STATUS_SUCCESS AND responseCode < response.STATUS_REDIRECTION)
+      if (request.getMethod() = "GET" AND response.isReusable())
+        m._cache.store(request, responseNode, response.getMaxAge())
+      end if
+    else if (responseCode = response.STATUS_NOT_MODIFIED)
+      return m._cache.prolong(request, responseNode, response.getMaxAge())
+    end if
+    ' @todo consider returning cached data in case on internal server error
+
+    return responseNode
   end function
 
   ' @private

@@ -3,6 +3,7 @@
 ' @import /components/promise/Promise.brs from @dazn/kopytko-utils
 ' @import /components/promise/PromiseReject.brs from @dazn/kopytko-utils
 ' @import /components/promise/PromiseResolve.brs from @dazn/kopytko-utils
+' @import /components/request/HttpCache.brs
 
 ' @todo as we can pass task instance as a param now, this function should be renamed to e.g. sendRequest
 function createRequest(task as Dynamic, data = {} as Object, options = {} as Object) as Object
@@ -19,6 +20,23 @@ function createRequest(task as Dynamic, data = {} as Object, options = {} as Obj
   end if
 
   task.data = data
+
+  if (getProperty(options, "cache.enable", false))
+    reparseCachedData = getProperty(options, "cache.reparse", false)
+    if (NOT reparseCachedData)
+      calculatedRequestOptions = task.callFunc("getCalculatedRequestOptions")
+      if (calculatedRequestOptions.method = "GET" AND calculatedRequestOptions.url <> Invalid)
+        cachedResponse = HttpCache().readParsed(calculatedRequestOptions.url)
+        if cachedResponse <> Invalid
+          return PromiseResolve(cachedResponse)
+        end if
+      end if
+    end if
+
+    task.enableCaching = true
+    task.reparseCachedData = reparseCachedData
+  end if
+
   task.observeFieldScoped("response", "createRequest_onPromiseResponse")
 
   if (m._requests = Invalid)

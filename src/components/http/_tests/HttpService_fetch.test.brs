@@ -13,7 +13,7 @@ function TestSuite__HttpService_fetch() as Object
     ' Then
     return ts.assertMethodWasCalled("HttpRequest.send")
   end function)
-  
+
   ts.addTest("it sends request options and response to the interceptor", function (ts as Object) as String
     ' Given
     _httpService = HttpService({}, [HttpInterceptor()])
@@ -29,12 +29,14 @@ function TestSuite__HttpService_fetch() as Object
       responseHeaders: {},
     })
     _httpService.__portMessage = _urlEvent
-    m.__request = { 
+    m.__request = {
       send: sub ()
       end sub,
       getId: function ()
       end function,
       getOptions: function ()
+      end function,
+      getMethod: function ()
       end function,
     }
 
