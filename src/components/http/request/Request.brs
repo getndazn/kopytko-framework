@@ -12,11 +12,14 @@ sub init()
   initRequest()
 end sub
 
-' Implement by each child
+' @abstract
 sub runRequest()
 end sub
 
-' Eventually implement by child
+' Abstract method to prepare data before running a task to avoid rendezvous (becaused it's called on the render thread)
+' The same can be achieved by adding the code to child's init() function
+' @deprecated
+' @protected
 sub initRequest()
 end sub
 
@@ -25,17 +28,17 @@ function getRequestOptions(data as Object) as Object
   return {}
 end function
 
-' Implement by child
+' Overwrite by child to use parsers and potentially return a specific node type
 function parseResponseData(data as Object) as Object
-  return {}
+  parsedData = CreateObject("roSGNode", "Node")
+  parsedData.addFields(data)
+
+  return parsedData
 end function
 
-' Implement by child
+' Overwrite by child for returning a specific data structure and/or node type
 function generateErrorData(response as Object) as Object
-  ' Structure:
-  ' { code: "", message: "" }
-
-  return {}
+  return response
 end function
 
 sub _onDataChange(event as Object)
