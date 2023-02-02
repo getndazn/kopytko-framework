@@ -8,10 +8,6 @@ sub init()
   m.top.observeFieldScoped("data", "_onDataChange")
 end sub
 
-function getCalculatedRequestOptions() as Object
-  return m._requestOptions
-end function
-
 function getRequestOptions(data as Object) as Object
   return data
 end function

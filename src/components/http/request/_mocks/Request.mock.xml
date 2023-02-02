@@ -4,6 +4,7 @@
   <interface>
     <field id="abort" type="boolean" />
     <field id="data" type="assocarray" />
+    <field id="enableCaching" type="boolean" />
     <field id="response" type="node" />
   </interface>
 
