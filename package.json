@@ -25,7 +25,7 @@
     "test": "node node_modules/@dazn/kopytko-unit-testing-framework/scripts/test.js"
   },
   "dependencies": {
-    "@dazn/kopytko-utils": "^2.2.2"
+    "@dazn/kopytko-utils": "^2.3.0"
   },
   "devDependencies": {
     "@dazn/eslint-plugin-kopytko": "^2.1.0",
