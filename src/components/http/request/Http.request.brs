@@ -7,10 +7,7 @@ sub init()
 end sub
 
 sub runRequest()
-  m._requestOptions.cache = {
-    enable: m.top.enableCaching
-    reparse: m.top.reparseCachedData
-  }
+  m._requestOptions.enableCaching = m.top.enableCaching
 
   response = m._httpService.fetch(m._requestOptions)
 

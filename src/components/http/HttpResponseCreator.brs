@@ -1,0 +1,45 @@
+' @import /components/getProperty.brs from @dazn/kopytko-utils
+' @import /components/http/HttpResponse.brs
+
+' @class
+function HttpResponseCreator() as Object
+  prototype = {}
+
+  prototype._CONTENT_TYPE_HEADER = "content-type"
+  prototype._JSON_CONTENT_TYPE = "application/json"
+
+  ' Parses response's content to JSON when application/json mimetype is detected.
+  ' Warning: should be used on a render thread due to parsing json
+  prototype.fromUrlEvent = function (urlEvent as Object, request as Object) as Object
+    response = HttpResponse({
+      content: m._parseUrlEventContent(urlEvent),
+      httpStatusCode: urlEvent.getResponseCode(),
+      failureReason: urlEvent.getFailureReason(),
+      id: request.getId(),
+      headers: urlEvent.getResponseHeaders(),
+      requestOptions: request.getOptions(),
+    })
+  end function
+
+  prototype.fromCache = function (cachedResponse as Object) as Object
+    ' @todo
+    return HttpResponse()
+  end function
+
+  prototype._parseUrlEventContent = function (urlEvent as Object) as Object
+    content = urlEvent.getString()
+    isJsonResponse = m._isJsonResponse(urlEvent)
+    if (NOT isJsonResponse OR content = "") then return {}
+
+    data = ParseJSON(content)
+    if (data = Invalid) then return {}
+
+    return data
+  end function
+
+  prototype._isJsonResponse = function (urlEvent as Object) as Boolean
+    return getProperty(urlEvent.getResponseHeaders(), [m._CONTENT_TYPE_HEADER], "").instr(m._JSON_CONTENT_TYPE) > -1
+  end function
+
+  return prototype
+end function

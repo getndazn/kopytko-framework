@@ -1,6 +1,8 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
+' @import /components/http/cache/HttpCache.brs
 ' @import /components/http/HttpRequest.brs
 ' @import /components/http/HttpResponse.brs
+' @import /components/http/HttpResponseCreator.brs
 
 ' WARNING: the service must be used on the Task threads.
 ' @class
@@ -17,11 +19,23 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   prototype._httpInterceptors = httpInterceptors
   prototype._port = port
 
-  ' Performs HTTP request
+  prototype._cache = HttpCache()
+  prototype._responseCreator = HttpResponseCreator()
+
+  ' Performs HTTP request or returns a stored response omitting HttpInterceptors
   ' @param {HttpRequest~Options} options
   ' @returns {HttpResponse|Invalid}
   prototype.fetch = function (options as Object) as Object
     request = HttpRequest(options, m._httpInterceptors).setMessagePort(m._port)
+
+    if (request.isCachingEnabled())
+      ' Warning: Cached requests omit HttpInterceptors
+      cachedResponse = m._cache.read(request.getEscapedUrl())
+      if (cachedResponse <> Invalid)
+        return cachedResponse
+      end if
+    end if
+
     request.send()
 
     return m._waitForResponse(request)
@@ -57,27 +71,19 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
       interceptor.interceptResponse(request, urlEvent)
     end for
 
-    response = HttpResponse({
-      rawData: urlEvent.getString(),
-      httpStatusCode: urlEvent.getResponseCode(),
-      failureReason: urlEvent.getFailureReason(),
-      id: request.getId(),
-      headers: urlEvent.getResponseHeaders(),
-      requestOptions: request.getOptions(),
-    })
-    responseNode = response.toNode()
+    response = m._responseCreator.fromUrlEvent(urlEvent, request)
 
     responseCode = response.getStatusCode()
     if (responseCode > response.STATUS_SUCCESS AND responseCode < response.STATUS_REDIRECTION)
       if (request.getMethod() = "GET" AND response.isReusable())
-        m._cache.store(request, responseNode, response.getMaxAge())
+        m._cache.store(request, response, response.getMaxAge())
       end if
     else if (responseCode = response.STATUS_NOT_MODIFIED)
-      return m._cache.prolong(request, responseNode, response.getMaxAge())
+      return m._cache.prolong(request, response, response.getMaxAge())
     end if
     ' @todo consider returning cached data in case on internal server error
 
-    return responseNode
+    return response.toNode()
   end function
 
   ' @private

@@ -2,7 +2,7 @@ function TestSuite__HttpResponse_getMaxAge() as Object
   ts = HttpResponseTestSuite()
   ts.name = "HttpResponse - getMaxAge"
 
-  ts.addTest("returns MAX_AGE_NOT_ALLOWED for no-cache header", function (ts as Object) as String
+  it("returns MAX_AGE_NOT_ALLOWED for no-cache header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -15,10 +15,10 @@ function TestSuite__HttpResponse_getMaxAge() as Object
     result = response.getMaxAge()
 
     ' Then
-    return ts.assertEqual(result, response.MAX_AGE_NOT_ALLOWED)
+    return expect(result).toBe(response.MAX_AGE_NOT_ALLOWED)
   end function)
 
-  ts.addTest("returns max-age value of Cache-Control header", function (ts as Object) as String
+  it("returns max-age value of Cache-Control header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -31,10 +31,10 @@ function TestSuite__HttpResponse_getMaxAge() as Object
     result = response.getMaxAge()
 
     ' Then
-    return ts.assertEqual(result, 360)
+    return expect(result).toBe(360)
   end function)
 
-  ts.addTest("returns time left based on Expires value if no Cache-Control header", function (ts as Object) as String
+  it("returns time left based on Expires value if no Cache-Control header", function (_ts as Object) as String
     ' Given
     m.__mocks.imfFixdateToSeconds.getReturnValue = function (params as Object, m as Object) as Object
       if params.imfFixdate = "Tue, 20 Apr 2022 04:20:00 GMT"
@@ -56,10 +56,10 @@ function TestSuite__HttpResponse_getMaxAge() as Object
     result = response.getMaxAge()
 
     ' Then
-    return ts.assertEqual(result, 250)
+    return expect(result).toBe(250)
   end function)
 
-  ts.addTest("returns MAX_AGE_NOT_ALLOWED if Expires value is in the past and if no Cache-Control header", function (ts as Object) as String
+  it("returns MAX_AGE_NOT_ALLOWED if Expires value is in the past and if no Cache-Control header", function (_ts as Object) as String
     ' Given
     m.__mocks.imfFixdateToSeconds.getReturnValue = function (params as Object, m as Object) as Object
       if params.imfFixdate = "Tue, 20 Apr 2022 04:20:00 GMT"
@@ -81,10 +81,10 @@ function TestSuite__HttpResponse_getMaxAge() as Object
     result = response.getMaxAge()
 
     ' Then
-    return ts.assertEqual(result, response.MAX_AGE_NOT_ALLOWED)
+    return expect(result).toBe(response.MAX_AGE_NOT_ALLOWED)
   end function)
 
-  ts.addTest("returns 0 if no Expires or Cache-Control header", function (ts as Object) as String
+  it("returns 0 if no Expires or Cache-Control header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -97,7 +97,7 @@ function TestSuite__HttpResponse_getMaxAge() as Object
     result = response.getMaxAge()
 
     ' Then
-    return ts.assertEqual(result, 0)
+    return expect(result).toBe(0)
   end function)
 
   return ts

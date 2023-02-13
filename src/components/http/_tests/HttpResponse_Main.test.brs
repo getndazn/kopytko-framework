@@ -2,20 +2,20 @@ function TestSuite__HttpResponse_Main() as Object
   ts = HttpResponseTestSuite()
   ts.name = "HttpResponse - Main"
 
-  ts.addTest("should create successful response", function (ts as Object) as String
+  it("should create successful response", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
       httpStatusCode: 200,
       failureReason: "OK",
-      rawData: FormatJSON({ id: 1 }),
+      content: FormatJSON({ id: "1" }),
       headers: { "Content-Type": "application/json" },
     }
     expectedResult = {
       headers: { "Content-Type": "application/json" },
       id: props.id,
       httpStatusCode: props.httpStatusCode,
-      rawData: ParseJSON(props.rawData),
+      rawData: ParseJSON(props.content),
       isSuccess: true,
     }
 
@@ -27,42 +27,36 @@ function TestSuite__HttpResponse_Main() as Object
       httpStatusCode: result.httpStatusCode,
       id: result.id,
       rawData: result.rawData,
-      isSuccess: true,
+      isSuccess: result.isSuccess,
     }
 
     ' Then
-    return ts.assertEqual(result, expectedResult)
+    return expect(result).toEqual(expectedResult)
   end function)
 
-  ts.addTest("should create error response", function (ts as Object) as String
+  it("should create error response", function (_ts as Object) as String
     ' Given
     props = {
+      content: FormatJSON({ nevermind: "1" }),
       id: "123456",
       httpStatusCode: 400,
       failureReason: "Some error",
-      rawData: FormatJSON({ "nevermind": 1 }),
       headers: { "Content-Type": "application/json" },
     }
-    expectedResult = {
-      headers: { "Content-Type": "application/json" },
+    expectedResult = CreateObject("roSGNode", "HttpResponseModel")
+    expectedResult.setFields({
+      rawData: ParseJSON(props.content),
       id: props.id,
       httpStatusCode: props.httpStatusCode,
-      rawData: ParseJSON(props.rawData),
-      failureReason: "Some error",
-    }
+      failureReason: props.failureReason,
+      headers: props.headers,
+    })
 
     ' When
     response = HttpResponse(props)
-    result = response.toNode().getFields()
-    result = {
-      headers: result.headers,
-      httpStatusCode: result.httpStatusCode,
-      id: result.id,
-      rawData: result.rawData,
-      failureReason: result.failureReason,
-    }
+
     ' Then
-    return ts.assertEqual(result, expectedResult)
+    return expect(response.toNode()).toEqual(expectedResult)
   end function)
 
   return ts

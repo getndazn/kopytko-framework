@@ -2,7 +2,7 @@ function TestSuite__HttpResponse_isReusable() as Object
   ts = HttpResponseTestSuite()
   ts.name = "HttpResponse - isReusable"
 
-  ts.addTest("should return false for no Cache-Control header", function (ts as Object) as String
+  it("should return false for no Cache-Control header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -15,10 +15,10 @@ function TestSuite__HttpResponse_isReusable() as Object
     result = response.isReusable()
 
     ' Then
-    return ts.assertFalse(result)
+    return expect(result).toBeFalse()
   end function)
 
-  ts.addTest("should return false for no-store value in the Cache-Control header", function (ts as Object) as String
+  it("should return false for no-store value in the Cache-Control header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -31,10 +31,10 @@ function TestSuite__HttpResponse_isReusable() as Object
     result = response.isReusable()
 
     ' Then
-    return ts.assertFalse(result)
+    return expect(result).toBeFalse()
   end function)
 
-  ts.addTest("should return true for no no-store value in the Cache-Control header", function (ts as Object) as String
+  it("should return true for no no-store value in the Cache-Control header", function (_ts as Object) as String
     ' Given
     props = {
       id: "123456",
@@ -47,7 +47,7 @@ function TestSuite__HttpResponse_isReusable() as Object
     result = response.isReusable()
 
     ' Then
-    return ts.assertTrue(result)
+    return expect(result).toBeTrue()
   end function)
 
   return ts

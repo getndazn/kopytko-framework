@@ -5,10 +5,14 @@
 function HttpResponseTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  ts.setBeforeEach(sub (ts as Object)
+  beforeEach(sub (_ts as Object)
+    m.__mockedCurrentTime = 777
+
     m.__mocks = {}
     m.__mocks.dateTime = {
-      asSeconds: {},
+      asSeconds: {
+        returnValue: m.__mockedCurrentTime,
+      },
     }
     m.__mocks.imfFixdateToSeconds = {}
   end sub)

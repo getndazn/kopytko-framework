@@ -4,7 +4,7 @@
 ' @import /components/http/_mocks/UrlEvent.mock.brs
 ' @mock /components/http/HttpInterceptor.brs
 ' @mock /components/http/HttpRequest.brs
-' @mock /components/http/HttpResponse.brs
+' @mock /components/http/HttpResponseCreator.brs
 
 function HttpServiceTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
@@ -47,8 +47,10 @@ function HttpServiceTestSuite() as Object
         end function,
       },
     }
-    m.__mocks.httpResponse = {
-      toNode: {},
+    m.__mocks.httpResponseCreator = {
+      fromUrlEvent: {
+        returnValue: HttpResponse({ id: "any", requestOptions: {} }),
+      },
     }
 
     m.__params = {

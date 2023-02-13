@@ -144,12 +144,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
   ' @returns {Boolean}
   prototype.isCachingEnabled = function () as Boolean
-    return getProperty(m.options, "cache.enable", false)
-  end function
-
-  ' @returns {Boolean}
-  prototype.shouldReparseCachedData = function () as Boolean
-    return getProperty(m.options, "cache.reparse", false)
+    return getProperty(m.options, "enableCaching", false)
   end function
 
   ' Aborts active request.

@@ -6,18 +6,12 @@ function TestSuite__HttpService_timeout() as Object
     ' Given
     m.__mocks.httpRequest.isTimedOut.returnValue = true
     m.__httpService.__portMessage = Invalid
-    m.__mocks.httpResponse.toNode.getReturnValue = function (params as Object, m as Object) as Object
-      return m.__mocks.httpResponse.constructorCalls[0].params.options
-    end function
 
     ' When
     response = m.__httpService.fetch(m.__params)
 
     ' Then
-    expected = m.__httpService._TIMEOUT_ERROR_CODE
-    actual = m.__mocks.httpResponse.constructorCalls[0].params.response.httpStatusCode
-
-    return ts.assertEqual(actual, expected)
+    return ts.assertEqual(response.httpStatusCode, m.__httpService._TIMEOUT_ERROR_CODE)
   end function)
 
   return ts

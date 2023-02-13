@@ -30,14 +30,11 @@ function TestSuite__HttpService_fetch() as Object
     })
     _httpService.__portMessage = _urlEvent
     m.__request = {
-      send: sub ()
-      end sub,
-      getId: function ()
-      end function,
-      getOptions: function ()
-      end function,
-      getMethod: function ()
-      end function,
+      send: sub () : end sub,
+      getId: function () : return "" : end function,
+      getOptions: function () : return {} : end function,
+      getMethod: function () : return "" : end function,
+      isCachingEnabled: function () : return false : end function,
     }
 
     ' When
