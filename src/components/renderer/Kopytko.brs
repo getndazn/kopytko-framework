@@ -34,10 +34,8 @@ sub destroyKopytko(data = {} as Object)
 
   componentWillUnmount()
 
-  if (m.global.eventBus <> Invalid)
-    for each event in m.global.eventBus.getFields()
-      m.global.eventBus.unobserveFieldScoped(event)
-    end for
+  if (m["$$eventBus"] <> Invalid)
+    m["$$eventBus"].clear()
   end if
 
   m.state = {}
