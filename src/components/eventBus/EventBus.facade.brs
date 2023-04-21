@@ -52,7 +52,7 @@ function EventBusFacade() as Object
       return
     end if
 
-    m._eventsMap[eventName] = m._arrayUtils.filter(callbacks, function(callback as object, handlerToRemove as function) as boolean
+    m._eventsMap[eventName] = m._arrayUtils.filter(callbacks, function (callback as Object, handlerToRemove as Function) as Boolean
       return (callback.handler <> handlerToRemove)
     end function, handlerToRemove)
   end sub
