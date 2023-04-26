@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/getndazn/kopytko-framework/compare/v1.4.0...v1.4.1) (2023-04-26)
+
+
+### Bug Fixes
+
+* clearing EventBus registered events on component destroy ([#43](https://github.com/getndazn/kopytko-framework/issues/43)) ([38b506f](https://github.com/getndazn/kopytko-framework/commit/38b506fd79207e57d73b4572d5074a847136159f))
+
 # [1.4.0](https://github.com/getndazn/kopytko-framework/compare/v1.3.4...v1.4.0) (2023-03-23)
 
 
