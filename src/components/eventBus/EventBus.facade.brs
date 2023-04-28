@@ -9,7 +9,7 @@ function EventBusFacade() as Object
   _global = KopytkoGlobalNode()
   if (NOT _global.hasField("eventBus"))
     _global.addFields({
-      eventBus: CreateObject("roSGNode", "Node"),
+      eventBus: CreateObject("roSGNode", "EventBus"),
     })
   end if
 
@@ -36,7 +36,7 @@ function EventBusFacade() as Object
     m._eventsMap[eventName].push({ handler: handler, context: context })
 
     m._eventBus.unobserveFieldScoped(eventName)
-    m._eventBus.observeFieldScoped(eventName, "EventBus_onEventFired")
+    m._eventBus.observeFieldScoped(eventName, "EventBus_onEventFired", ["$$payload"])
   end sub
 
   ' Detach subscriber for an event
@@ -69,15 +69,20 @@ function EventBusFacade() as Object
   ' @param {Object} [payload={}]
   prototype.trigger = sub (eventName as String, payload = {} as Object)
     m._ensureEventExistence(eventName)
-    m._eventBus[eventName] = payload
+
+    ' The event payload is stored in a separate field to avoid memory leaks.
+    ' Payload needs to be removed from the EventBus node, and if that would
+    ' be stored in the AA field of a specific event, then callbacks would be
+    ' triggered for another time after changing the value to invalid.
+    m._eventBus["$$payload"] = payload
+    m._eventBus[eventName] = true
+    m._eventBus["$$payload"] = Invalid
   end sub
 
   ' @private
   prototype._ensureEventExistence = sub (eventName as String)
     if (NOT m._eventBus.hasField(eventName))
-      fields = {}
-      fields[eventName] = {}
-      m._eventBus.addFields(fields)
+      m._eventBus.addField(eventName, "boolean", true)
     end if
   end sub
 
@@ -95,7 +100,11 @@ sub EventBus_onEventFired(event as Object)
     return
   end if
 
-  payload = event.getData()
+  payload = Invalid
+  context = event.getInfo()
+  if (context <> Invalid)
+    payload = context["$$payload"]
+  end if
 
   for each callback in callbacks
     functionCall(callback.handler, [payload], callback.context)
