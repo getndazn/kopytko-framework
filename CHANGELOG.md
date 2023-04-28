@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/getndazn/kopytko-framework/compare/v1.4.1...v1.4.2) (2023-04-28)
+
+
+### Bug Fixes
+
+* event bus storing last payload of each event ([#47](https://github.com/getndazn/kopytko-framework/issues/47)) ([445c7e8](https://github.com/getndazn/kopytko-framework/commit/445c7e88238c1102d23cc3d116f394ed5ed4ccae))
+
 ## [1.4.1](https://github.com/getndazn/kopytko-framework/compare/v1.4.0...v1.4.1) (2023-04-28)
 
 
