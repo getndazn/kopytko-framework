@@ -1,4 +1,4 @@
-## [1.4.1](https://github.com/getndazn/kopytko-framework/compare/v1.4.0...v1.4.1) (2023-04-26)
+## [1.4.1](https://github.com/getndazn/kopytko-framework/compare/v1.4.0...v1.4.1) (2023-04-28)
 
 
 ### Bug Fixes
