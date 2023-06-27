@@ -6,6 +6,8 @@ and improving its maintainability overall. It is highly inspired by the Javascri
 of its patterns as well as its API, making it extremely friendly for someone coming from a React components environment.
 It is also inspired by router of the Javascript Angular framework and some other mechanisms taken from the Javascript world.
 
+# Kopytko Roku Ecosystem
+
 Kopytko Framework is part of Kopytko Roku Ecosystem which consists of:
 - [Kopytko Framework](https://github.com/getndazn/kopytko-framework),
 - [Kopytko Utils](https://github.com/getndazn/kopytko-utils) - a collection of modern utility functions for Brightscript applications,
