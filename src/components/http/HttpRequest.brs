@@ -27,6 +27,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     "Accept": "application/json",
   }
 
+  prototype._headers = prototype._DEFAULT_HEADERS
   prototype._httpInterceptors = httpInterceptors
   prototype._options = options
   prototype._urlTransfer = UrlTransfer()
@@ -49,12 +50,10 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
       m._urlTransfer.initClientCertificates()
     end if
 
-    headers = m._DEFAULT_HEADERS
     if (Type(m._options.headers) = "roAssociativeArray")
-      headers.append(m._options.headers)
+      m._headers.append(m._options.headers)
     end if
 
-    m._urlTransfer.setHeaders(headers)
     m._timeout = ternary(m._options.timeout <> Invalid AND m._options.timeout <> 0, m._options.timeout, m._FALLBACK_TIMEOUT)
 
     return m
@@ -63,6 +62,8 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
   ' Performs actual request.
   ' @returns {Object} - Returns instance
   prototype.send = function () as Object
+    m._urlTransfer.setHeaders(m._headers)
+
     for each interceptor in m._httpInterceptors
       interceptor.interceptRequest(m, m._urlTransfer)
     end for
@@ -144,8 +145,12 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
   ' @returns {Boolean}
   prototype.isCachingEnabled = function () as Boolean
-    return getProperty(m.options, "enableCaching", false)
+    return getProperty(m.options, "enableCaching", true)
   end function
+
+  prototype.setHeader = sub (name as String, value as Dynamic)
+    m._headers[name] = value
+  end sub
 
   ' Aborts active request.
   prototype.abort = sub ()

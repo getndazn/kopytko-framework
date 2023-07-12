@@ -19,11 +19,12 @@ function createRequest(task as Dynamic, data = {} as Object, options = {} as Obj
   end if
 
   task.data = data
-  if (options.enableCaching <> Invalid)
-    task.enableCaching = options.enableCaching
+  if (options.taskOptions <> Invalid)
+    task.options = options.taskOptions
   end if
 
-  task.observeFieldScoped("response", "createRequest_onPromiseResponse")
+  task.observeFieldScoped("response", "createRequest_onPromiseResult") ' @todo remove once response field is removed
+  task.observeFieldScoped("result", "createRequest_onPromiseResult")
 
   if (m._requests = Invalid)
     m._requests = {}
@@ -46,7 +47,7 @@ function createRequest(task as Dynamic, data = {} as Object, options = {} as Obj
   return requestPromise
 end function
 
-sub createRequest_onPromiseResponse(event as Object)
+sub createRequest_onPromiseResult(event as Object)
   if (m._requests = Invalid)
     return
   end if
@@ -60,18 +61,19 @@ sub createRequest_onPromiseResponse(event as Object)
 
   ' We stop task manually to make sure that state is changed and task can be rerun
   request.task.control = "stop"
-  request.task.unobserveFieldScoped("response")
+  request.task.unobserveFieldScoped("response") ' @todo remove once response field is removed
+  request.task.unobserveFieldScoped("result")
   createRequest_unsubscribeSignalIfNecessary(request)
 
   requestPromise = request.promise
 
-  response = event.getData()
+  result = event.getData()
   if (getProperty(request, "signal.abort", false))
     requestPromise.reject(createRequest_createAbortedRequestError())
-  else if (response.isSuccess)
-    requestPromise.resolve(response.data)
+  else if (result.isSuccess)
+    requestPromise.resolve(result.data)
   else
-    requestPromise.reject(response.data)
+    requestPromise.reject(result.data)
   end if
 
   m._requests.delete(requestId)
@@ -99,7 +101,8 @@ sub createRequest_onAbortSignal(event as Object)
   for each requestItem in m._requests.items()
     request = requestItem.value
     if (signal.isSameNode(request.signal))
-      request.task.unobserveFieldScoped("response")
+      request.task.unobserveFieldScoped("response") ' @todo remove once response field is removed
+      request.task.unobserveFieldScoped("result")
       request.task.abort = true
       request.task.control = "stop"
       request.promise.reject(createRequest_createAbortedRequestError())

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <component name="HttpRequest" extends="Request">
-  <interface>
-    <field id="enableCaching" type="boolean" />
-  </interface>
-
   <script type="text/brightscript" uri="Http.request.brs" />
 </component>

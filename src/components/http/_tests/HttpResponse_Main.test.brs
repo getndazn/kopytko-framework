@@ -8,14 +8,14 @@ function TestSuite__HttpResponse_Main() as Object
       id: "123456",
       httpStatusCode: 200,
       failureReason: "OK",
-      content: FormatJSON({ id: "1" }),
+      rawData: { id: "1" },
       headers: { "Content-Type": "application/json" },
     }
     expectedResult = {
       headers: { "Content-Type": "application/json" },
       id: props.id,
       httpStatusCode: props.httpStatusCode,
-      rawData: ParseJSON(props.content),
+      rawData: props.rawData,
       isSuccess: true,
     }
 
@@ -37,19 +37,19 @@ function TestSuite__HttpResponse_Main() as Object
   it("should create error response", function (_ts as Object) as String
     ' Given
     props = {
-      content: FormatJSON({ nevermind: "1" }),
       id: "123456",
       httpStatusCode: 400,
       failureReason: "Some error",
       headers: { "Content-Type": "application/json" },
+      rawData: { nevermind: "1" },
     }
     expectedResult = CreateObject("roSGNode", "HttpResponseModel")
     expectedResult.setFields({
-      rawData: ParseJSON(props.content),
       id: props.id,
       httpStatusCode: props.httpStatusCode,
       failureReason: props.failureReason,
       headers: props.headers,
+      rawData: props.rawData,
     })
 
     ' When

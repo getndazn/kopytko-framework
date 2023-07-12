@@ -1,4 +1,5 @@
 ' @import /components/uuid.brs from @dazn/kopytko-utils
+' @deprecated - this file will be detached from Request.xml file and deleted
 sub init()
   m._id = uuid()
 

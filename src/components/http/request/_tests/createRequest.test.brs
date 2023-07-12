@@ -36,7 +36,7 @@ function TestSuite__createRequest() as Object
     data = ItemGenerator({ title: "string" })
 
     ' When
-    createRequest_onPromiseResponse(Event({
+    createRequest_onPromiseResult(Event({
       nodeId: m._requests.keys()[0],
       data: {
         isSuccess: true,
@@ -55,7 +55,7 @@ function TestSuite__createRequest() as Object
     error = ItemGenerator({ message: "string" })
 
     ' When
-    createRequest_onPromiseResponse(Event({
+    createRequest_onPromiseResult(Event({
       nodeId: m._requests.keys()[0],
       data: {
         isSuccess: false,
@@ -88,7 +88,7 @@ function TestSuite__createRequest() as Object
 
     ' When
     abortSignal.abort = true
-    createRequest_onPromiseResponse(Event({
+    createRequest_onPromiseResult(Event({
       nodeId: m._requests.keys()[0],
       data: {
         isSuccess: true,
@@ -100,24 +100,17 @@ function TestSuite__createRequest() as Object
     return ts.assertTrue(m.__returnedResponse.wasAborted)
   end function)
 
-  ts.addTest("should not set task enableCaching flag by default", function (ts as Object) as String
+  ts.addTest("should pass taskOptions to task", function (ts as Object) as String
+    ' Given
+    taskOptions = { enableCaching: true }
+
     ' When
-    createRequest("RequestMock", {})
+    createRequest("RequestMock", {}, { taskOptions: taskOptions })
 
     ' Then
     requestId = m._requests.keys()[0]
 
-    return ts.assertFalse(m._requests[requestId].task.enableCaching)
-  end function)
-
-  ts.addTest("should set task enableCaching flag if cache is allowed", function (ts as Object) as String
-    ' When
-    createRequest("RequestMock", {}, { enableCaching: true })
-
-    ' Then
-    requestId = m._requests.keys()[0]
-
-    return ts.assertTrue(m._requests[requestId].task.enableCaching)
+    return ts.assertEqual(m._requests[requestId].task.options, taskOptions)
   end function)
 
   return ts

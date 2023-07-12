@@ -48,7 +48,7 @@ function HttpServiceTestSuite() as Object
       },
     }
     m.__mocks.httpResponseCreator = {
-      fromUrlEvent: {
+      create: {
         returnValue: HttpResponse({ id: "any", requestOptions: {} }),
       },
     }

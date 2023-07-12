@@ -10,22 +10,21 @@ function HttpResponseCreator() as Object
 
   ' Parses response's content to JSON when application/json mimetype is detected.
   ' Warning: should be used on a render thread due to parsing json
-  prototype.fromUrlEvent = function (urlEvent as Object, request as Object) as Object
-    response = HttpResponse({
-      content: m._parseUrlEventContent(urlEvent),
+  ' @param {roUrlEvent} urlEvent
+  ' @param {HttpRequest} request
+  ' @returns {HttpResponse}
+  prototype.create = function (urlEvent as Object, request as Object) as Object
+    return HttpResponse({
       httpStatusCode: urlEvent.getResponseCode(),
       failureReason: urlEvent.getFailureReason(),
       id: request.getId(),
       headers: urlEvent.getResponseHeaders(),
+      rawData: m._parseUrlEventContent(urlEvent),
       requestOptions: request.getOptions(),
     })
   end function
 
-  prototype.fromCache = function (cachedResponse as Object) as Object
-    ' @todo
-    return HttpResponse()
-  end function
-
+  ' @private
   prototype._parseUrlEventContent = function (urlEvent as Object) as Object
     content = urlEvent.getString()
     isJsonResponse = m._isJsonResponse(urlEvent)
@@ -37,6 +36,7 @@ function HttpResponseCreator() as Object
     return data
   end function
 
+  ' @private
   prototype._isJsonResponse = function (urlEvent as Object) as Boolean
     return getProperty(urlEvent.getResponseHeaders(), [m._CONTENT_TYPE_HEADER], "").instr(m._JSON_CONTENT_TYPE) > -1
   end function

@@ -2,7 +2,7 @@
 
 <component name="HttpResponseModel" extends="Node">
   <interface>
-    <field id="data" type="node" />
+    <field id="data" type="node" /> <!-- @deprecated -->
     <field id="failureReason" type="string" />
     <field id="headers" type="assocarray" />
     <field id="httpStatusCode" type="integer" />

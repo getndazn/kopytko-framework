@@ -22,23 +22,35 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   prototype._cache = HttpCache()
   prototype._responseCreator = HttpResponseCreator()
 
-  ' Performs HTTP request or returns a stored response omitting HttpInterceptors
+  ' Performs HTTP request or returns a stored response
+  ' Warning: if a stored response is returned, HttpInterceptors are omitted
   ' @param {HttpRequest~Options} options
-  ' @returns {HttpResponse|Invalid}
+  ' @returns {HttpResponseModel|Invalid}
   prototype.fetch = function (options as Object) as Object
     request = HttpRequest(options, m._httpInterceptors).setMessagePort(m._port)
 
-    if (request.isCachingEnabled())
-      ' Warning: Cached requests omit HttpInterceptors
-      cachedResponse = m._cache.read(request.getEscapedUrl())
-      if (cachedResponse <> Invalid)
-        return cachedResponse
+    cachedResponse = m._getCachedResponse(request)
+    if (cachedResponse <> Invalid)
+      if (NOT m._cache.hasResponseExpired(cachedResponse))
+        return cachedResponse.toNode()
+      end if
+
+      etag = cachedResponse.getHeaders().etag
+      if (etag <> Invalid AND etag <> "")
+        request.setHeader("If-None-Match", etag)
       end if
     end if
 
     request.send()
 
     return m._waitForResponse(request)
+  end function
+
+  ' @private
+  prototype._getCachedResponse = function (request as Object) as Object
+    if (NOT request.isCachingEnabled()) then return Invalid
+
+    return m._cache.read(request.getEscapedUrl())
   end function
 
   ' @private
@@ -55,7 +67,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
 
         return Invalid
       else if (message = Invalid AND request.isTimedOut())
-        return m._getTimeoutResponse(request)
+        return HttpResponse({ httpStatusCode: m._TIMEOUT_ERROR_CODE, id: request.getId() }).toNode()
       end if
     end while
   end function
@@ -71,27 +83,18 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
       interceptor.interceptResponse(request, urlEvent)
     end for
 
-    response = m._responseCreator.fromUrlEvent(urlEvent, request)
+    response = m._responseCreator.create(urlEvent, request)
 
     responseCode = response.getStatusCode()
-    if (responseCode > response.STATUS_SUCCESS AND responseCode < response.STATUS_REDIRECTION)
+    if (responseCode >= response.STATUS_SUCCESS AND responseCode < response.STATUS_REDIRECTION)
       if (request.getMethod() = "GET" AND response.isReusable())
-        m._cache.store(request, response, response.getMaxAge())
+        m._cache.store(request, response)
       end if
     else if (responseCode = response.STATUS_NOT_MODIFIED)
-      return m._cache.prolong(request, response, response.getMaxAge())
+      return m._cache.prolong(request, response).toNode()
     end if
-    ' @todo consider returning cached data in case on internal server error
 
     return response.toNode()
-  end function
-
-  ' @private
-  prototype._getTimeoutResponse = function (request as Object) as Object
-    return HttpResponse({
-      httpStatusCode: m._TIMEOUT_ERROR_CODE,
-      id: request.getId(),
-    }).toNode()
   end function
 
   return prototype

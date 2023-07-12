@@ -1,6 +1,6 @@
-function TestSuite__HttpResponse_setMaxAge() as Object
+function TestSuite__HttpResponse_setRevalidatedCache() as Object
   ts = HttpResponseTestSuite()
-  ts.name = "HttpResponse - setMaxAge"
+  ts.name = "HttpResponse - setRevalidatedCache"
 
   itEach([
     "",
@@ -20,7 +20,7 @@ function TestSuite__HttpResponse_setMaxAge() as Object
     response = HttpResponse(props)
 
     ' When
-    response.setMaxAge(newMaxAge)
+    response.setRevalidatedCache(newMaxAge)
 
     ' Then
     return expect(response.getMaxAge()).toBe(newMaxAge)
@@ -37,7 +37,7 @@ function TestSuite__HttpResponse_setMaxAge() as Object
     response = HttpResponse(props)
 
     ' When
-    response.setMaxAge(newMaxAge)
+    response.setRevalidatedCache(newMaxAge)
     headers = response.getHeaders()
 
     ' Then

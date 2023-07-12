@@ -9,6 +9,7 @@
 ' @param {Object} responseData.headers
 ' @param {Integer} responseData.httpStatusCode
 ' @param {Object} responseData.requestOptions
+' @param {Integer} [responseData.time]
 function HttpResponse(responseData as Object) as Object
   prototype = {}
 
@@ -22,13 +23,26 @@ function HttpResponse(responseData as Object) as Object
   prototype._HEADER_CACHE_CONTROL = "Cache-Control"
   prototype._HEADER_EXPIRES = "Expires"
 
-  prototype._data = getProperty(responseData, "content", {})
   prototype._id = responseData.id
   prototype._failureReason = getProperty(responseData, "failureReason", "OK")
   prototype._headers = getProperty(responseData, "headers", {})
   prototype._httpStatusCode = getProperty(responseData, "httpStatusCode", -1)
+  prototype._rawData = getProperty(responseData, "rawData", {})
   prototype._requestOptions = responseData.requestOptions
-  prototype._time = DateTime().asSeconds()
+  prototype._time = 0
+
+  ' @constructor
+  ' @param {Object} m - instance reference
+  ' @param {Object} responseData
+  _constructor = function (m as Object, responseData as Object) as Object
+    if (responseData.time <> Invalid)
+      m._time = responseData.time
+    else
+      m._time = DateTime().asSeconds()
+    end if
+
+    return m
+  end function
 
   ' Casts response object to node.
   ' @returns {HttpResponseModel}
@@ -42,11 +56,24 @@ function HttpResponse(responseData as Object) as Object
       isReusable: m.isReusable()
       isSuccess: m._isSuccess(),
       maxAge: m.getMaxAge(),
-      rawData: m._data,
+      rawData: m._rawData,
       requestOptions: m._requestOptions,
     })
 
     return responseNode
+  end function
+
+  ' @returns {Object}
+  prototype.serialise = function () as Object
+    return {
+      id: m._id,
+      failureReason: m._failureReason,
+      headers: m._headers,
+      httpStatusCode: m._httpStatusCode,
+      rawData: m._rawData,
+      requestOptions: m._requestOptions,
+      time: m._time,
+    }
   end function
 
   ' @returns {Object}
@@ -82,7 +109,7 @@ function HttpResponse(responseData as Object) as Object
       expiresInSeconds = imfFixdateToSeconds(expires)
       if expiresInSeconds > 0
         maxAge = expiresInSeconds - DateTime().asSeconds()
-        if maxAge <= 0 then return m.MAX_AGE_NOT_ALLOWED
+        if maxAge < 0 then return m.MAX_AGE_NOT_ALLOWED
 
         return maxAge
       end if
@@ -102,8 +129,16 @@ function HttpResponse(responseData as Object) as Object
     return cacheControl.inStr(m._CACHE_CONTROL_NO_STORE) = -1
   end function
 
+  ' @returns {Integer}
+  prototype.getTime = function () as Integer
+    return m._time
+  end function
+
+  ' Updates cache max-age value
   ' @param {Integer} maxAge
-  prototype.setMaxAge = sub (maxAge as Integer)
+  prototype.setRevalidatedCache = sub (maxAge as Integer)
+    m._time = DateTime().asSeconds()
+
     cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
     if (cacheControl <> invalid)
       maxAgeRegex = CreateObject("roRegex", "max-age=(\d+)", "i")
@@ -115,7 +150,7 @@ function HttpResponse(responseData as Object) as Object
       newCacheControl = "max-age=" + maxAge.toStr()
     end if
 
-    ' Cache-Control max-age is more handy to use, so let's switch to it
+    ' Cache-Control max-age is handier to use, so let's switch to it
     m._headers[m._HEADER_CACHE_CONTROL] = newCacheControl
     m._headers.delete(m._HEADER_EXPIRES)
   end sub
@@ -125,5 +160,5 @@ function HttpResponse(responseData as Object) as Object
     return (m._httpStatusCode >= m.STATUS_SUCCESS AND m._httpStatusCode < m.STATUS_FAILURE)
   end function
 
-  return prototype
+  return _constructor(prototype, responseData)
 end function

@@ -4,8 +4,8 @@
   <interface>
     <field id="abort" type="boolean" />
     <field id="data" type="assocarray" />
-    <field id="enableCaching" type="boolean" />
-    <field id="response" type="node" />
+    <field id="options" type="assocarray" />
+    <field id="result" type="node" />
   </interface>
 
   <script type="text/brightscript" uri="Request.mock.brs" />
