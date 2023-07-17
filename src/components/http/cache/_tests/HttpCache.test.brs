@@ -1,8 +1,8 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/CacheFS.brs from @dazn/kopytko-utils
+' @mock /components/http/cache/CachedHttpResponse.brs
 ' @mock /components/http/HttpRequest.brs
 ' @mock /components/http/HttpResponse.brs
-' @mock /components/http/cache/CachedHttpResponse.brs
 function TestSuite__HttpCache() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "HttpCache"

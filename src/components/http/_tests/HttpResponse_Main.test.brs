@@ -13,7 +13,7 @@ function TestSuite__HttpResponse_Main() as Object
     }
     expectedResult = CreateObject("roSGNode", "HttpResponseModel")
     expectedResult.setFields({
-      failureReason: "OK"
+      failureReason: "OK",
       httpStatusCode: props.httpStatusCode,
       headers: props.headers,
       id: props.id,

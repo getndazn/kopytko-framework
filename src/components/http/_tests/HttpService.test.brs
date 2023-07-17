@@ -44,7 +44,7 @@ function HttpServiceTestSuite() as Object
           return m.__params
         end function,
       },
-      isCachingEnabled: { returnValue: false }
+      isCachingEnabled: { returnValue: false },
       send: { returnValue: Invalid },
       setMessagePort: { returnValue: Invalid },
     }

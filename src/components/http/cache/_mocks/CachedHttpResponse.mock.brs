@@ -4,7 +4,7 @@ function CachedHttpResponse(responseData as Object) as Object
   return Mock({
     testComponent: m,
     name: "CachedHttpResponse",
-    constructorParams: { responseData: responseData }
+    constructorParams: { responseData: responseData },
     methods: {
       hasExpired: function () as Boolean
         return m.hasExpiredMock("hasExpired", {}, "Boolean")

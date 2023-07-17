@@ -1,5 +1,5 @@
-' @import /components/http/HttpService.brs
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
+' @import /components/http/HttpService.brs
 
 ' Accessing data owned by different threads (render or other tasks) cause a Rendezvous, except accessing render thread-owned data in the `init` function
 ' because it's called on the render thread. That's why:

@@ -40,7 +40,7 @@ function HttpResponse(responseData as Object) as Object
       id: m._id,
       headers: m._headers,
       httpStatusCode: m._httpStatusCode,
-      isReusable: m.isReusable()
+      isReusable: m.isReusable(),
       isSuccess: m._isSuccess(),
       maxAge: m.getMaxAge(),
       rawData: m._rawData,
