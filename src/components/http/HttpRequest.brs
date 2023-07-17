@@ -9,6 +9,7 @@
 ' @property {String} url
 ' @property {Object} queryParams
 ' @property {String} method
+' @property {Boolean} compression
 ' @property {Object} headers
 ' @property {Integer} timeout
 ' @property {Object} body

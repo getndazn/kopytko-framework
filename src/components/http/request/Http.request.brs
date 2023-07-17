@@ -41,7 +41,7 @@ sub handleResponse(response as Object)
   m.top.result = result
 end sub
 
-' Returns a list of objects implementing HttpInterceptor interface which will be passed to HttpService
+' Overwrite by child to return a list of objects implementing HttpInterceptor interface which will be passed to HttpService
 ' @protected
 ' @returns {HttpInterceptor[]}
 function getHttpInterceptors() as Object

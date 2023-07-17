@@ -24,7 +24,7 @@ end sub
 sub initRequest()
 end sub
 
-' Eventually implement by child
+' Overwrite by child to setup request options
 function getRequestOptions(data as Object) as Object
   return {}
 end function
