@@ -2,7 +2,7 @@ function TestSuite__StoreFacade_subscribe() as Object
   ts = StoreFacadeTestSuite()
   ts.name = "StoreFacade_subscribe"
 
-  ts.addTest("should add 1 subscriber", function (ts as Object) as String
+  it("should add 1 subscriber", function (_ts as Object) as String
     ' Given
     expectedResult = 1
     store = StoreFacade()
@@ -11,12 +11,11 @@ function TestSuite__StoreFacade_subscribe() as Object
     store.subscribe("title", subscriber)
 
     ' Then
-    return ts.assertEqual(store._subscriptions.count(), expectedResult)
+    return expect(store._subscriptions.count()).toBe(1)
   end function)
 
-  ts.addTest("should add 2 subscribers", function (ts as Object) as String
+  it("should add 2 subscribers", function (_ts as Object) as String
     ' Given
-    expectedResult = 2
     store = StoreFacade()
 
     ' When
@@ -24,23 +23,35 @@ function TestSuite__StoreFacade_subscribe() as Object
     store.subscribe("test", otherSubscriber)
 
     ' Then
-    return ts.assertEqual(store._subscriptions.count(), expectedResult)
+    return expect(store._subscriptions.count()).toBe(2)
   end function)
 
-  ts.addTest("should call callback in sequence", function (ts as Object) as String
+  it("should call callback in sequence", function (_ts as Object) as String
     ' Given
-    expectedResult = 4
     store = StoreFacade()
 
     ' When
     store.subscribe("title", subscriber)
-    store.set("title", { data: "2" })
+    store.set("title", "someTitle")
     store.set("title", Invalid)
-    store.set("title", { data: "3" })
-    store.set("title", { otherData: 1 })
+    store.set("title", "someOtherTitle")
 
     ' Then
-    return ts.assertEqual(m.__spy.subscriber.calledTimes, expectedResult)
+    return expect(m.__spy.subscriber.calledTimes).toBe(3)
+  end function)
+
+  it("should call callback with the given context when it is provided", function (_ts as Object) as String
+    ' Given
+    context = { __spy: { contextSubscriber: { calledTimes: 0 } } }
+    store = StoreFacade()
+
+    ' When
+    store.subscribe("title", contextSubscriber, context)
+    store.set("title", "someTitle")
+    store.set("title", Invalid)
+
+    ' Then
+    return expect(context.__spy.contextSubscriber.calledTimes).toBe(2)
   end function)
 
   return ts

@@ -5,9 +5,12 @@
 
 ' @returns {Mock}
 function KopytkoGlobalNode() as Object
+  eventBusNode = createNode()
+  eventBusNode.addField("$$payload", "assocarray", false)
+
   fields = {
     cache: createNode(),
-    eventBus: createNode(),
+    eventBus: eventBusNode,
     router: createNode(),
     store: createNode(),
     theme: createNode(),

@@ -1,25 +1,25 @@
 ' @import /components/ArrayUtils.brs from @dazn/kopytko-utils
+' @import /components/functionCall.brs from @dazn/kopytko-utils
 ' @import /components/utils/KopytkoGlobalNode.brs
 
 ' Pub/Sub implementation
-' WARNING: it pollutes scope (m._eventBus)
+' WARNING: it pollutes scope (m["$$eventBus"])
 ' @class
 function EventBusFacade() as Object
   _global = KopytkoGlobalNode()
   if (NOT _global.hasField("eventBus"))
     _global.addFields({
-      eventBus: CreateObject("roSGNode", "Node"),
+      eventBus: CreateObject("roSGNode", "EventBus"),
     })
   end if
 
-  if (m._eventBus <> Invalid)
-    return m._eventBus
+  if (m["$$eventBus"] <> Invalid)
+    return m["$$eventBus"]
   end if
 
   prototype = {}
-  prototype.global = _global
   prototype._arrayUtils = ArrayUtils()
-  prototype._eventBus = m.global.eventBus
+  prototype._eventBus = _global.eventBus
   prototype._eventsMap = {}
 
   ' Attach subscriber for an event
@@ -35,8 +35,8 @@ function EventBusFacade() as Object
 
     m._eventsMap[eventName].push({ handler: handler, context: context })
 
-    m.global.eventBus.unobserveFieldScoped(eventName)
-    m.global.eventBus.observeFieldScoped(eventName, "EventBus_onEventFired")
+    m._eventBus.unobserveFieldScoped(eventName)
+    m._eventBus.observeFieldScoped(eventName, "EventBus_onEventFired", ["$$payload"])
   end sub
 
   ' Detach subscriber for an event
@@ -47,7 +47,7 @@ function EventBusFacade() as Object
 
     if (callbacks = Invalid OR callbacks.count() <= 1)
       m._eventsMap.delete(eventName)
-      m.global.eventBus.unobserveFieldScoped(eventName)
+      m._eventBus.unobserveFieldScoped(eventName)
 
       return
     end if
@@ -57,24 +57,36 @@ function EventBusFacade() as Object
     end function, handlerToRemove)
   end sub
 
+  prototype.clear = sub()
+    for each eventName in m._eventsMap
+      m._eventsMap.delete(eventName)
+      m._eventBus.unobserveFieldScoped(eventName)
+    end for
+  end sub
+
   ' Trigger given event with given payload
   ' @param {String} eventName
   ' @param {Object} [payload={}]
   prototype.trigger = sub (eventName as String, payload = {} as Object)
     m._ensureEventExistence(eventName)
-    m.global.eventBus[eventName] = payload
+
+    ' The event payload is stored in a separate field to avoid memory leaks.
+    ' Payload needs to be removed from the EventBus node, and if that would
+    ' be stored in the AA field of a specific event, then callbacks would be
+    ' triggered for another time after changing the value to invalid.
+    m._eventBus["$$payload"] = payload
+    m._eventBus[eventName] = true
+    m._eventBus["$$payload"] = Invalid
   end sub
 
   ' @private
   prototype._ensureEventExistence = sub (eventName as String)
-    if (NOT m.global.eventBus.hasField(eventName))
-      fields = {}
-      fields[eventName] = {}
-      m.global.eventBus.addFields(fields)
+    if (NOT m._eventBus.hasField(eventName))
+      m._eventBus.addField(eventName, "boolean", true)
     end if
   end sub
 
-  m._eventBus = prototype
+  m["$$eventBus"] = prototype
 
   return prototype
 end function
@@ -82,22 +94,19 @@ end function
 ' @private
 sub EventBus_onEventFired(event as Object)
   eventName = event.getField()
-  callbacks = m._eventBus._eventsMap[eventName]
+  callbacks = m["$$eventBus"]._eventsMap[eventName]
 
   if (callbacks = Invalid)
     return
   end if
 
-  payload = event.getData()
+  payload = Invalid
+  context = event.getInfo()
+  if (context <> Invalid)
+    payload = context["$$payload"]
+  end if
 
   for each callback in callbacks
-    if (callback.context = Invalid)
-      handler = callback.handler
-      handler(payload)
-    else
-      callback.context["_eventBus_callback_handler"] = callback.handler
-      callback.context._eventBus_callback_handler(payload)
-      callback.context.delete("_eventBus_callback_handler")
-    end if
+    functionCall(callback.handler, [payload], callback.context)
   end for
 end sub

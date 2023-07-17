@@ -1,3 +1,33 @@
+## [1.4.2](https://github.com/getndazn/kopytko-framework/compare/v1.4.1...v1.4.2) (2023-04-28)
+
+
+### Bug Fixes
+
+* event bus storing last payload of each event ([#47](https://github.com/getndazn/kopytko-framework/issues/47)) ([445c7e8](https://github.com/getndazn/kopytko-framework/commit/445c7e88238c1102d23cc3d116f394ed5ed4ccae))
+
+## [1.4.1](https://github.com/getndazn/kopytko-framework/compare/v1.4.0...v1.4.1) (2023-04-28)
+
+
+### Bug Fixes
+
+* clearing EventBus registered events on component destroy ([#43](https://github.com/getndazn/kopytko-framework/issues/43)) ([38b506f](https://github.com/getndazn/kopytko-framework/commit/38b506fd79207e57d73b4572d5074a847136159f))
+
+# [1.4.0](https://github.com/getndazn/kopytko-framework/compare/v1.3.4...v1.4.0) (2023-03-23)
+
+
+### Features
+
+* store's subscribe callback accepts a context ([#40](https://github.com/getndazn/kopytko-framework/issues/40)) ([3b9afb2](https://github.com/getndazn/kopytko-framework/commit/3b9afb2777ee3dd896147aa7043ea8a511e0845f))
+
+## [1.3.4](https://github.com/getndazn/kopytko-framework/compare/v1.3.3...v1.3.4) (2023-01-30)
+
+
+### Bug Fixes
+
+* not using findNode when removing component's children ([#37](https://github.com/getndazn/kopytko-framework/issues/37)) ([d82d2b2](https://github.com/getndazn/kopytko-framework/commit/d82d2b2ef4fa4b99dcbcb475feaf0ed6a4c3f4d3))
+* update workflow files ([#38](https://github.com/getndazn/kopytko-framework/issues/38)) ([1e56ba8](https://github.com/getndazn/kopytko-framework/commit/1e56ba8a90942890b3c46f1e5f5264016940aed5))
+* workflow ms-teams-deploy-card action version ([#39](https://github.com/getndazn/kopytko-framework/issues/39)) ([d60abe6](https://github.com/getndazn/kopytko-framework/commit/d60abe6e82942fa1373d0be3399c605a5ebcacad))
+
 ## [1.3.3](https://github.com/getndazn/kopytko-framework/compare/v1.3.2...v1.3.3) (2022-12-09)
 
 

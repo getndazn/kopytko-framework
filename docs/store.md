@@ -8,8 +8,8 @@ Its public methods:
 - `consume(key as String)` - return a stored value from given key and removes it from the store
 - `remove(key as String)` - removes value and key from the store
 - `setFields(newSet as Object)` - similar to `set()`, but allows setting multiple values at once
-- `subscribe(key as String, callback as Function)` - subscribes to value changes from given key and calls callback function on every change
+- `subscribe(key as String, callback as Function, context = Invalid as Object)` - subscribes to value changes from a given key and calls the callback function on every change, optionally the context could be provided
 - `unsubscribe(key as String, callback as Function)` - unsubscribes specific callback of the key
-- `subscribeOnce(key as String, callback as Function)` - similar to `subscribe` but it automatically unsubscribes after the first callback run
+- `subscribeOnce(key as String, callback as Function, context = Invalid as Object)` - similar to `subscribe` but it automatically unsubscribes after the first callback run
 - `updateNode(key as String, value as Dynamic)` - updates fields (passed as `value` object) of the stored node from given key
 - `updateAA(key as String, updatedData as Object)` - updates fields of the stored AA from given key

@@ -93,14 +93,14 @@ function StoreFacade() as Object
     end for
   end sub
 
-  prototype.subscribeOnce = sub (key as String, callback as Function)
+  prototype.subscribeOnce = sub (key as String, callback as Function, context = Invalid as Object)
     m._handleSubscriber(key)
-    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], once: true }
+    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], context: context, once: true }
   end sub
 
-  prototype.subscribe = sub (key as String, callback as Function)
+  prototype.subscribe = sub (key as String, callback as Function, context = Invalid as Object)
     m._handleSubscriber(key)
-    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], once: false }
+    m._subscriptions[m._getRandomizedKey(key)] = { key: key, callback: [callback], context: context, once: false }
   end sub
 
   prototype.unsubscribe = sub (key as String, callback as Function)
@@ -144,7 +144,11 @@ function StoreFacade() as Object
       listener = m._subscriptions[subscriptionKey]
 
       if (listener <> Invalid AND listener.key = key)
-        listener.callback[0](value)
+        if (listener.context = Invalid)
+          listener.callback[0](value)
+        else
+          listener.callback[0](value, listener.context)
+        end if
 
         if (listener.once)
           m._subscriptions.delete(subscriptionKey)
