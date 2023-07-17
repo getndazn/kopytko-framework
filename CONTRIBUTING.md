@@ -80,6 +80,18 @@ build: some description.
 chore: some description.
 ```
 
+# Unit tests
+Please cover any changes in unit tests.
+They are running via Kopytko Packager, so to be able to run them, create .env file in the root directory (it's git-ignored) with following fields:
+```
+ROKU_IP=<Roku device IP>
+ROKU_DEV_PASSWORD=<Roku device dev mode password>
+ROKU_USER=<Roku device dev mode user>
+```
+More info: https://github.com/getndazn/kopytko-packager#env-file
+
+Run unit tests using `npm test` command.
+
 # Our Code of Conduct
 
 Finally, to make sure you have a pleasant experience while being in our welcoming community, please read our [code of conduct](CODE_OF_CONDUCT.md). It outlines our core values and believes and will make working together a happier experience.
