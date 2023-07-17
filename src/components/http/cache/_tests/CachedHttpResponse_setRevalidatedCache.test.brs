@@ -1,6 +1,6 @@
 function TestSuite__HttpResponse_setRevalidatedCache() as Object
-  ts = HttpResponseTestSuite()
-  ts.name = "HttpResponse - setRevalidatedCache"
+  ts = CachedHttpResponseTestSuite()
+  ts.name = "CachedHttpResponse - setRevalidatedCache"
 
   itEach([
     "",
@@ -17,7 +17,7 @@ function TestSuite__HttpResponse_setRevalidatedCache() as Object
       headers: { "Cache-Control": cacheControl },
     }
     newMaxAge = 777
-    response = HttpResponse(props)
+    response = CachedHttpResponse(props)
 
     ' When
     response.setRevalidatedCache(newMaxAge)
@@ -34,7 +34,7 @@ function TestSuite__HttpResponse_setRevalidatedCache() as Object
       headers: { "Expires": "Tue, 20 Apr 2022 04:20:00 GMT" },
     }
     newMaxAge = 777
-    response = HttpResponse(props)
+    response = CachedHttpResponse(props)
 
     ' When
     response.setRevalidatedCache(newMaxAge)

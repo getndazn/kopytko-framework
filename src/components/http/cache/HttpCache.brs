@@ -1,24 +1,20 @@
 ' @import /components/CacheFS.brs from @dazn/kopytko-utils
 ' @import /components/ternary.brs from @dazn/kopytko-utils
-' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @import /components/http/HttpResponse.brs
 ' @import /components/http/HttpResponseCreator.brs
+' @import /components/http/cache/CachedHttpResponse.brs
 function HttpCache() as Object
   prototype = {}
-
-  prototype._WRITE_ERROR_CODE = -23
-  prototype._WRITE_ERROR_MESSAGE = "Could not overwrite existing cached response"
-  prototype._READ_ERROR_CODE = -26
-  prototype._READ_ERROR_MESSAGE = "Trying to prolong no longer existing cached response"
 
   prototype._cacheFS = CacheFS()
 
   ' @param {String} escapedUrl
+  ' @returns {CachedHttpResponse|Invalid}
   prototype.read = function (escapedUrl as String) as Object
     serialisedResponse = m._cacheFS.read(escapedUrl)
     if (serialisedResponse = Invalid) then return Invalid
 
-    return HttpResponse(serialisedResponse)
+    return CachedHttpResponse(serialisedResponse)
   end function
 
   ' @param {HttpRequest} request
@@ -32,38 +28,16 @@ function HttpCache() as Object
   end function
 
   ' @param {HttpRequest} request
-  ' @param {HttpResponse} response
-  ' @returns {HttpResponse}
-  prototype.prolong = function (request as Object, response as Object) as Object
-    maxAge = response.getMaxAge()
-    if (maxAge = response.MAX_AGE_NOT_ALLOWED) then return Invalid
-
+  ' @param {CachedHttpResponse} response
+  ' @param {Integer} newMaxAge
+  ' @returns {CachedHttpResponse}
+  prototype.prolong = function (request as Object, response as Object, newMaxAge as Integer) as Object
     escapedUrl = request.getEscapedUrl()
-    cachedResponse = m.read(escapedUrl)
-    if (cachedResponse = Invalid)
-      return HttpResponse({
-        failureReason: m._READ_ERROR_MESSAGE,
-        httpStatusCode: m._READ_ERROR_CODE,
-        id: request.getId(),
-      })
-    end if
 
-    cachedResponse.setRevalidatedCache(maxAge)
-    if (NOT m._cacheFS.write(escapedUrl, cachedResponse.serialise()))
-      return HttpResponse({
-        failureReason: m._WRITE_ERROR_MESSAGE,
-        httpStatusCode: m._WRITE_ERROR_CODE,
-        id: request.getId(),
-      })
-    end if
+    response.setRevalidatedCache(newMaxAge)
+    m._cacheFS.write(escapedUrl, response.serialise())
 
-    return cachedResponse
-  end function
-
-  ' @param {HttpResponse} response
-  ' @returns {Boolean} - true if response is expired based on its maxAge and time values
-  prototype.hasResponseExpired = function (response as Object) as Boolean
-    return DateTime().asSeconds() > response.getTime() + response.getMaxAge()
+    return response
   end function
 
   return prototype

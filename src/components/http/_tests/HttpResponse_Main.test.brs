@@ -11,27 +11,21 @@ function TestSuite__HttpResponse_Main() as Object
       rawData: { id: "1" },
       headers: { "Content-Type": "application/json" },
     }
-    expectedResult = {
-      headers: { "Content-Type": "application/json" },
-      id: props.id,
+    expectedResult = CreateObject("roSGNode", "HttpResponseModel")
+    expectedResult.setFields({
+      failureReason: "OK"
       httpStatusCode: props.httpStatusCode,
-      rawData: props.rawData,
+      headers: props.headers,
+      id: props.id,
       isSuccess: true,
-    }
+      rawData: props.rawData,
+    })
 
     ' When
     response = HttpResponse(props)
-    result = response.toNode().getFields()
-    result = {
-      headers: result.headers,
-      httpStatusCode: result.httpStatusCode,
-      id: result.id,
-      rawData: result.rawData,
-      isSuccess: result.isSuccess,
-    }
 
     ' Then
-    return expect(result).toEqual(expectedResult)
+    return expect(response.toNode()).toEqual(expectedResult)
   end function)
 
   it("should create error response", function (_ts as Object) as String

@@ -5,7 +5,7 @@ function TestSuite__HttpService_timeout() as Object
   ts.addTest("should return timeout error code when request is timed out", function (ts as Object) as String
     ' Given
     m.__mocks.httpRequest.isTimedOut.returnValue = true
-    m.__httpService.__portMessage = Invalid
+    m.__portMessage = Invalid
 
     ' When
     response = m.__httpService.fetch(m.__params)

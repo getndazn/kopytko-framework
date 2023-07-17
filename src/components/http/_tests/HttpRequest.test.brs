@@ -253,7 +253,8 @@ function TestSuite__HttpRequest() as Object
 
     ' When
     request = HttpRequest(options)
-    request.send().isTimedOut()
+    request.send()
+    request.isTimedOut()
 
     ' Then
     return ts.assertMethodWasCalled("UrlTransfer.asyncCancel")

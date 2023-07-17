@@ -3,6 +3,7 @@
 ' @import /components/http/HttpRequest.brs
 ' @import /components/http/HttpResponse.brs
 ' @import /components/http/HttpResponseCreator.brs
+' @import /components/utils/kopytkoWait.brs
 
 ' WARNING: the service must be used on the Task threads.
 ' @class
@@ -27,11 +28,12 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   ' @param {HttpRequest~Options} options
   ' @returns {HttpResponseModel|Invalid}
   prototype.fetch = function (options as Object) as Object
-    request = HttpRequest(options, m._httpInterceptors).setMessagePort(m._port)
+    request = HttpRequest(options, m._httpInterceptors)
+    request.setMessagePort(m._port)
 
     cachedResponse = m._getCachedResponse(request)
     if (cachedResponse <> Invalid)
-      if (NOT m._cache.hasResponseExpired(cachedResponse))
+      if (NOT cachedResponse.hasExpired())
         return cachedResponse.toNode()
       end if
 
@@ -43,7 +45,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
 
     request.send()
 
-    return m._waitForResponse(request)
+    return m._waitForResponse(request, cachedResponse)
   end function
 
   ' @private
@@ -54,13 +56,13 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   end function
 
   ' @private
-  prototype._waitForResponse = function (request as Object) as Object
+  prototype._waitForResponse = function (request as Object, cachedResponse as Object) as Object
     while (true)
       message = m._waitForMessage()
 
       if (getType(message) = "roUrlEvent")
         if (message.getInt() = m._HTTP_REQUEST_COMPLETED)
-          return m._handleResponse(request, message)
+          return m._handleResponse(request, message, cachedResponse)
         end if
       else if (getType(message) = "roSGNodeEvent" AND message.getField() = "abort")
         request.abort()
@@ -74,11 +76,11 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
 
   ' @private
   prototype._waitForMessage = function () as Object
-    return Wait(m._TIMEOUT_INTERVAL_CHECK, m._port)
+    return kopytkoWait(m._TIMEOUT_INTERVAL_CHECK, m._port)
   end function
 
   ' @private
-  prototype._handleResponse = function (request as Object, urlEvent as Object) as Object
+  prototype._handleResponse = function (request as Object, urlEvent as Object, cachedResponse as Object) as Object
     for each interceptor in m._httpInterceptors
       interceptor.interceptResponse(request, urlEvent)
     end for
@@ -91,7 +93,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
         m._cache.store(request, response)
       end if
     else if (responseCode = response.STATUS_NOT_MODIFIED)
-      return m._cache.prolong(request, response).toNode()
+      return m._cache.prolong(request, cachedResponse, response.getMaxAge()).toNode()
     end if
 
     return response.toNode()

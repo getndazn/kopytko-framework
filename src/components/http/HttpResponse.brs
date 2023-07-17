@@ -29,20 +29,7 @@ function HttpResponse(responseData as Object) as Object
   prototype._httpStatusCode = getProperty(responseData, "httpStatusCode", -1)
   prototype._rawData = getProperty(responseData, "rawData", {})
   prototype._requestOptions = responseData.requestOptions
-  prototype._time = 0
-
-  ' @constructor
-  ' @param {Object} m - instance reference
-  ' @param {Object} responseData
-  _constructor = function (m as Object, responseData as Object) as Object
-    if (responseData.time <> Invalid)
-      m._time = responseData.time
-    else
-      m._time = DateTime().asSeconds()
-    end if
-
-    return m
-  end function
+  prototype._time = DateTime().asSeconds()
 
   ' Casts response object to node.
   ' @returns {HttpResponseModel}
@@ -129,36 +116,10 @@ function HttpResponse(responseData as Object) as Object
     return cacheControl.inStr(m._CACHE_CONTROL_NO_STORE) = -1
   end function
 
-  ' @returns {Integer}
-  prototype.getTime = function () as Integer
-    return m._time
-  end function
-
-  ' Updates cache max-age value
-  ' @param {Integer} maxAge
-  prototype.setRevalidatedCache = sub (maxAge as Integer)
-    m._time = DateTime().asSeconds()
-
-    cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
-    if (cacheControl <> invalid)
-      maxAgeRegex = CreateObject("roRegex", "max-age=(\d+)", "i")
-      newCacheControl = maxAgeRegex.replace(cacheControl, "max-age=" + maxAge.toStr())
-      if (newCacheControl = cacheControl)
-        newCacheControl += ", max-age=" + maxAge.toStr()
-      end if
-    else
-      newCacheControl = "max-age=" + maxAge.toStr()
-    end if
-
-    ' Cache-Control max-age is handier to use, so let's switch to it
-    m._headers[m._HEADER_CACHE_CONTROL] = newCacheControl
-    m._headers.delete(m._HEADER_EXPIRES)
-  end sub
-
   ' @private
   prototype._isSuccess = function () as Boolean
     return (m._httpStatusCode >= m.STATUS_SUCCESS AND m._httpStatusCode < m.STATUS_FAILURE)
   end function
 
-  return _constructor(prototype, responseData)
+  return prototype
 end function
