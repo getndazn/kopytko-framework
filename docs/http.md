@@ -19,9 +19,15 @@ It's a Kopytko convention to use `.request` as a suffix e.g. `Search.request.xml
 If you need to aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
 
 `HttpRequest` has the following interface that should be extended in your `Request` derived component:
+<<<<<<< Updated upstream
 - `getRequestOptions(data)` - returns an object implementing the [`HttpRequest~Options`](#Request Options)
 - `parseResponse(response)` - returns a data object (e.g. node) based on HttpResponse object (`/component/http/HttpResponse.brs`) fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread,
 - `generateErrorData(response)` - returns custom error data object thrown on request failure; the promise returned from `createRequest()` function will be rejected with this object. The method is executed on a task thread,
+=======
+- `getRequestOptions(data)` - returns an object implementing the `HttpRequest~Options` interface with options like URL, headers, method, body, timeout
+- `parseResponse(response)` - returns a data object (e.g. node) based on HttpResponse object (`/component/http/HttpResponse.brs`) fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread
+- `generateErrorData(response)` - returns custom error data object thrown on request failure; the promise returned from `createRequest()` function will be rejected with this object. The method is executed on a task thread
+>>>>>>> Stashed changes
 - `getHttpInterceptors()` - returns the list of HTTP request and response interceptors implementing the `HttpInterceptor` interface
 
 ### Example request
@@ -80,9 +86,9 @@ Request options structure allowed to be returned by `getRequestOptions` function
 To send a request, use the `createRequest` function. It will create a task instance, run it and return a `Promise` that is fulfilled or rejected with the result of the `parseResponse` or `generateErrorData` function.
 
 `createRequest` has 3 arguments:
-- `task` - the name of a component extending the `HttpRequest` to be created or an instance of such component to be reused,
-- `data` - data necessary to send a request, passed to `getRequestOptions` function,
-- `options` - an AA object with additional options; currently supports `taskOptions` field to pass options to the task component and `signal` for aborting request (described in the next section).
+- `task` - the name of a component extending the `HttpRequest` to be created or an instance of such component to be reused
+- `data` - data necessary to send a request, passed to `getRequestOptions` function
+- `options` - an AA object with additional options; currently supports `taskOptions` field to pass options to the task component and `signal` for [aborting request](#abort-request)
 
 Let's use an example from previous section:
 ```brightscript

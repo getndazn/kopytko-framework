@@ -81,7 +81,7 @@ chore: some description.
 ```
 
 # Unit tests
-Please cover any changes in unit tests.
+Please note that all contributions should be accompanied by unit tests.
 They are running via Kopytko Packager, so to be able to run them, create .env file in the root directory (it's git-ignored) with following fields:
 ```
 ROKU_IP=<Roku device IP>
