@@ -1,6 +1,6 @@
 ' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
-' @import /components/utils/imfFixdateToSeconds.brs
 ' @import /components/http/HttpStatusCodes.const.brs
+' @import /components/utils/imfFixdateToSeconds.brs
 
 ' @class
 ' @param {Object} responseData
