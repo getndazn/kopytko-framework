@@ -16,7 +16,7 @@ The logic for handling HTTP requests.
 To create your own HTTP request, create a new component extending `HttpRequest` (`/component/http/request/Http.request.xml`).
 It's recommended to use `.request` postfix in its file names, e.g. `Search.request.xml`.
 
-If you need aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
+If you need to aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
 
 `HttpRequest` has the following interface that should be extended in your `Request` derived component:
 - `getRequestOptions(data)` - returns an object implementing the `HttpRequest~Options` interface with options like URL, headers, method, body, timeout,
