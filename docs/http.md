@@ -120,7 +120,7 @@ Initialise them in the `init()` function and return in the overwritten `getHttpI
 
 ### Intercept Request
 
-Intercept requests by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
+Request can be intercepted by adding custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
 `interceptRequest` takes two arguments:
 - `requestOptions` - these are options with which request was sent
