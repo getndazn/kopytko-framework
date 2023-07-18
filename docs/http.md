@@ -128,7 +128,7 @@ Request can be intercepted by adding custom interceptors to the `HttpService`. E
 
 ### Intercept Response
 
-Intercept response by adding your custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
+Response can be intercepted by adding custom interceptors to the `HttpService`. Each time the request is made, the interceptor will be invoked with arguments: `requestOptions` and `urlTransfer`.
 
 `interceptResponse` takes two arguments:
 - `requestOptions` - these are options with which request was sent
