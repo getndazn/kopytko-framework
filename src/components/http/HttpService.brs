@@ -39,7 +39,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
         return cachedResponse.toNode()
       end if
 
-      eTag = cachedResponse.getHeaders().etag
+      eTag = cachedResponse.getHeaders().eTag
       if (eTag <> Invalid AND eTag <> "")
         request.setHeader("If-None-Match", eTag)
       end if
