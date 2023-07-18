@@ -3,6 +3,7 @@
 ' @import /components/http/HttpRequest.brs
 ' @import /components/http/HttpResponse.brs
 ' @import /components/http/HttpResponseCreator.brs
+' @import /components/http/HttpStatusCodes.const.brs
 ' @import /components/utils/kopytkoWait.brs
 
 ' WARNING: the service must be used on the Task threads.
@@ -22,6 +23,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
 
   prototype._cache = HttpCache()
   prototype._responseCreator = HttpResponseCreator()
+  prototype._statusCodes = HttpStatusCodes()
 
   ' Performs HTTP request or returns a stored response
   ' Warning: if a stored response is returned, HttpInterceptors are omitted
@@ -37,9 +39,9 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
         return cachedResponse.toNode()
       end if
 
-      etag = cachedResponse.getHeaders().etag
-      if (etag <> Invalid AND etag <> "")
-        request.setHeader("If-None-Match", etag)
+      eTag = cachedResponse.getHeaders().etag
+      if (eTag <> Invalid AND eTag <> "")
+        request.setHeader("If-None-Match", eTag)
       end if
     end if
 
@@ -58,7 +60,7 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   ' @private
   prototype._waitForResponse = function (request as Object, cachedResponse as Object) as Object
     while (true)
-      message = m._waitForMessage()
+      message = kopytkoWait(m._TIMEOUT_INTERVAL_CHECK, m._port)
 
       if (getType(message) = "roUrlEvent")
         if (message.getInt() = m._HTTP_REQUEST_COMPLETED)
@@ -75,11 +77,6 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   end function
 
   ' @private
-  prototype._waitForMessage = function () as Object
-    return kopytkoWait(m._TIMEOUT_INTERVAL_CHECK, m._port)
-  end function
-
-  ' @private
   prototype._handleResponse = function (request as Object, urlEvent as Object, cachedResponse as Object) as Object
     for each interceptor in m._httpInterceptors
       interceptor.interceptResponse(request, urlEvent)
@@ -88,11 +85,11 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     response = m._responseCreator.create(urlEvent, request)
 
     responseCode = response.getStatusCode()
-    if (responseCode >= response.STATUS_SUCCESS AND responseCode < response.STATUS_REDIRECTION)
+    if (responseCode >= m._statusCodes.SUCCESS AND responseCode < m._statusCodes.REDIRECTION)
       if (request.getMethod() = "GET" AND response.isReusable())
         m._cache.store(request, response)
       end if
-    else if (responseCode = response.STATUS_NOT_MODIFIED)
+    else if (responseCode = m._statusCodes.NOT_MODIFIED)
       return m._cache.prolong(request, cachedResponse, response.getMaxAge()).toNode()
     end if
 

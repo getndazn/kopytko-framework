@@ -7,6 +7,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     headers = {}
     headers["Cache-Control"] = "max-age=300"
     response = HttpResponse({ id: "testId", httpStatusCode: 200, headers: headers, requestOptions: {} })
+    expectedCachedResponse = response.serialise()
     m.__mocks.httpResponseCreator.create.returnValue = response
 
     ' When
@@ -17,7 +18,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
       expect("HttpCache.store").toHaveBeenCalledTimes(1),
       expect(m.__mocks.HttpCache.store.calls[0].params.request.name).toBe("HttpRequest"),
       expect(m.__mocks.HttpCache.store.calls[0].params.request.constructorParams.options).toEqual(m.__params),
-      expect(m.__mocks.HttpCache.store.calls[0].params.response).toEqual(response),
+      expect(m.__mocks.HttpCache.store.calls[0].params.response.serialise()).toEqual(expectedCachedResponse),
     ]
   end function)
 

@@ -1,20 +1,21 @@
-function TestSuite__HttpResponse_setRevalidatedCache() as Object
+function TestSuite__CachedHttpResponse_setRevalidatedCache() as Object
   ts = CachedHttpResponseTestSuite()
   ts.name = "CachedHttpResponse - setRevalidatedCache"
 
   itEach([
-    "",
-    "public",
-    "max-age=0",
-    "max-age=10",
-    "max-age=10, public",
-    "public, max-age=10",
-  ], "adds max-age to or overwrites the value of the cache-control header", function (_ts as Object, cacheControl as Object) as String
+    { given: "", expected: "max-age=777" },
+    { given: "public", expected: "public, max-age=777" },
+    { given: "max-age=0", expected: "max-age=777" },
+    { given: "max-age=10", expected: "max-age=777" },
+    { given: "max-age=777", expected: "max-age=777" },
+    { given: "max-age=10, public", expected: "max-age=777, public" },
+    { given: "public, max-age=10", expected: "public, max-age=777" },
+  ], "adds max-age to or overwrites the value of the cache-control header", function (_ts, cacheControl as Object)
     ' Given
     props = {
       id: "123456",
       httpStatusCode: 200,
-      headers: { "Cache-Control": cacheControl },
+      headers: { "Cache-Control": cacheControl.given },
     }
     newMaxAge = 777
     response = CachedHttpResponse(props)
@@ -23,10 +24,10 @@ function TestSuite__HttpResponse_setRevalidatedCache() as Object
     response.setRevalidatedCache(newMaxAge)
 
     ' Then
-    return expect(response.getMaxAge()).toBe(newMaxAge)
+    return expect(response.getHeaders()["Cache-Control"]).toBe(cacheControl.expected)
   end function)
 
-  it("removes Expires header", function (_ts as Object) as String
+  it("removes Expires header", function (_ts)
     ' Given
     props = {
       id: "123456",
@@ -38,10 +39,9 @@ function TestSuite__HttpResponse_setRevalidatedCache() as Object
 
     ' When
     response.setRevalidatedCache(newMaxAge)
-    headers = response.getHeaders()
 
     ' Then
-    return expect(headers.expires).toBeInvalid()
+    return expect(response.getHeaders().expires).toBeInvalid()
   end function)
 
   return ts

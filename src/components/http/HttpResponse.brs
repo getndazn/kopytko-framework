@@ -1,5 +1,6 @@
 ' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @import /components/utils/imfFixdateToSeconds.brs
+' @import /components/http/HttpStatusCodes.const.brs
 
 ' @class
 ' @param {Object} responseData
@@ -14,10 +15,7 @@ function HttpResponse(responseData as Object) as Object
   prototype = {}
 
   prototype.MAX_AGE_NOT_ALLOWED = -1
-  prototype.STATUS_SUCCESS = 200
-  prototype.STATUS_REDIRECTION = 300
-  prototype.STATUS_NOT_MODIFIED = 304
-  prototype.STATUS_FAILURE = 400
+  prototype._CACHE_CONTROL_MAX_AGE = "max-age="
   prototype._CACHE_CONTROL_NO_CACHE = "no-cache"
   prototype._CACHE_CONTROL_NO_STORE = "no-store"
   prototype._HEADER_CACHE_CONTROL = "Cache-Control"
@@ -31,15 +29,18 @@ function HttpResponse(responseData as Object) as Object
   prototype._requestOptions = responseData.requestOptions
   prototype._time = DateTime().asSeconds()
 
+  prototype._maxAgeRegex = Invalid
+  prototype._statusCodes = HttpStatusCodes()
+
   ' Casts response object to node.
   ' @returns {HttpResponseModel}
   prototype.toNode = function () as Object
     responseNode = CreateObject("roSGNode", "HttpResponseModel")
     responseNode.setFields({
       failureReason: m._failureReason,
-      id: m._id,
       headers: m._headers,
       httpStatusCode: m._httpStatusCode,
+      id: m._id,
       isReusable: m.isReusable(),
       isSuccess: m._isSuccess(),
       maxAge: m.getMaxAge(),
@@ -53,10 +54,10 @@ function HttpResponse(responseData as Object) as Object
   ' @returns {Object}
   prototype.serialise = function () as Object
     return {
-      id: m._id,
       failureReason: m._failureReason,
       headers: m._headers,
       httpStatusCode: m._httpStatusCode,
+      id: m._id,
       rawData: m._rawData,
       requestOptions: m._requestOptions,
       time: m._time,
@@ -84,8 +85,7 @@ function HttpResponse(responseData as Object) as Object
         return m.MAX_AGE_NOT_ALLOWED
       end if
 
-      maxAgeRegex = CreateObject("roRegex", "max-age=(\d+)", "i")
-      maxAgeMatches = maxAgeRegex.match(cacheControl)
+      maxAgeMatches = m._getMaxAgeRegex().match(cacheControl)
       if (NOT maxAgeMatches.isEmpty())
         return maxAgeMatches[1].toInt()
       end if
@@ -116,9 +116,16 @@ function HttpResponse(responseData as Object) as Object
     return cacheControl.inStr(m._CACHE_CONTROL_NO_STORE) = -1
   end function
 
+  ' @protected
+  prototype._getMaxAgeRegex = function () as Object
+    if (m._maxAgeRegex = Invalid) then m._maxAgeRegex = CreateObject("roRegex", m._CACHE_CONTROL_MAX_AGE + "(\d+)", "i")
+
+    return m._maxAgeRegex
+  end function
+
   ' @private
   prototype._isSuccess = function () as Boolean
-    return (m._httpStatusCode >= m.STATUS_SUCCESS AND m._httpStatusCode < m.STATUS_FAILURE)
+    return (m._httpStatusCode >= m._statusCodes.SUCCESS AND m._httpStatusCode < m._statusCodes.FAILURE)
   end function
 
   return prototype

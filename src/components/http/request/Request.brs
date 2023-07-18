@@ -24,12 +24,12 @@ end sub
 sub initRequest()
 end sub
 
-' Overwrite by child to setup request options
+' Override by child to setup request options
 function getRequestOptions(data as Object) as Object
   return {}
 end function
 
-' Overwrite by child to use parsers and potentially return a specific node type
+' Override by child to use parsers and potentially return a specific node type
 function parseResponseData(data as Object) as Object
   parsedData = CreateObject("roSGNode", "Node")
   parsedData.addFields(data)
@@ -37,7 +37,7 @@ function parseResponseData(data as Object) as Object
   return parsedData
 end function
 
-' Overwrite by child for returning a specific data structure and/or node type
+' Override by child for returning a specific data structure and/or node type
 function generateErrorData(response as Object) as Object
   return response
 end function

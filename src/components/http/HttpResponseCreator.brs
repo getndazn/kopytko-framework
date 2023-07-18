@@ -15,10 +15,10 @@ function HttpResponseCreator() as Object
   ' @returns {HttpResponse}
   prototype.create = function (urlEvent as Object, request as Object) as Object
     return HttpResponse({
-      httpStatusCode: urlEvent.getResponseCode(),
       failureReason: urlEvent.getFailureReason(),
-      id: request.getId(),
       headers: urlEvent.getResponseHeaders(),
+      httpStatusCode: urlEvent.getResponseCode(),
+      id: request.getId(),
       rawData: m._parseUrlEventContent(urlEvent),
       requestOptions: request.getOptions(),
     })
@@ -26,9 +26,10 @@ function HttpResponseCreator() as Object
 
   ' @private
   prototype._parseUrlEventContent = function (urlEvent as Object) as Object
+    if (NOT m._isJsonResponse(urlEvent)) then return {}
+
     content = urlEvent.getString()
-    isJsonResponse = m._isJsonResponse(urlEvent)
-    if (NOT isJsonResponse OR content = "") then return {}
+    if (content = "") then return {}
 
     data = ParseJSON(content)
     if (data = Invalid) then return {}

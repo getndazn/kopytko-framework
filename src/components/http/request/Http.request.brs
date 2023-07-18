@@ -41,14 +41,14 @@ sub handleResponse(response as Object)
   m.top.result = result
 end sub
 
-' Overwrite by child to return a list of objects implementing HttpInterceptor interface which will be passed to HttpService
+' Override by child to return a list of objects implementing HttpInterceptor interface which will be passed to HttpService
 ' @protected
 ' @returns {HttpInterceptor[]}
 function getHttpInterceptors() as Object
   return []
 end function
 
-' Overwrite by child to use parsers and potentially return a specific node type
+' Override by child to use parsers and potentially return a specific node type
 ' @protected
 ' @param {Node<HttpResponseModel>} response
 ' @returns {Node}

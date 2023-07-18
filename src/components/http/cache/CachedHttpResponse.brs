@@ -24,14 +24,13 @@ function CachedHttpResponse(responseData as Object) as Object
     m._time = DateTime().asSeconds()
 
     cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
-    if (cacheControl <> invalid)
-      maxAgeRegex = CreateObject("roRegex", "max-age=(\d+)", "i")
-      newCacheControl = maxAgeRegex.replace(cacheControl, "max-age=" + maxAge.toStr())
-      if (newCacheControl = cacheControl)
-        newCacheControl += ", max-age=" + maxAge.toStr()
+    if (cacheControl <> invalid AND cacheControl <> "")
+      newCacheControl = m._getMaxAgeRegex().replace(cacheControl, m._CACHE_CONTROL_MAX_AGE + maxAge.toStr())
+      if (newCacheControl = cacheControl AND NOT m._getMaxAgeRegex().isMatch(cacheControl))
+        newCacheControl += ", " + m._CACHE_CONTROL_MAX_AGE + maxAge.toStr()
       end if
     else
-      newCacheControl = "max-age=" + maxAge.toStr()
+      newCacheControl = m._CACHE_CONTROL_MAX_AGE + maxAge.toStr()
     end if
 
     ' Cache-Control max-age is handier to use, so let's switch to it
