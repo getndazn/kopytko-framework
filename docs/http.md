@@ -77,7 +77,7 @@ Request options structure allowed to be returned by `getRequestOptions` function
 
 ## Sending Request
 
-To send a defined request, use the `createRequest` function. It will create a task instance, run it and return a `Promise` object eventually fulfilled or rejected with data generated in task's `parseResponse` or `generateErrorData`.
+To send a request, use the `createRequest` function. It will create a task instance, run it and return a `Promise` that is fulfilled or rejected with the result of the `parseResponse` or `generateErrorData` function.
 
 `createRequest` has 3 arguments:
 - `task` - the name of a component extending the `HttpRequest` to be created or an instance of such component to be reused,
