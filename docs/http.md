@@ -14,7 +14,7 @@ The logic for handling HTTP requests.
 ## Defining HTTP(S) request
 
 To create your own HTTP request, create a new component extending `HttpRequest` (`/component/http/request/Http.request.xml`).
-It's recommended to use `.request` postfix in its file names, e.g. `Search.request.xml`.
+It's a Kopytko convention to use `.request` as a suffix e.g. `Search.request.xml`.
 
 If you need to aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
 
