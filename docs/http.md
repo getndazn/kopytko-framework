@@ -80,7 +80,7 @@ Request options structure allowed to be returned by `getRequestOptions` function
 To send a defined request, use the `createRequest` function. It will create a task instance, run it and return a `Promise` object eventually fulfilled or rejected with data generated in task's `parseResponse` or `generateErrorData`.
 
 `createRequest` has 3 arguments:
-- `task` - the name of a component extending the `HttpRequest` component or an instance of such component,
+- `task` - the name of a component extending the `HttpRequest` to be created or an instance of such component to be reused,
 - `data` - data necessary to send a request, passed to `getRequestOptions` function,
 - `options` - an AA object with additional options; currently supports `taskOptions` field to pass options to the task component and `signal` for aborting request (described in the next section).
 
