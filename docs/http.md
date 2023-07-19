@@ -19,15 +19,9 @@ It's a Kopytko convention to use `.request` as a suffix e.g. `Search.request.xml
 If you need to aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
 
 `HttpRequest` has the following interface that should be extended in your `Request` derived component:
-<<<<<<< Updated upstream
 - `getRequestOptions(data)` - returns an object implementing the [`HttpRequest~Options`](#Request Options)
-- `parseResponse(response)` - returns a data object (e.g. node) based on HttpResponse object (`/component/http/HttpResponse.brs`) fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread,
-- `generateErrorData(response)` - returns custom error data object thrown on request failure; the promise returned from `createRequest()` function will be rejected with this object. The method is executed on a task thread,
-=======
-- `getRequestOptions(data)` - returns an object implementing the `HttpRequest~Options` interface with options like URL, headers, method, body, timeout
 - `parseResponse(response)` - returns a data object (e.g. node) based on HttpResponse object (`/component/http/HttpResponse.brs`) fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread
 - `generateErrorData(response)` - returns custom error data object thrown on request failure; the promise returned from `createRequest()` function will be rejected with this object. The method is executed on a task thread
->>>>>>> Stashed changes
 - `getHttpInterceptors()` - returns the list of HTTP request and response interceptors implementing the `HttpInterceptor` interface
 
 ### Example request
