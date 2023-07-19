@@ -13,14 +13,14 @@ The logic for handling HTTP requests.
 
 ## Defining HTTP(S) request
 
-To create your own HTTP request, create a new component extending `HttpRequest` (`/component/http/request/Http.request.xml`).
+To create your own HTTP request, create a new component extending [`HttpRequest component`](../src/components/http/request/Http.request.xml).
 It's a Kopytko convention to use `.request` as a suffix e.g. `Search.request.xml`.
 
 If you need to aggregate the common logic of some of your requests (e.g. setting headers), create a component with that logic and extend it (`MyRequest` extends `MyBackendServiceRequest` extends `HttpRequest`).
 
-`HttpRequest` has the following interface that should be extended in your `Request` derived component:
-- `getRequestOptions(data)` - returns an object implementing the [`HttpRequest~Options`](#Request Options)
-- `parseResponse(response)` - returns a data object (e.g. node) based on HttpResponse object (`/component/http/HttpResponse.brs`) fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread
+[`HttpRequest`](../src/components/http/request/Http.request.brs) has the following interface that should be extended in your `Request` derived component:
+- `getRequestOptions(data)` - returns an object implementing the [`HttpRequest~Options`](#request-options)
+- `parseResponse(response)` - returns a data object (e.g. node) based on [`HttpResponse`](../src/components/http/HttpResponse.brs) object fulfilled with data; the promise returned from `createRequest()` function will be resolved with this object. The method is executed on a task thread
 - `generateErrorData(response)` - returns custom error data object thrown on request failure; the promise returned from `createRequest()` function will be rejected with this object. The method is executed on a task thread
 - `getHttpInterceptors()` - returns the list of HTTP request and response interceptors implementing the `HttpInterceptor` interface
 
@@ -77,10 +77,10 @@ Request options structure allowed to be returned by `getRequestOptions` function
 
 ## Sending Request
 
-To send a request, use the `createRequest` function. It will create a task instance, run it and return a `Promise` that is fulfilled or rejected with the result of the `parseResponse` or `generateErrorData` function.
+To send a request, use the [`createRequest`](../src/components/http/request/createRequest.brs) function. It will create a task instance, run it and return a `Promise` that is fulfilled or rejected with the result of the `parseResponse` or `generateErrorData` function.
 
 `createRequest` has 3 arguments:
-- `task` - the name of a component extending the `HttpRequest` to be created or an instance of such component to be reused
+- `task` - the name of a component extending the [`HttpRequest component`](../src/components/http/request/Http.request.brs) to be created or an instance of such component to be reused
 - `data` - data necessary to send a request, passed to `getRequestOptions` function
 - `options` - an AA object with additional options; currently supports `taskOptions` field to pass options to the task component and `signal` for [aborting request](#abort-request)
 
@@ -96,7 +96,7 @@ promiseChain.then(sub (user as Object): end sub, sub (apiError as Object): end s
 
 ## Abort Request
 
-If you know that request is not needed anymore you can easily abort it by adding the `AbortController` signal to your request and by calling `abort` method on that instance of `AbortController`.
+If you know that request is not needed anymore you can easily abort it by adding the [`AbortController`](../src/components/http/request/AbortController.brs)'s signal to your request and by calling `abort` method on that instance of `AbortController`.
 
 To do that you can pass your instance of abort controller in the options of `createRequest`.
 
@@ -115,8 +115,8 @@ The catch/rejected handler of the promise will be invoked when request is aborte
 
 ## Intercepting
 
-Kopytko HTTP module allows intercepting requests made by `HttpService` (e.g. for reporting purposes) by creating interceptor objects implementing the `HttpInterceptor` interface (`/component/http/HttpInterceptor.brs`).
-Initialise them in the `init()` function and return in the overwritten `getHttpInterceptors` function declared in `Http.request.brs`
+Kopytko HTTP module allows intercepting requests made by [`HttpService` ](../src/components/http/HttpService.brs) (e.g. for reporting purposes) by creating interceptor objects implementing the [`HttpInterceptor`](../src/components/http/HttpInterceptor.brs) interface.
+Initialise them in the `init()` function and return in the overwritten `getHttpInterceptors` function declared in [`HttpRequest component`](../src/components/http/request/Http.request.brs)
 
 ### Intercept Request
 
