@@ -8,22 +8,13 @@ function TestSuite__HttpCache() as Object
   ts.name = "HttpCache"
 
   beforeEach(sub (_ts as Object)
-    m.__mocks = {}
-    m.__mocks.cacheFS = {
-      read: { returnValue: Invalid },
-      write: { returnValue: true },
-    }
-    m.__mocks.cachedHttpResponse = {
-      serialise: { returnValue: {} },
-    }
-    m.__mocks.httpRequest = {
-      getEscapedUrl: { returnValue: "" },
-    }
-    m.__mocks.httpResponse = {
-      properties: { MAX_AGE_NOT_ALLOWED: -1 },
-      getMaxAge: { returnValue: 0 },
-      serialise: { returnValue: {} },
-    }
+    mockFunction("cacheFS.read").returnValue(Invalid)
+    mockFunction("cacheFS.write").returnValue(true)
+    mockFunction("cachedHttpResponse.serialise").returnValue({})
+    mockFunction("httpRequest.getEscapedUrl").returnValue("")
+    mockFunction("httpResponse").setProperty("MAX_AGE_NOT_ALLOWED", -1)
+    mockFunction("httpResponse.getMaxAge").returnValue(0)
+    mockFunction("httpResponse.serialise").returnValue({})
 
     m.__httpCache = HttpCache()
   end sub)
@@ -35,7 +26,7 @@ function TestSuite__HttpCache() as Object
   it("read returns a stored response", function (_ts)
     ' Given
     storedResponseData = { id: "stored" }
-    m.__mocks.cacheFS.read.returnValue = storedResponseData
+    mockFunction("cacheFS.read").returnValue(storedResponseData)
     escapedUrl = "cachedUrl"
     expectedResult = CachedHttpResponse(storedResponseData)
 
@@ -53,7 +44,7 @@ function TestSuite__HttpCache() as Object
   it("store returns false if response's max-age value is NOT_ALLOWED", function (_ts)
     ' Given
     request = HttpRequest({ url: "any"})
-    m.__mocks.httpResponse.getMaxAge.returnValue = -1
+    mockFunction("httpResponse.getMaxAge").returnValue(-1)
     response = HttpResponse({ id: "any" })
 
     ' When
@@ -65,11 +56,11 @@ function TestSuite__HttpCache() as Object
 
   itEach([true, false], "store returns CacheFS.write result max-age value is valid", function (_ts, writeResult as Boolean)
     ' Given
-    m.__mocks.cacheFS.write.returnValue = writeResult
+    mockFunction("cacheFS.write").returnValue(writeResult)
     escapedUrl = "escapedUrl"
-    m.__mocks.httpRequest.getEscapedUrl.returnValue = escapedUrl
+    mockFunction("httpRequest.getEscapedUrl").returnValue(escapedUrl)
     serialisedResponse = { seria: "lised" }
-    m.__mocks.httpResponse.serialise.returnValue = serialisedResponse
+    mockFunction("httpResponse.serialise").returnValue(serialisedResponse)
 
     request = HttpRequest({ url: "any"})
     response = HttpResponse({ id: "any" })
@@ -87,9 +78,9 @@ function TestSuite__HttpCache() as Object
   it("prolong saves response with revalidated cache and returns response", function (_ts)
     ' Given
     escapedUrl = "escapedUrl"
-    m.__mocks.httpRequest.getEscapedUrl.returnValue = escapedUrl
+    mockFunction("httpRequest.getEscapedUrl").returnValue(escapedUrl)
     serialisedResponse = { seria: "lised" }
-    m.__mocks.cachedHttpResponse.serialise.returnValue = serialisedResponse
+    mockFunction("cachedHttpResponse.serialise").returnValue(serialisedResponse)
 
     request = HttpRequest({ url: "any"})
     responseData = { id: "any" }

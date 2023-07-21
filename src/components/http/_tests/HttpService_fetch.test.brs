@@ -23,24 +23,24 @@ function TestSuite__HttpService_fetch() as Object
     ' Then
     return [
       expect("HttpInterceptor.interceptResponse").toHaveBeenCalledTimes(1),
-      expect(m.__mocks.HttpInterceptor.interceptResponse.calls[0].params.urlEvent).toEqual(m.__portMessage),
-      expect(m.__mocks.HttpInterceptor.interceptResponse.calls[0].params.request.name).toBe("HttpRequest"),
-      expect(m.__mocks.HttpInterceptor.interceptResponse.calls[0].params.request.constructorParams.options).toEqual(m.__params),
+      expect(mockFunction("HttpInterceptor.interceptResponse").getCalls()[0].params.urlEvent).toEqual(m.__portMessage),
+      expect(mockFunction("HttpInterceptor.interceptResponse").getCalls()[0].params.request.name).toBe("HttpRequest"),
+      expect(mockFunction("HttpInterceptor.interceptResponse").getCalls()[0].params.request.constructorParams.options).toEqual(m.__params),
     ]
   end function)
 
   it("returns a cached response if exists and non-expired", function (_ts)
     ' Given
-    m.__mocks.httpRequest.isCachingEnabled.returnValue = true
+    mockFunction("httpRequest.isCachingEnabled").returnValue(true)
     ESCAPED_URL = "http://escaped.url"
-    m.__mocks.httpRequest.getEscapedUrl.returnValue = ESCAPED_URL
+    mockFunction("httpRequest.getEscapedUrl").returnValue(ESCAPED_URL)
 
     expectedResult = CreateObject("roSGNode", "Node")
     expectedResult.addFields({ expected: "result "})
-    m.__mocks.cachedHttpResponse.hasExpired.returnValue = false
-    m.__mocks.cachedHttpResponse.toNode.returnValue = expectedResult
+    mockFunction("cachedHttpResponse.hasExpired").returnValue(false)
+    mockFunction("cachedHttpResponse.toNode").returnValue(expectedResult)
     cachedResponse = CachedHttpResponse({})
-    m.__mocks.httpCache.read.returnValue = cachedResponse
+    mockFunction("httpCache.read").returnValue(cachedResponse)
 
     ' When
     result = m.__httpService.fetch(m.__params)
@@ -54,13 +54,13 @@ function TestSuite__HttpService_fetch() as Object
 
   it("sets if-none-match header if a cached expired response has etag header", function (_ts)
     ' Given
-    m.__mocks.httpRequest.isCachingEnabled.returnValue = true
+    mockFunction("httpRequest.isCachingEnabled").returnValue(true)
 
     ETAG = "abcdefgh"
-    m.__mocks.cachedHttpResponse.hasExpired.returnValue = true
-    m.__mocks.cachedHttpResponse.getHeaders.returnValue = { etag: ETAG }
+    mockFunction("cachedHttpResponse.hasExpired").returnValue(true)
+    mockFunction("cachedHttpResponse.getHeaders").returnValue({ etag: ETAG })
     cachedResponse = CachedHttpResponse({})
-    m.__mocks.httpCache.read.returnValue = cachedResponse
+    mockFunction("httpCache.read").returnValue(cachedResponse)
 
     ' When
     m.__httpService.fetch(m.__params)

@@ -8,7 +8,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     headers["Cache-Control"] = "max-age=300"
     response = HttpResponse({ id: "testId", httpStatusCode: 200, headers: headers, requestOptions: {} })
     expectedCachedResponse = response.serialise()
-    m.__mocks.httpResponseCreator.create.returnValue = response
+    mockFunction("httpResponseCreator.create").returnValue(response)
 
     ' When
     m.__httpService.fetch(m.__params)
@@ -27,7 +27,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     headers = {}
     headers["Cache-Control"] = "max-age=300"
     response = HttpResponse({ id: "testId", httpStatusCode: 400, headers: headers, requestOptions: {} })
-    m.__mocks.httpResponseCreator.create.returnValue = response
+    mockFunction("httpResponseCreator.create").returnValue(response)
 
     ' When
     m.__httpService.fetch(m.__params)
@@ -38,11 +38,11 @@ function TestSuite__HttpService_storeCachedResponse() as Object
 
   it("does not store successful reusable response for non-GET request", function (_ts)
     ' Given
-    m.__mocks.httpRequest.getMethod.returnValue = "POST"
+    mockFunction("httpRequest.getMethod").returnValue("POST")
     headers = {}
     headers["Cache-Control"] = "max-age=300"
     response = HttpResponse({ id: "testId", httpStatusCode: 200, headers: headers, requestOptions: {} })
-    m.__mocks.httpResponseCreator.create.returnValue = response
+    mockFunction("httpResponseCreator.create").returnValue(response)
 
     ' When
     m.__httpService.fetch(m.__params)
@@ -54,7 +54,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
   it("does not store successful non-reusable response for GET request", function (_ts)
     ' Given
     response = HttpResponse({ id: "testId", httpStatusCode: 200, requestOptions: {} })
-    m.__mocks.httpResponseCreator.create.returnValue = response
+    mockFunction("httpResponseCreator.create").returnValue(response)
 
     ' When
     m.__httpService.fetch(m.__params)
@@ -65,23 +65,23 @@ function TestSuite__HttpService_storeCachedResponse() as Object
 
   it("prolongs 304 HTTP response", function (_ts)
     ' Given
-    m.__mocks.httpRequest.isCachingEnabled.returnValue = true
+    mockFunction("httpRequest.isCachingEnabled").returnValue(true)
 
     expectedResult = CreateObject("roSGNode", "Node")
     expectedResult.addFields({ expected: "result "})
-    m.__mocks.cachedHttpResponse.hasExpired.returnValue = true
-    m.__mocks.cachedHttpResponse.toNode.returnValue = expectedResult
+    mockFunction("cachedHttpResponse.hasExpired").returnValue(true)
+    mockFunction("cachedHttpResponse.toNode").returnValue(expectedResult)
 
     cachedResponseData = { id: "cached" }
     cachedResponse = CachedHttpResponse(cachedResponseData)
-    m.__mocks.httpCache.read.returnValue = cachedResponse
-    m.__mocks.httpCache.prolong.returnValue = cachedResponse
+    mockFunction("httpCache.read").returnValue(cachedResponse)
+    mockFunction("httpCache.prolong").returnValue(cachedResponse)
 
     headers = {}
     maxAge = 300
     headers["Cache-Control"] = "max-age=" + maxAge.toStr()
     response = HttpResponse({ id: "testId", httpStatusCode: 304, headers: headers, requestOptions: {} })
-    m.__mocks.httpResponseCreator.create.returnValue = response
+    mockFunction("httpResponseCreator.create").returnValue(response)
 
     ' When
     result = m.__httpService.fetch(m.__params)
@@ -89,11 +89,11 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     ' Then
     return [
       expect("HttpCache.prolong").toHaveBeenCalledTimes(1),
-      expect(m.__mocks.HttpCache.prolong.calls[0].params.request.name).toBe("HttpRequest"),
-      expect(m.__mocks.HttpCache.prolong.calls[0].params.request.constructorParams.options).toEqual(m.__params),
-      expect(m.__mocks.HttpCache.prolong.calls[0].params.response.name).toBe("CachedHttpResponse"),
-      expect(m.__mocks.HttpCache.prolong.calls[0].params.response.constructorParams.responseData).toEqual(cachedResponseData),
-      expect(m.__mocks.HttpCache.prolong.calls[0].params.newMaxAge).toBe(maxAge),
+      expect(mockFunction("HttpCache.prolong").getCalls()[0].params.request.name).toBe("HttpRequest"),
+      expect(mockFunction("HttpCache.prolong").getCalls()[0].params.request.constructorParams.options).toEqual(m.__params),
+      expect(mockFunction("HttpCache.prolong").getCalls()[0].params.response.name).toBe("CachedHttpResponse"),
+      expect(mockFunction("HttpCache.prolong").getCalls()[0].params.response.constructorParams.responseData).toEqual(cachedResponseData),
+      expect(mockFunction("HttpCache.prolong").getCalls()[0].params.newMaxAge).toBe(maxAge),
       expect(result).toEqual(expectedResult),
     ]
   end function)

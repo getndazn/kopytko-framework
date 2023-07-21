@@ -13,51 +13,30 @@ function HttpServiceTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
   beforeEach(sub (_ts as Object)
-    m.__mocks = {}
-    m.__mocks.cachedHttpResponse = {
-      getHeaders: { returnValue: {} },
-      hasExpired: { returnValue: false },
-      toNode: { returnValue: Invalid },
-    }
-    m.__mocks.getType = {
-      getReturnValue: function (params as Object, m as Object) as String
-        value = params.value
+    mockFunction("cachedHttpResponse.getHeaders").returnValue({})
+    mockFunction("cachedHttpResponse.hasExpired").returnValue(false)
+    mockFunction("cachedHttpResponse.toNode").returnValue(Invalid)
+    mockFunction("getType").implementation(function (params as Object, m as Object) as String
+      value = params.value
 
-        if (value <> Invalid AND value.eventScheme <> Invalid)
-          return value.eventScheme.type
-        end if
+      if (value <> Invalid AND value.eventScheme <> Invalid)
+        return value.eventScheme.type
+      end if
 
-        return Type(value)
-      end function,
-    }
-    m.__mocks.httpCache = {
-      read: { returnValue: Invalid },
-      prolong: { returnValue: Invalid },
-    }
-    m.__mocks.httpRequest = {
-      isTimedOut: { returnValue: false },
-      getEscapedUrl: { returnValue: "" },
-      getId: { returnValue: "id" },
-      getMethod: { returnValue: "GET" },
-      getOptions: {
-        getReturnValue: function (params as Object, m as Object)
-          return m.__params
-        end function,
-      },
-      isCachingEnabled: { returnValue: false },
-      send: { returnValue: Invalid },
-      setMessagePort: { returnValue: Invalid },
-    }
-    m.__mocks.httpResponseCreator = {
-      create: {
-        returnValue: HttpResponse({ id: "any", requestOptions: {} }),
-      },
-    }
-    m.__mocks.kopytkoWait = {
-      getReturnValue: function (params as Object, m as Object) as Object
-        return m.__portMessage
-      end function,
-    }
+      return Type(value)
+    end function)
+    mockFunction("httpCache.read").returnValue(Invalid)
+    mockFunction("httpCache.prolong").returnValue(Invalid)
+    mockFunction("httpRequest.isTimedOut").returnValue(false)
+    mockFunction("httpRequest.getEscapedUrl").returnValue("")
+    mockFunction("httpRequest.getId").returnValue("id")
+    mockFunction("httpRequest.getMethod").returnValue("GET")
+    mockFunction("httpRequest.getOptions").implementation(function (params, m) : return m.__params : end function)
+    mockFunction("httpRequest.isCachingEnabled").returnValue(false)
+    mockFunction("httpRequest.send").returnValue(Invalid)
+    mockFunction("httpRequest.setMessagePort").returnValue(Invalid)
+    mockFunction("httpResponseCreator.create").returnValue(HttpResponse({ id: "any", requestOptions: {} }))
+    mockFunction("kopytkoWait").implementation(function (params, m) : return m.__portMessage : end function)
 
     m.__params = {
       id: "123456",
