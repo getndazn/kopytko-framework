@@ -9,6 +9,7 @@
 ' @property {String} url
 ' @property {Object} queryParams
 ' @property {String} method
+' @property {Boolean} compression
 ' @property {Object} headers
 ' @property {Integer} timeout
 ' @property {Object} body
@@ -27,6 +28,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     "Accept": "application/json",
   }
 
+  prototype._headers = prototype._DEFAULT_HEADERS
   prototype._httpInterceptors = httpInterceptors
   prototype._options = options
   prototype._urlTransfer = UrlTransfer()
@@ -49,12 +51,10 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
       m._urlTransfer.initClientCertificates()
     end if
 
-    headers = m._DEFAULT_HEADERS
     if (Type(m._options.headers) = "roAssociativeArray")
-      headers.append(m._options.headers)
+      m._headers.append(m._options.headers)
     end if
 
-    m._urlTransfer.setHeaders(headers)
     m._timeout = ternary(m._options.timeout <> Invalid AND m._options.timeout <> 0, m._options.timeout, m._FALLBACK_TIMEOUT)
 
     return m
@@ -63,13 +63,18 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
   ' Performs actual request.
   ' @returns {Object} - Returns instance
   prototype.send = function () as Object
+    method = m.getMethod()
+
+    if (method <> "POST" AND method <> "PUT") then m._headers.delete("Content-Type")
+    m._urlTransfer.setHeaders(m._headers)
+
     for each interceptor in m._httpInterceptors
       interceptor.interceptRequest(m, m._urlTransfer)
     end for
 
-    if (m._options.method = "GET")
+    if (method = "GET")
       m._urlTransfer.asyncGetToString()
-    else if (m._options.method = "POST" OR m._options.method = "PUT" OR m._options.method = "DELETE")
+    else if (method = "POST" OR method = "PUT" OR method = "DELETE")
       body = ""
 
       if (m._options.body <> Invalid)
@@ -119,6 +124,16 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
     return m._urlTransfer.getUrl()
   end function
 
+  ' @returns {String}
+  prototype.getEscapedUrl = function () as String
+    return m._urlTransfer.escape(m.getUrl())
+  end function
+
+  ' @returns {String}
+  prototype.getMethod = function () as String
+    return m._options.method
+  end function
+
   ' Cancels request that times out.
   ' @returns {Boolean}
   prototype.isTimedOut = function () as Boolean
@@ -130,6 +145,15 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
     return isTimedOut
   end function
+
+  ' @returns {Boolean}
+  prototype.isCachingEnabled = function () as Boolean
+    return getProperty(m.options, "enableCaching", true)
+  end function
+
+  prototype.setHeader = sub (name as String, value as Dynamic)
+    m._headers[name] = value
+  end sub
 
   ' Aborts active request.
   prototype.abort = sub ()

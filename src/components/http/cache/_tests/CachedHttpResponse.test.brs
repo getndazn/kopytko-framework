@@ -2,7 +2,7 @@
 ' @mock /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @mock /components/utils/imfFixdateToSeconds.brs
 
-function HttpResponseTestSuite() as Object
+function CachedHttpResponseTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
   beforeEach(sub (_ts)

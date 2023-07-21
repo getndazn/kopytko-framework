@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="HttpResponseModel" extends="Node">
+  <interface>
+    <field id="data" type="node" /> <!-- @deprecated - HttpRequestResultModel is set as Request task's result field instead of HttpResponseModel -->
+    <field id="failureReason" type="string" />
+    <field id="headers" type="assocarray" />
+    <field id="httpStatusCode" type="integer" />
+    <field id="isReusable" type="boolean" />
+    <field id="isSuccess" type="boolean" />
+    <field id="maxAge" type="integer" />
+    <field id="rawData" type="assocarray" />
+    <field id="requestOptions" type="assocarray" />
+  </interface>
+</component>

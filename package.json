@@ -25,12 +25,12 @@
     "test": "node node_modules/@dazn/kopytko-unit-testing-framework/scripts/test.js"
   },
   "dependencies": {
-    "@dazn/kopytko-utils": "^2.2.2"
+    "@dazn/kopytko-utils": "^2.3.2"
   },
   "devDependencies": {
     "@dazn/eslint-plugin-kopytko": "^2.1.0",
     "@dazn/kopytko-packager": "^1.2.3",
-    "@dazn/kopytko-unit-testing-framework": "^2.0.1",
+    "@dazn/kopytko-unit-testing-framework": "^2.3.1",
     "eslint": "^8.21.0"
   },
   "license": "MIT",

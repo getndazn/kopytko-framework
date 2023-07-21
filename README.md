@@ -30,3 +30,7 @@ and used in apps configured by Kopytko Packager.
 - Store: a mechanism to store reusable data. Docs available in [docs/store.md](docs/store.md)
 - Theme: manages UI configuration and allows easy use in any place. Full documentation available in [docs/theme.md](docs/theme.md)
 
+
+## Versions migration
+
+To update Kopytko Framework to the latest major version, please follow the [Versions migration guide](docs/versions-migration-guide.md)

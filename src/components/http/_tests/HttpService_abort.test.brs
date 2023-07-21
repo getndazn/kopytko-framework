@@ -4,7 +4,7 @@ function TestSuite__HttpService_abort() as Object
 
   ts.addTest("should abort request", function (ts as Object) as String
     ' Given
-    m.__httpService.__portMessage = Event({
+    m.__portMessage = Event({
       field: "abort",
       type: "roSGNodeEvent",
     })

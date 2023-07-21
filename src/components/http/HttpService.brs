@@ -1,6 +1,11 @@
+' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/getType.brs from @dazn/kopytko-utils
+' @import /components/http/cache/HttpCache.brs
 ' @import /components/http/HttpRequest.brs
 ' @import /components/http/HttpResponse.brs
+' @import /components/http/HttpResponseCreator.brs
+' @import /components/http/HttpStatusCodes.const.brs
+' @import /components/utils/kopytkoWait.brs
 
 ' WARNING: the service must be used on the Task threads.
 ' @class
@@ -17,62 +22,79 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
   prototype._httpInterceptors = httpInterceptors
   prototype._port = port
 
-  ' Performs HTTP request
+  prototype._cache = HttpCache()
+  prototype._responseCreator = HttpResponseCreator()
+  prototype._statusCodes = HttpStatusCodes()
+
+  ' Performs HTTP request or returns a stored response
+  ' Warning: if a stored response is returned, HttpInterceptors are omitted
   ' @param {HttpRequest~Options} options
-  ' @returns {HttpResponse|Invalid}
+  ' @returns {HttpResponseModel|Invalid}
   prototype.fetch = function (options as Object) as Object
-    request = HttpRequest(options, m._httpInterceptors).setMessagePort(m._port)
+    request = HttpRequest(options, m._httpInterceptors)
+    request.setMessagePort(m._port)
+
+    cachedResponse = m._getCachedResponse(request)
+    if (cachedResponse <> Invalid)
+      if (NOT cachedResponse.hasExpired())
+        return cachedResponse.toNode()
+      end if
+
+      eTag = getProperty(cachedResponse.getHeaders(), "eTag", "")
+      if (eTag <> "")
+        request.setHeader("If-None-Match", eTag)
+      end if
+    end if
+
     request.send()
 
-    return m._waitForResponse(request)
+    return m._waitForResponse(request, cachedResponse)
   end function
 
   ' @private
-  prototype._waitForResponse = function (request as Object) as Object
+  prototype._getCachedResponse = function (request as Object) as Object
+    if (NOT request.isCachingEnabled()) then return Invalid
+
+    return m._cache.read(request.getEscapedUrl())
+  end function
+
+  ' @private
+  prototype._waitForResponse = function (request as Object, cachedResponse as Object) as Object
     while (true)
-      message = m._waitForMessage()
+      message = kopytkoWait(m._TIMEOUT_INTERVAL_CHECK, m._port)
 
       if (getType(message) = "roUrlEvent")
         if (message.getInt() = m._HTTP_REQUEST_COMPLETED)
-          return m._handleResponse(request, message)
+          return m._handleResponse(request, message, cachedResponse)
         end if
       else if (getType(message) = "roSGNodeEvent" AND message.getField() = "abort")
         request.abort()
 
         return Invalid
       else if (message = Invalid AND request.isTimedOut())
-        return m._getTimeoutResponse(request)
+        return HttpResponse({ httpStatusCode: m._TIMEOUT_ERROR_CODE, id: request.getId() }).toNode()
       end if
     end while
   end function
 
   ' @private
-  prototype._waitForMessage = function () as Object
-    return Wait(m._TIMEOUT_INTERVAL_CHECK, m._port)
-  end function
-
-  ' @private
-  prototype._handleResponse = function (request as Object, urlEvent as Object) as Object
+  prototype._handleResponse = function (request as Object, urlEvent as Object, cachedResponse as Object) as Object
     for each interceptor in m._httpInterceptors
       interceptor.interceptResponse(request, urlEvent)
     end for
 
-    return HttpResponse({
-      rawData: urlEvent.getString(),
-      httpStatusCode: urlEvent.getResponseCode(),
-      failureReason: urlEvent.getFailureReason(),
-      id: request.getId(),
-      headers: urlEvent.getResponseHeaders(),
-      requestOptions: request.getOptions(),
-    }).toNode()
-  end function
+    response = m._responseCreator.create(urlEvent, request)
 
-  ' @private
-  prototype._getTimeoutResponse = function (request as Object) as Object
-    return HttpResponse({
-      httpStatusCode: m._TIMEOUT_ERROR_CODE,
-      id: request.getId(),
-    }).toNode()
+    responseCode = response.getStatusCode()
+    if (responseCode >= m._statusCodes.SUCCESS AND responseCode < m._statusCodes.REDIRECTION)
+      if (request.getMethod() = "GET" AND response.isReusable())
+        m._cache.store(request, response)
+      end if
+    else if (responseCode = m._statusCodes.NOT_MODIFIED)
+      return m._cache.prolong(request, cachedResponse, response.getMaxAge()).toNode()
+    end if
+
+    return response.toNode()
   end function
 
   return prototype
