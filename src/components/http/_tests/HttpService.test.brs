@@ -16,7 +16,7 @@ function HttpServiceTestSuite() as Object
     mockFunction("cachedHttpResponse.getHeaders").returnValue({})
     mockFunction("cachedHttpResponse.hasExpired").returnValue(false)
     mockFunction("cachedHttpResponse.toNode").returnValue(Invalid)
-    mockFunction("getType").implementation(function (params as Object, m as Object) as String
+    mockFunction("getType").implementation(function (params, _m)
       value = params.value
 
       if (value <> Invalid AND value.eventScheme <> Invalid)
@@ -31,12 +31,16 @@ function HttpServiceTestSuite() as Object
     mockFunction("httpRequest.getEscapedUrl").returnValue("")
     mockFunction("httpRequest.getId").returnValue("id")
     mockFunction("httpRequest.getMethod").returnValue("GET")
-    mockFunction("httpRequest.getOptions").implementation(function (params, m) : return m.__params : end function)
+    mockFunction("httpRequest.getOptions").implementation(function (params, m)
+      return m.__params
+    end function)
     mockFunction("httpRequest.isCachingEnabled").returnValue(false)
     mockFunction("httpRequest.send").returnValue(Invalid)
     mockFunction("httpRequest.setMessagePort").returnValue(Invalid)
     mockFunction("httpResponseCreator.create").returnValue(HttpResponse({ id: "any", requestOptions: {} }))
-    mockFunction("kopytkoWait").implementation(function (params, m) : return m.__portMessage : end function)
+    mockFunction("kopytkoWait").implementation(function (params, m)
+      return m.__portMessage
+    end function)
 
     m.__params = {
       id: "123456",

@@ -92,7 +92,7 @@ function HttpResponse(responseData as Object) as Object
     end if
 
     expires = m._headers[m._HEADER_EXPIRES]
-    if (expires <> invalid)
+    if (expires <> Invalid)
       expiresInSeconds = imfFixdateToSeconds(expires)
       if (expiresInSeconds > 0)
         maxAge = expiresInSeconds - DateTime().asSeconds()

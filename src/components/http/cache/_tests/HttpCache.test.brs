@@ -28,7 +28,6 @@ function TestSuite__HttpCache() as Object
     storedResponseData = { id: "stored" }
     mockFunction("cacheFS.read").returnValue(storedResponseData)
     escapedUrl = "cachedUrl"
-    expectedResult = CachedHttpResponse(storedResponseData)
 
     ' When
     result = m.__httpCache.read(escapedUrl)

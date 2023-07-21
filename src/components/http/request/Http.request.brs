@@ -70,9 +70,10 @@ end sub
 ' Allows to rerun the same instance of a task
 ' @private
 sub _onStateChange(event as Object)
+  state = event.getData()
   m.top.unobserveFieldScoped("abort")
 
-  if (LCase(m.top.state) = "run")
+  if (LCase(state) = "run")
     m._port = CreateObject("roMessagePort")
     m.top.observeFieldScoped("abort", m._port)
   end if

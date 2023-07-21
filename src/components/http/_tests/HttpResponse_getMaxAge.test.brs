@@ -36,7 +36,7 @@ function TestSuite__HttpResponse_getMaxAge() as Object
 
   it("returns time left based on Expires value if no Cache-Control header", function (_ts)
     ' Given
-    mockFunction("imfFixdateToSeconds").implementation(function (params as Object, m as Object) as Object
+    mockFunction("imfFixdateToSeconds").implementation(function (params, _m)
       if params.imfFixdate = "Tue, 20 Apr 2022 04:20:00 GMT"
         return 400 ' different than header value but it does not matter
       end if
@@ -61,7 +61,7 @@ function TestSuite__HttpResponse_getMaxAge() as Object
 
   it("returns MAX_AGE_NOT_ALLOWED if Expires value is in the past and if no Cache-Control header", function (_ts)
     ' Given
-    mockFunction("imfFixdateToSeconds").implementation(function (params as Object, m as Object) as Object
+    mockFunction("imfFixdateToSeconds").implementation(function (params, _m)
       if params.imfFixdate = "Tue, 20 Apr 2022 04:20:00 GMT"
         return 400 ' different than header value but it does not matter
       end if
