@@ -7,7 +7,7 @@ function TestSuite__HttpCache() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "HttpCache"
 
-  beforeEach(sub (_ts as Object)
+  beforeEach(sub (_ts)
     mockFunction("cacheFS.read").returnValue(Invalid)
     mockFunction("cacheFS.write").returnValue(true)
     mockFunction("cachedHttpResponse.serialise").returnValue({})

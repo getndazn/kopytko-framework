@@ -5,7 +5,7 @@
 function StoreFacadeTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  beforeEach(sub (_ts as Object)
+  beforeEach(sub (_ts)
     m._store = Invalid
     m.__spy = {
       subscriber: {

@@ -5,7 +5,7 @@
 function HttpResponseTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  beforeEach(sub (_ts as Object)
+  beforeEach(sub (_ts)
     mockFunction("dateTime.asSeconds").returnValue(777)
     mockFunction("imfFixdateToSeconds").returnValue(0)
   end sub)

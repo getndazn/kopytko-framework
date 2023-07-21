@@ -12,7 +12,7 @@
 function HttpServiceTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  beforeEach(sub (_ts as Object)
+  beforeEach(sub (_ts)
     mockFunction("cachedHttpResponse.getHeaders").returnValue({})
     mockFunction("cachedHttpResponse.hasExpired").returnValue(false)
     mockFunction("cachedHttpResponse.toNode").returnValue(Invalid)
