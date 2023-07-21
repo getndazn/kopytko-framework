@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/getndazn/kopytko-framework/compare/v1.4.2...v2.0.0) (2023-07-21)
+
+
+* feat!: Add HTTP request and support HTTP caching (#49) ([1a09ae8](https://github.com/getndazn/kopytko-framework/commit/1a09ae8e4b765dabe45136d60c45874eb7c9ebb4)), closes [#49](https://github.com/getndazn/kopytko-framework/issues/49)
+
+
+### BREAKING CHANGES
+
+* New HttpRequest node extending current base Request task node
+
 ## [1.4.2](https://github.com/getndazn/kopytko-framework/compare/v1.4.1...v1.4.2) (2023-04-28)
 
 
