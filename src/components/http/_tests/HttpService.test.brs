@@ -38,7 +38,7 @@ function HttpServiceTestSuite() as Object
     mockFunction("httpRequest.send").returnValue(Invalid)
     mockFunction("httpRequest.setMessagePort").returnValue(Invalid)
     mockFunction("httpResponseCreator.create").returnValue(HttpResponse({ id: "any", requestOptions: {} }))
-    mockFunction("kopytkoWait").implementation(function (params, m)
+    mockFunction("kopytkoWait").implementation(function (_params, m)
       return m.__portMessage
     end function)
 
