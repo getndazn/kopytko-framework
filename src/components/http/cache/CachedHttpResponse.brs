@@ -24,7 +24,7 @@ function CachedHttpResponse(responseData as Object) as Object
     m._time = DateTime().asSeconds()
 
     cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
-    if (cacheControl <> invalid AND cacheControl <> "")
+    if (cacheControl <> Invalid AND cacheControl <> "")
       newCacheControl = m._getMaxAgeRegex().replace(cacheControl, m._CACHE_CONTROL_MAX_AGE + maxAge.toStr())
       if (newCacheControl = cacheControl AND NOT m._getMaxAgeRegex().isMatch(cacheControl))
         newCacheControl += ", " + m._CACHE_CONTROL_MAX_AGE + maxAge.toStr()
