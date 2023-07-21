@@ -2,7 +2,7 @@ function TestSuite__StoreFacade_subscribe() as Object
   ts = StoreFacadeTestSuite()
   ts.name = "StoreFacade_subscribe"
 
-  it("should add 1 subscriber", function (_ts as Object) as String
+  it("should add 1 subscriber", function (_ts)
     ' Given
     expectedResult = 1
     store = StoreFacade()
@@ -14,7 +14,7 @@ function TestSuite__StoreFacade_subscribe() as Object
     return expect(store._subscriptions.count()).toBe(1)
   end function)
 
-  it("should add 2 subscribers", function (_ts as Object) as String
+  it("should add 2 subscribers", function (_ts)
     ' Given
     store = StoreFacade()
 
@@ -26,7 +26,7 @@ function TestSuite__StoreFacade_subscribe() as Object
     return expect(store._subscriptions.count()).toBe(2)
   end function)
 
-  it("should call callback in sequence", function (_ts as Object) as String
+  it("should call callback in sequence", function (_ts)
     ' Given
     store = StoreFacade()
 
@@ -40,7 +40,7 @@ function TestSuite__StoreFacade_subscribe() as Object
     return expect(m.__spy.subscriber.calledTimes).toBe(3)
   end function)
 
-  it("should call callback with the given context when it is provided", function (_ts as Object) as String
+  it("should call callback with the given context when it is provided", function (_ts)
     ' Given
     context = { __spy: { contextSubscriber: { calledTimes: 0 } } }
     store = StoreFacade()

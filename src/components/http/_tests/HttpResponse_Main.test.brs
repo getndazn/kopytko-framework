@@ -2,7 +2,7 @@ function TestSuite__HttpResponse_Main() as Object
   ts = HttpResponseTestSuite()
   ts.name = "HttpResponse - Main"
 
-  it("should create successful response", function (_ts as Object) as String
+  it("should create successful response", function (_ts)
     ' Given
     props = {
       id: "123456",
@@ -28,7 +28,7 @@ function TestSuite__HttpResponse_Main() as Object
     return expect(response.toNode()).toEqual(expectedResult)
   end function)
 
-  it("should create error response", function (_ts as Object) as String
+  it("should create error response", function (_ts)
     ' Given
     props = {
       id: "123456",
