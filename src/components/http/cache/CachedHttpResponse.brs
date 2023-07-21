@@ -1,3 +1,5 @@
+' @import /components/getProperty.brs from @dazn/kopytko-utils
+' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @import /components/http/HttpResponse.brs
 function CachedHttpResponse(responseData as Object) as Object
   prototype = HttpResponse(responseData)
@@ -23,8 +25,8 @@ function CachedHttpResponse(responseData as Object) as Object
   prototype.setRevalidatedCache = sub (maxAge as Integer)
     m._time = DateTime().asSeconds()
 
-    cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
-    if (cacheControl <> Invalid AND cacheControl <> "")
+    cacheControl = getProperty(m._headers, m._HEADER_CACHE_CONTROL, "")
+    if (cacheControl <> "")
       newCacheControl = m._getMaxAgeRegex().replace(cacheControl, m._CACHE_CONTROL_MAX_AGE + maxAge.toStr())
       if (newCacheControl = cacheControl AND NOT m._getMaxAgeRegex().isMatch(cacheControl))
         newCacheControl += ", " + m._CACHE_CONTROL_MAX_AGE + maxAge.toStr()

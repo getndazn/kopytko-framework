@@ -1,3 +1,4 @@
+' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/http/cache/HttpCache.brs
 ' @import /components/http/HttpRequest.brs
@@ -39,8 +40,8 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
         return cachedResponse.toNode()
       end if
 
-      eTag = cachedResponse.getHeaders().eTag
-      if (eTag <> Invalid AND eTag <> "")
+      eTag = getProperty(cachedResponse.getHeaders(), "eTag", "")
+      if (eTag <> "")
         request.setHeader("If-None-Match", eTag)
       end if
     end if

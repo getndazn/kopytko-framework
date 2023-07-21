@@ -63,13 +63,15 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
   ' Performs actual request.
   ' @returns {Object} - Returns instance
   prototype.send = function () as Object
+    method = m.getMethod()
+
+    if (method <> "POST" AND method <> "PUT") then m._headers.delete("Content-Type")
     m._urlTransfer.setHeaders(m._headers)
 
     for each interceptor in m._httpInterceptors
       interceptor.interceptRequest(m, m._urlTransfer)
     end for
 
-    method = m.getMethod()
     if (method = "GET")
       m._urlTransfer.asyncGetToString()
     else if (method = "POST" OR method = "PUT" OR method = "DELETE")
