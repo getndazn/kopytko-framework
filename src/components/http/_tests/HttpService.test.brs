@@ -31,7 +31,7 @@ function HttpServiceTestSuite() as Object
     mockFunction("httpRequest.getEscapedUrl").returnValue("")
     mockFunction("httpRequest.getId").returnValue("id")
     mockFunction("httpRequest.getMethod").returnValue("GET")
-    mockFunction("httpRequest.getOptions").implementation(function (params, m)
+    mockFunction("httpRequest.getOptions").implementation(function (_params, m)
       return m.__params
     end function)
     mockFunction("httpRequest.isCachingEnabled").returnValue(false)
