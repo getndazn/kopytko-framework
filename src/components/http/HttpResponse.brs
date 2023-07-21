@@ -80,7 +80,7 @@ function HttpResponse(responseData as Object) as Object
   ' @returns {Integer}
   prototype.getMaxAge = function () as Integer
     cacheControl = m._headers[m._HEADER_CACHE_CONTROL]
-    if (cacheControl <> invalid)
+    if (cacheControl <> Invalid)
       if (cacheControl.inStr(m._CACHE_CONTROL_NO_CACHE) > 0)
         return m.MAX_AGE_NOT_ALLOWED
       end if
