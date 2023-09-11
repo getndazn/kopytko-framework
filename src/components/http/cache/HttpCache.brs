@@ -4,7 +4,7 @@
 function HttpCache() as Object
   prototype = {}
 
-  prototype._cacheFS = CacheFS()
+  prototype._cacheFS = CacheFS("httpCache")
 
   ' @param {String} escapedUrl
   ' @returns {CachedHttpResponse|Invalid}
@@ -36,6 +36,11 @@ function HttpCache() as Object
     m._cacheFS.write(escapedUrl, response.serialise())
 
     return response
+  end function
+
+  ' @returns {Boolean} - true if the cache in scope has been cleared
+  prototype.clear = function () as Boolean
+    return m._cacheFS.clear()
   end function
 
   return prototype

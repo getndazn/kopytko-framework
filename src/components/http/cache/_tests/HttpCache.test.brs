@@ -98,5 +98,19 @@ function TestSuite__HttpCache() as Object
     ]
   end function)
 
+  it("clear returns true when scoped cache is cleared", function (_ts)
+    ' Given
+    mockFunction("cacheFS.clear").returnValue(true)
+
+    ' When
+    result = m.__httpCache.clear()
+
+    ' Then
+    return [
+      expect("CacheFS.clear").toHaveBeenCalled()
+      expect(result).toBeTrue()
+    ]
+  end function)
+
   return ts
 end function

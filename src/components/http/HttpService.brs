@@ -51,6 +51,12 @@ function HttpService(port as Object, httpInterceptors = [] as Object) as Object
     return m._waitForResponse(request, cachedResponse)
   end function
 
+  ' Clears the cache in scope of this service
+  ' @returns {Boolean} - true if scoped cache has been cleared
+  prototype.clearCache = function () as Boolean
+    return m._cache.clear()
+  end function
+
   ' @private
   prototype._getCachedResponse = function (request as Object) as Object
     if (NOT request.isCachingEnabled()) then return Invalid
