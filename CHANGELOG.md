@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/getndazn/kopytko-framework/compare/v2.0.0...v2.1.0) (2023-09-13)
+
+
+### Features
+
+* HttpCache improvements - supporting CacheFS folders ([#51](https://github.com/getndazn/kopytko-framework/issues/51)) ([11752b5](https://github.com/getndazn/kopytko-framework/commit/11752b5bbcde4864ac44c49a66f38c34758d7a56))
+
 # [2.0.0](https://github.com/getndazn/kopytko-framework/compare/v1.4.2...v2.0.0) (2023-07-21)
 
 
