@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/getndazn/kopytko-framework/compare/v2.1.0...v2.1.1) (2023-10-20)
+
+
+### Bug Fixes
+
+* attaching observer in kopytkoRoot ([#52](https://github.com/getndazn/kopytko-framework/issues/52)) ([ee85fd0](https://github.com/getndazn/kopytko-framework/commit/ee85fd03e5bd8aab91f089e925f5e64197965974))
+
 # [2.1.0](https://github.com/getndazn/kopytko-framework/compare/v2.0.0...v2.1.0) (2023-09-13)
 
 
