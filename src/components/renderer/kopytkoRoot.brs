@@ -1,16 +1,16 @@
 sub initKopytkoRoot(dynamicProps as Object)
   m._dynamicProps = dynamicProps
 
-  for each prop in dynamicProps
-    m.top.observeFieldScoped(prop, "kopytkoRoot_dynamicPropChanged")
-  end for
-
   dynamicPropsValues = {}
   for each prop in dynamicProps
     dynamicPropsValues[prop] = m.top[prop]
   end for
 
   initKopytko(dynamicPropsValues)
+
+  for each prop in dynamicProps
+    m.top.observeFieldScoped(prop, "kopytkoRoot_dynamicPropChanged")
+  end for
 end sub
 
 sub destroyKopytkoRoot()
