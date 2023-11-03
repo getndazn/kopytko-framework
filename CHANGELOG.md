@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/getndazn/kopytko-framework/compare/v2.1.1...v2.1.2) (2023-11-03)
+
+
+### Bug Fixes
+
+* HttpResponse.rawData accepts only AssocArray ([#54](https://github.com/getndazn/kopytko-framework/issues/54)) ([33b5caa](https://github.com/getndazn/kopytko-framework/commit/33b5caa2df3d3ccb442049c824067146876629fa))
+
 ## [2.1.1](https://github.com/getndazn/kopytko-framework/compare/v2.1.0...v2.1.1) (2023-10-20)
 
 
