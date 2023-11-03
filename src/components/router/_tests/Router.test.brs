@@ -244,7 +244,6 @@ end function
 
 sub RouterTestSuite__TearDown(ts as Object)
   m.top.activatedRoute = CreateObject("roSGNode", "ActivatedRoute")
-  m.top.activatedPath = ""
   m.top.url = "/"
 
   m._history = []

@@ -6,6 +6,8 @@
     <field id="data" type="assocarray" />
     <field id="options" type="assocarray" />
     <field id="result" type="node" />
+    <!-- Task fields -->
+    <field id="control" type="string" />
   </interface>
 
   <script type="text/brightscript" uri="Request.mock.brs" />

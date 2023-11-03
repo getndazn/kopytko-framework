@@ -9,6 +9,7 @@
 ' @param {String} responseData.failureReason
 ' @param {Object} responseData.headers
 ' @param {Integer} responseData.httpStatusCode
+' @param {Object} responseData.rawData
 ' @param {Object} responseData.requestOptions
 ' @param {Integer} [responseData.time]
 function HttpResponse(responseData as Object) as Object
@@ -25,7 +26,7 @@ function HttpResponse(responseData as Object) as Object
   prototype._failureReason = getProperty(responseData, "failureReason", "OK")
   prototype._headers = getProperty(responseData, "headers", {})
   prototype._httpStatusCode = getProperty(responseData, "httpStatusCode", -1)
-  prototype._rawData = getProperty(responseData, "rawData", {})
+  prototype._rawData = getProperty(responseData, "rawData")
   prototype._requestOptions = responseData.requestOptions
   prototype._time = DateTime().asSeconds()
 
@@ -44,6 +45,7 @@ function HttpResponse(responseData as Object) as Object
       isReusable: m.isReusable(),
       isSuccess: m._isSuccess(),
       maxAge: m.getMaxAge(),
+      raw: { data: m._rawData },
       rawData: m._rawData,
       requestOptions: m._requestOptions,
     })

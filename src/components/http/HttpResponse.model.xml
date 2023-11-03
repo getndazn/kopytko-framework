@@ -9,7 +9,8 @@
     <field id="isReusable" type="boolean" />
     <field id="isSuccess" type="boolean" />
     <field id="maxAge" type="integer" />
-    <field id="rawData" type="assocarray" />
+    <field id="raw" type="assocarray" />
+    <field id="rawData" type="assocarray" /> <!-- @deprecated - raw field contains data key with rawData value now - raw = { data: <rawData value>} -->
     <field id="requestOptions" type="assocarray" />
   </interface>
 </component>
