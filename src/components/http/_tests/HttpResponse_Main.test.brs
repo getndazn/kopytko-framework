@@ -18,6 +18,7 @@ function TestSuite__HttpResponse_Main() as Object
       headers: props.headers,
       id: props.id,
       isSuccess: true,
+      raw: { data: props.rawData },
       rawData: props.rawData,
     })
 
@@ -43,6 +44,7 @@ function TestSuite__HttpResponse_Main() as Object
       httpStatusCode: props.httpStatusCode,
       failureReason: props.failureReason,
       headers: props.headers,
+      raw: { data: props.rawData },
       rawData: props.rawData,
     })
 

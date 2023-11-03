@@ -52,7 +52,7 @@ end function
 
 function parseResponse(response as Object) as Object
   user = CreateObject("roSGNode", "User") ' example custom roSGNode extending Node
-  user.status = response.rawData.status
+  user.status = response.raw.data.status
 
   return user
 end function
