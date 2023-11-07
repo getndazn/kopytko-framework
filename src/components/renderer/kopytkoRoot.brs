@@ -1,7 +1,7 @@
 ' @import /components/ternary.brs from @dazn/kopytko-utils
 
 sub initKopytkoRoot(dynamicProps as Object)
-  m._dynamicProps = ternary(dynamicProps <> invalid, dynamicProps, [])
+  m._dynamicProps = ternary(Type(dynamicProps) = "roArray", dynamicProps, [])
 
   dynamicPropsValues = {}
   for each prop in m._dynamicProps
