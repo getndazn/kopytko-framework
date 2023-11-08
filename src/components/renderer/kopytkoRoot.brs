@@ -16,7 +16,7 @@ sub initKopytkoRoot(dynamicProps as Object)
 end sub
 
 sub destroyKopytkoRoot()
-  if m._dynamicProps <> invalid
+  if m._dynamicProps <> Invalid
     for each prop in m._dynamicProps
       m.top.unobserveFieldScoped(prop)
     end for
