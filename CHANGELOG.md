@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/getndazn/kopytko-framework/compare/v2.1.2...v2.1.3) (2023-11-08)
+
+
+### Bug Fixes
+
+* more defensive code in KopytkoRoot ([#55](https://github.com/getndazn/kopytko-framework/issues/55)) ([6d640c1](https://github.com/getndazn/kopytko-framework/commit/6d640c12a28abdda69b86db92ee083c3f2494b3c))
+
 ## [2.1.2](https://github.com/getndazn/kopytko-framework/compare/v2.1.1...v2.1.2) (2023-11-03)
 
 
