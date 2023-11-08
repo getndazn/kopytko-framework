@@ -1,8 +1,10 @@
+' @import /components/ternary.brs from @dazn/kopytko-utils
+
 sub initKopytkoRoot(dynamicProps as Object)
-  m._dynamicProps = dynamicProps
+  m._dynamicProps = ternary(Type(dynamicProps) = "roArray", dynamicProps, [])
 
   dynamicPropsValues = {}
-  for each prop in dynamicProps
+  for each prop in m._dynamicProps
     dynamicPropsValues[prop] = m.top[prop]
   end for
 
@@ -14,11 +16,14 @@ sub initKopytkoRoot(dynamicProps as Object)
 end sub
 
 sub destroyKopytkoRoot()
-  for each prop in m._dynamicProps
-    m.top.unobserveFieldScoped(prop)
-  end for
+  if m._dynamicProps <> Invalid
+    for each prop in m._dynamicProps
+      m.top.unobserveFieldScoped(prop)
+    end for
 
-  m._dynamicProps = Invalid
+    m._dynamicProps = Invalid
+  end if
+
   destroyKopytko()
 end sub
 
