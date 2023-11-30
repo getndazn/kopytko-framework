@@ -8,7 +8,7 @@ sub init()
   _global.addFields({
     router: m.top,
   })
-  m.top.activatedRoute = _createRoute({})
+  m.top.activatedRoute = _createRoute()
 
   m._history = []
 end sub
@@ -17,11 +17,11 @@ sub navigate(navigateData as Object)
   url = buildUrl(navigateData.path, navigateData.params)
   if (url = m.top.url) then return ' Avoid doubling url
 
-  if (navigateData.skipInHistory = Invalid OR (NOT navigateData.skipInHistory))
+  isBackJourney = getProperty(navigateData, "isBackJourney", false)
+
+  if (NOT getProperty(navigateData, "skipInHistory", false))
     _updateHistory()
   end if
-
-  isBackJourney = getProperty(navigateData, "isBackJourney", false)
 
   ' Needs to be set before activatedRoute as _getPreviousRoute uses the previous value of activatedRoute.
   m.top.previousRoute = _getPreviousRoute(isBackJourney)
@@ -36,13 +36,13 @@ sub navigate(navigateData as Object)
 end sub
 
 function back(_backData = {} as Object) as Boolean
-  previousLocation = m._history.pop()
+  previousRoute = m._history.pop()
 
-  if (previousLocation = Invalid) then return false
+  if (previousRoute = Invalid) then return false
 
-  previousLocation.skipInHistory = true
-  previousLocation.isBackJourney = true
-  navigate(previousLocation)
+  previousRoute.skipInHistory = true
+  previousRoute.isBackJourney = true
+  navigate(previousRoute)
 
   return true
 end function
@@ -51,16 +51,12 @@ sub resetHistory(rootPath = "" as String)
   m._history = []
 
   if (rootPath <> "")
-    rootRoute = _createRoute({ path: rootPath })
-
-    m._history.push(_createHistoryItem(rootRoute))
+    m._history.push(_createRoute({ path: rootPath }))
   end if
 end sub
 
 function _getPreviousRoute(isBackJourney as Boolean) as Object
-  if (isBackJourney OR m.top.activatedRoute.shouldSkip)
-    return _createRoute(m._history.peek())
-  end if
+  if (isBackJourney OR m.top.activatedRoute.shouldSkip) then return m._history.peek()
 
   return NodeUtils().cloneNode(m.top.activatedRoute)
 end function
@@ -68,28 +64,12 @@ end function
 sub _updateHistory()
   if (m.top.url = "" OR m.top.activatedRoute.shouldSkip) then return
 
-  m._history.push(_createHistoryItem(m.top.activatedRoute))
+  m._history.push(NodeUtils().cloneNode(m.top.activatedRoute))
 end sub
 
-function _createRoute(routeData as Object) as Object
-  if (routeData = Invalid) then return Invalid
-
+function _createRoute(routeData = {} as Object) as Object
   route = CreateObject("roSGNode", "ActivatedRoute")
   route.setFields(routeData)
 
   return route
 end function
-
-function _createHistoryItem(route as Object) as Object
-  historyItem = route.getFields()
-  ' TODO: implement ObjectUtils().omit function in kopytko-utils and use it here
-  _deleteKeys(historyItem, ["change", "focusable", "focusedChild", "id"])
-
-  return historyItem
-end function
-
-sub _deleteKeys(assocArray as Object, keys as Object)
-  for each key in keys
-    assocArray.delete(key)
-  end for
-end sub

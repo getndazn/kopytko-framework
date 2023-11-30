@@ -9,6 +9,7 @@
     <field id="renderedUrl" type="string" />
     <field id="routeConfig" type="assocarray" />
     <field id="shouldSkip" type="boolean" />
+    <field id="skipInHistory" type="boolean" />
     <field id="virtualPath" type="string" />
   </interface>
 </component>
