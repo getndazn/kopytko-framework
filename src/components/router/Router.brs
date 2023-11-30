@@ -13,27 +13,27 @@ sub init()
   m._history = []
 end sub
 
-sub navigate(data as Object)
-  url = buildUrl(data.path, data.params)
+sub navigate(navigateData as Object)
+  url = buildUrl(navigateData.path, navigateData.params)
   if (url = m.top.url) then return ' Avoid doubling url
 
-  if (data.skipInHistory = Invalid OR (NOT data.skipInHistory))
+  if (navigateData.skipInHistory = Invalid OR (NOT navigateData.skipInHistory))
     _updateHistory()
   end if
 
   ' Needs to be set before activatedRoute as _getPreviousRoute uses the previous value of activatedRoute.
-  m.top.previousRoute = _getPreviousRoute(data)
+  m.top.previousRoute = _getPreviousRoute(navigateData)
 
-  m.top.activatedRoute.path = getProperty(data, "path", "")
-  m.top.activatedRoute.params = getProperty(data, "params", {})
-  m.top.activatedRoute.backJourneyData = data.backJourneyData
-  m.top.activatedRoute.isBackJourney = getProperty(data, "isBackJourney", false)
+  m.top.activatedRoute.path = getProperty(navigateData, "path", "")
+  m.top.activatedRoute.params = getProperty(navigateData, "params", {})
+  m.top.activatedRoute.backJourneyData = navigateData.backJourneyData
+  m.top.activatedRoute.isBackJourney = getProperty(navigateData, "isBackJourney", false)
   m.top.activatedRoute.shouldSkip = false
-  m.top.activatedRoute.virtualPath = getProperty(data, "virtualPath", "")
+  m.top.activatedRoute.virtualPath = getProperty(navigateData, "virtualPath", "")
   m.top.url = url
 end sub
 
-function back(data = {} as Object) as Boolean
+function back(_backData = {} as Object) as Boolean
   previousLocation = m._history.pop()
 
   if (previousLocation = Invalid) then return false
