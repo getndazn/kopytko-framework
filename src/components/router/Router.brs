@@ -21,13 +21,15 @@ sub navigate(navigateData as Object)
     _updateHistory()
   end if
 
+  isBackJourney = getProperty(navigateData, "isBackJourney", false)
+
   ' Needs to be set before activatedRoute as _getPreviousRoute uses the previous value of activatedRoute.
-  m.top.previousRoute = _getPreviousRoute(navigateData)
+  m.top.previousRoute = _getPreviousRoute(isBackJourney)
 
   m.top.activatedRoute.path = getProperty(navigateData, "path", "")
   m.top.activatedRoute.params = getProperty(navigateData, "params", {})
   m.top.activatedRoute.backJourneyData = navigateData.backJourneyData
-  m.top.activatedRoute.isBackJourney = getProperty(navigateData, "isBackJourney", false)
+  m.top.activatedRoute.isBackJourney = isBackJourney
   m.top.activatedRoute.shouldSkip = false
   m.top.activatedRoute.virtualPath = getProperty(navigateData, "virtualPath", "")
   m.top.url = url
@@ -55,9 +57,7 @@ sub resetHistory(rootPath = "" as String)
   end if
 end sub
 
-function _getPreviousRoute(navigationData as Object) as Object
-  isBackJourney = getProperty(navigationData, "isBackJourney", false)
-
+function _getPreviousRoute(isBackJourney as Boolean) as Object
   if (isBackJourney OR m.top.activatedRoute.shouldSkip)
     return _createRoute(m._history.peek())
   end if
