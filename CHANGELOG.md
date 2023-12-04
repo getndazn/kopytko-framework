@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/getndazn/kopytko-framework/compare/v2.1.3...v2.1.4) (2023-12-04)
+
+
+### Bug Fixes
+
+* isCachingEnabled checks incorrect options object ([#58](https://github.com/getndazn/kopytko-framework/issues/58)) ([dd109bb](https://github.com/getndazn/kopytko-framework/commit/dd109bbf0159487a119d3b4822c7b60859e05732))
+
 ## [2.1.3](https://github.com/getndazn/kopytko-framework/compare/v2.1.2...v2.1.3) (2023-11-08)
 
 
