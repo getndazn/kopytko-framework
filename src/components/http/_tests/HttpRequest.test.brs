@@ -260,6 +260,39 @@ function TestSuite__HttpRequest() as Object
     return ts.assertMethodWasCalled("UrlTransfer.asyncCancel")
   end function)
 
+  ts.addTest("isCachingEnabled - should enable caching by default", function (ts as Object) as String
+    ' Given
+    options = {
+      id: "123456",
+      url: "http://test.com",
+      method: "GET",
+    }
+
+    ' When
+    request = HttpRequest(options)
+    request.send()
+
+    ' Then
+    return ts.assertTrue(request.isCachingEnabled())
+  end function)
+
+  ts.addTest("isCachingEnabled - should disable caching", function (ts as Object) as String
+    ' Given
+    options = {
+      id: "123456",
+      url: "http://test.com",
+      method: "GET",
+      enableCaching: false,
+    }
+
+    ' When
+    request = HttpRequest(options)
+    request.send()
+
+    ' Then
+    return ts.assertFalse(request.isCachingEnabled())
+  end function)
+
   ts.addTest("cancel - should cancel request", function (ts as Object) as String
     ' Given
     options = {
