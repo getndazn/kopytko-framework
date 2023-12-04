@@ -148,7 +148,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
   ' @returns {Boolean}
   prototype.isCachingEnabled = function () as Boolean
-    return getProperty(m.options, "enableCaching", true)
+    return getProperty(m._options, "enableCaching", true)
   end function
 
   prototype.setHeader = sub (name as String, value as Dynamic)
