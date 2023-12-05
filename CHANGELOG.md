@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/getndazn/kopytko-framework/compare/v2.1.4...v2.1.5) (2023-12-05)
+
+
+### Bug Fixes
+
+* wrong previousRoute after back journey ([#57](https://github.com/getndazn/kopytko-framework/issues/57)) ([cdd6652](https://github.com/getndazn/kopytko-framework/commit/cdd6652db8f85b020ffb734b8d51203f87c06493))
+
 ## [2.1.4](https://github.com/getndazn/kopytko-framework/compare/v2.1.3...v2.1.4) (2023-12-04)
 
 
