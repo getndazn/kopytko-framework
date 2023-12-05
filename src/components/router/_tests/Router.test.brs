@@ -1,5 +1,6 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/utils/KopytkoGlobalNode.brs
+
 function TestSuite__Router() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "Router"
@@ -55,11 +56,11 @@ function TestSuite__Router() as Object
       path: "/previous-path",
       params: { previousParam: "previousValue" },
       backJourneyData: { data: "kopytko" },
-      isBackJourney: true,
+      isBackJourney: false,
       shouldSkip: false,
       virtualPath: "/virtual-path",
     }
-    m.top.activatedRoute.setFields(data)
+    navigate(data)
 
     ' When
     navigate({ path: "new-path" })
@@ -160,6 +161,38 @@ function TestSuite__Router() as Object
     return ts.assertTrue(result)
   end function)
 
+  ts.addTest("back - sets proper previousRoute", function (ts as Object) as String
+    ' Given
+    data = {
+      path: "/old-path",
+      params: { previousParam: "oldValue" },
+      backJourneyData: { data: "old" },
+      isBackJourney: false,
+      shouldSkip: false,
+      virtualPath: "/virtual-path",
+    }
+    navigate(data)
+    navigate({ path: "new-path" })
+    navigate({ path: "newest-path" })
+
+    ' When
+    back()
+
+    ' Then
+    previousRoute = m.top.previousRoute
+    actual = {
+      backJourneyData: previousRoute.backJourneyData,
+      isBackJourney: previousRoute.isBackJourney,
+      params: previousRoute.params,
+      path: previousRoute.path,
+      shouldSkip: previousRoute.shouldSkip,
+      virtualPath: previousRoute.virtualPath,
+    }
+    expected = data
+
+    return ts.assertEqual(actual, expected)
+  end function)
+
   ts.addTest("back - returns false if empty history", function (ts as Object) as String
     result = back()
 
@@ -244,6 +277,7 @@ end function
 
 sub RouterTestSuite__TearDown(ts as Object)
   m.top.activatedRoute = CreateObject("roSGNode", "ActivatedRoute")
+  m.top.previousRoute = Invalid
   m.top.url = "/"
 
   m._history = []

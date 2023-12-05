@@ -1,48 +1,48 @@
 ' @import /components/buildUrl.brs from @dazn/kopytko-utils
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/NodeUtils.brs from @dazn/kopytko-utils
-' @import /components/ternary.brs from @dazn/kopytko-utils
 ' @import /components/utils/KopytkoGlobalNode.brs
+
 sub init()
   _global = KopytkoGlobalNode()
   _global.addFields({
     router: m.top,
   })
-  m.top.activatedRoute = CreateObject("roSGNode", "ActivatedRoute")
+  m.top.activatedRoute = _createRoute()
 
   m._history = []
 end sub
 
-sub navigate(data as Object)
-  url = buildUrl(data.path, data.params)
+sub navigate(navigateData as Object)
+  url = buildUrl(navigateData.path, navigateData.params)
   if (url = m.top.url) then return ' Avoid doubling url
 
-  if (data.skipInHistory = Invalid OR (NOT data.skipInHistory))
+  isBackJourney = getProperty(navigateData, "isBackJourney", false)
+
+  if (NOT getProperty(navigateData, "skipInHistory", false))
     _updateHistory()
   end if
 
-  if (NOT m.top.activatedRoute.shouldSkip)
-    m.top.previousRoute = NodeUtils().cloneNode(m.top.activatedRoute)
-  end if
+  ' Needs to be set before activatedRoute as _getPreviousRoute uses the previous value of activatedRoute.
+  m.top.previousRoute = _getPreviousRoute(isBackJourney)
 
-  m.top.activatedRoute.path = data.path
-  m.top.activatedRoute.params = ternary(data.params <> Invalid, data.params, {})
-  m.top.activatedRoute.backJourneyData = data.backJourneyData
-  m.top.activatedRoute.isBackJourney = getProperty(data, "isBackJourney", false)
+  m.top.activatedRoute.path = getProperty(navigateData, "path", "")
+  m.top.activatedRoute.params = getProperty(navigateData, "params", {})
+  m.top.activatedRoute.backJourneyData = navigateData.backJourneyData
+  m.top.activatedRoute.isBackJourney = isBackJourney
   m.top.activatedRoute.shouldSkip = false
-  m.top.activatedRoute.virtualPath = ""
+  m.top.activatedRoute.virtualPath = getProperty(navigateData, "virtualPath", "")
   m.top.url = url
 end sub
 
-function back(data = {} as Object) as Boolean
-  previousLocation = m._history.pop()
-  if (previousLocation = Invalid)
-    return false
-  end if
+function back(_backData = {} as Object) as Boolean
+  previousRoute = m._history.pop()
 
-  previousLocation.skipInHistory = true
-  previousLocation.isBackJourney = true
-  navigate(previousLocation)
+  if (previousRoute = Invalid) then return false
+
+  previousRoute.skipInHistory = true
+  previousRoute.isBackJourney = true
+  navigate(previousRoute)
 
   return true
 end function
@@ -51,22 +51,25 @@ sub resetHistory(rootPath = "" as String)
   m._history = []
 
   if (rootPath <> "")
-    m._history.push({ path: rootPath, params: {} })
+    m._history.push(_createRoute({ path: rootPath }))
   end if
 end sub
+
+function _getPreviousRoute(isBackJourney as Boolean) as Object
+  if (isBackJourney OR m.top.activatedRoute.shouldSkip) then return m._history.peek()
+
+  return NodeUtils().cloneNode(m.top.activatedRoute)
+end function
 
 sub _updateHistory()
-  if (m.top.url = "" OR m.top.activatedRoute.shouldSkip)
-    return
-  end if
+  if (m.top.url = "" OR m.top.activatedRoute.shouldSkip) then return
 
-  m._history.push(_createHistoryItem(m.top.activatedRoute))
+  m._history.push(NodeUtils().cloneNode(m.top.activatedRoute))
 end sub
 
-function _createHistoryItem(route as Object) as Object
-  return {
-    path: route.path,
-    params: route.params,
-    backJourneyData: route.backJourneyData,
-  }
+function _createRoute(routeData = {} as Object) as Object
+  route = CreateObject("roSGNode", "ActivatedRoute")
+  route.setFields(routeData)
+
+  return route
 end function
