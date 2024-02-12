@@ -21,7 +21,12 @@ sub initKopytko(dynamicProps = {} as Object, componentsMapping = {} as Object)
   m.top.observeFieldScoped("focusedChild", "focusDidChange")
   m.top.update(dynamicProps)
 
-  constructor()
+  try
+    constructor()
+  catch error
+    _throw(error, "constructor")
+  end try
+
   m._previousState = _cloneObject(m.state) ' required because of setting default state in constructor()
 
   _mountComponent()
@@ -32,7 +37,11 @@ end sub
 sub destroyKopytko(data = {} as Object)
   if (NOT m._isInitialized) then return
 
-  componentWillUnmount()
+  try
+    componentWillUnmount()
+  catch error
+    _throw(error, "componentWillUnmount")
+  end try
 
   if (m["$$eventBus"] <> Invalid)
     m["$$eventBus"].clear()
@@ -41,7 +50,12 @@ sub destroyKopytko(data = {} as Object)
   m.state = {}
   m._previousState = {}
   m.top.unobserveFieldScoped("focusedChild")
-  m._kopytkoUpdater.destroy()
+
+  try
+    m._kopytkoUpdater.destroy()
+  catch error
+    _throw(error, "destroyKopytko")
+  end try
 
   _clearDOM()
 
@@ -66,6 +80,10 @@ end sub
 sub componentWillUnmount()
 end sub
 
+sub componentDidCatch(error as Object, _info as Object)
+  throw error
+end sub
+
 sub focusDidChange(event as Object)
   if (m.top.hasFocus() AND m.elementToFocus <> Invalid)
     m.elementToFocus.setFocus(true)
@@ -73,15 +91,27 @@ sub focusDidChange(event as Object)
 end sub
 
 sub setState(partialState as Object, callback = Invalid as Dynamic)
-  m._kopytkoUpdater.enqueueStateUpdate(partialState, callback)
+  try
+    m._kopytkoUpdater.enqueueStateUpdate(partialState, callback)
+  catch error
+    _throw(error, "setState")
+  end try
 end sub
 
 sub forceUpdate()
-  m._kopytkoUpdater.forceStateUpdate()
+  try
+    m._kopytkoUpdater.forceStateUpdate()
+  catch error
+    _throw(error, "forceUpdate")
+  end try
 end sub
 
 sub enqueueUpdate()
-  m._kopytkoUpdater.enqueueStateUpdate()
+  try
+    m._kopytkoUpdater.enqueueStateUpdate()
+  catch error
+    _throw(error, "enqueueUpdate")
+  end try
 end sub
 
 sub updateProps(props = {} as Object)
@@ -92,10 +122,24 @@ end sub
 
 sub _mountComponent()
   m._virtualDOM = render()
-  m._kopytkoDOM.renderElement(m._virtualDOM, m.top)
 
-  m._kopytkoUpdater.setComponentMounted(m.state)
-  componentDidMount()
+  try
+    m._kopytkoDOM.renderElement(m._virtualDOM, m.top)
+  catch error
+    _throw(error, "renderElement")
+  end try
+
+  try
+    m._kopytkoUpdater.setComponentMounted(m.state)
+  catch error
+    _throw(error, "setComponentMounted")
+  end try
+
+  try
+    componentDidMount()
+  catch error
+    _throw(error, "componentDidMount")
+  end try
 end sub
 
 sub _onStateUpdated()
@@ -114,8 +158,20 @@ sub _updateDOM()
     m.top.setFocus(true)
   end if
 
-  componentDidUpdate(m._previousProps, m._previousState)
+  try
+    componentDidUpdate(m._previousProps, m._previousState)
+  catch error
+    _throw(error, "componentDidUpdate")
+  end try
+
   m._previousState = _cloneObject(m.state)
+end sub
+
+sub _throw(error as Object, failingComponentMethod as String)
+  componentDidCatch(error, {
+    componentMethod: failingComponentMethod,
+    componentName: m.top.subtype(),
+  })
 end sub
 
 sub _clearDOM()
