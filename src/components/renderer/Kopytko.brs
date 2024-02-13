@@ -1,8 +1,10 @@
+' @import /components/functionCall.brs from @dazn/kopytko-utils
+
 sub init()
   m.state = {}
   m.elementToFocus = Invalid
 
-  m._enabledErrorHandling = Type(componentDidCatch) <> "<uninitialized>"
+  m._enabledErrorCatching = Type(componentDidCatch) <> "<uninitialized>"
   m._isInitialized = false
   m._previousProps = {}
   m._previousState = {}
@@ -137,32 +139,17 @@ function _cloneObject(obj as Object) as Object
 end function
 
 sub _methodCall(func as Function, methodName as String, args = [] as Object, context = Invalid as Object)
-  if (m._enabledErrorHandling)
+  if (m._enabledErrorCatching)
     try
-      _functionCall(func, args, context)
+      functionCall(func, args, context)
     catch error
       _throw(error, methodName)
     end try
-  else
-    _functionCall(func, args, context)
-  end if
-end sub
 
-sub _functionCall(func as Function, args = [] as Object, context = Invalid as Object)
-  if (context = Invalid) then context = GetGlobalAA()
-
-  argumentsNumber = args.count()
-  context["$$functionCall"] = func
-
-  if (argumentsNumber = 0)
-    context["$$functionCall"]()
-  else if (argumentsNumber = 1)
-    context["$$functionCall"](args[0])
-  else if (argumentsNumber = 2)
-    context["$$functionCall"](args[0], args[1])
+    return
   end if
 
-  context.delete("$$functionCall")
+  functionCall(func, args, context)
 end sub
 
 sub _throw(error as Object, failingComponentMethod as String)
