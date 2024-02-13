@@ -2,6 +2,7 @@ sub init()
   m.state = {}
   m.elementToFocus = Invalid
 
+  m._enabledErrorHandling = Type(componentDidCatch) <> "<uninitialized>"
   m._isInitialized = false
   m._previousProps = {}
   m._previousState = {}
@@ -21,11 +22,7 @@ sub initKopytko(dynamicProps = {} as Object, componentsMapping = {} as Object)
   m.top.observeFieldScoped("focusedChild", "focusDidChange")
   m.top.update(dynamicProps)
 
-  try
-    constructor()
-  catch error
-    _throw(error, "constructor")
-  end try
+  _methodCall(constructor, "constructor")
 
   m._previousState = _cloneObject(m.state) ' required because of setting default state in constructor()
 
@@ -37,11 +34,7 @@ end sub
 sub destroyKopytko(data = {} as Object)
   if (NOT m._isInitialized) then return
 
-  try
-    componentWillUnmount()
-  catch error
-    _throw(error, "componentWillUnmount")
-  end try
+  _methodCall(componentWillUnmount, "componentWillUnmount")
 
   if (m["$$eventBus"] <> Invalid)
     m["$$eventBus"].clear()
@@ -51,11 +44,7 @@ sub destroyKopytko(data = {} as Object)
   m._previousState = {}
   m.top.unobserveFieldScoped("focusedChild")
 
-  try
-    m._kopytkoUpdater.destroy()
-  catch error
-    _throw(error, "destroyKopytko")
-  end try
+  _methodCall(m._kopytkoUpdater.destroy, "destroyKopytko", [], m._kopytkoUpdater)
 
   _clearDOM()
 
@@ -80,10 +69,6 @@ end sub
 sub componentWillUnmount()
 end sub
 
-sub componentDidCatch(error as Object, _info as Object)
-  throw error
-end sub
-
 sub focusDidChange(event as Object)
   if (m.top.hasFocus() AND m.elementToFocus <> Invalid)
     m.elementToFocus.setFocus(true)
@@ -91,27 +76,15 @@ sub focusDidChange(event as Object)
 end sub
 
 sub setState(partialState as Object, callback = Invalid as Dynamic)
-  try
-    m._kopytkoUpdater.enqueueStateUpdate(partialState, callback)
-  catch error
-    _throw(error, "setState")
-  end try
+  _methodCall(m._kopytkoUpdater.enqueueStateUpdate, "setState", [partialState, callback], m._kopytkoUpdater)
 end sub
 
 sub forceUpdate()
-  try
-    m._kopytkoUpdater.forceStateUpdate()
-  catch error
-    _throw(error, "forceUpdate")
-  end try
+  _methodCall(m._kopytkoUpdater.forceStateUpdate, "forceUpdate", [], m._kopytkoUpdater)
 end sub
 
 sub enqueueUpdate()
-  try
-    m._kopytkoUpdater.enqueueStateUpdate()
-  catch error
-    _throw(error, "enqueueUpdate")
-  end try
+  _methodCall(m._kopytkoUpdater.enqueueStateUpdate, "enqueueUpdate", [], m._kopytkoUpdater)
 end sub
 
 sub updateProps(props = {} as Object)
@@ -123,23 +96,9 @@ end sub
 sub _mountComponent()
   m._virtualDOM = render()
 
-  try
-    m._kopytkoDOM.renderElement(m._virtualDOM, m.top)
-  catch error
-    _throw(error, "renderElement")
-  end try
-
-  try
-    m._kopytkoUpdater.setComponentMounted(m.state)
-  catch error
-    _throw(error, "setComponentMounted")
-  end try
-
-  try
-    componentDidMount()
-  catch error
-    _throw(error, "componentDidMount")
-  end try
+  _methodCall(m._kopytkoDOM.renderElement, "setComponentMounted", [m._virtualDOM, m.top], m._kopytkoDOM)
+  _methodCall(m._kopytkoUpdater.setComponentMounted, "setComponentMounted", [m.state], m._kopytkoUpdater)
+  _methodCall(componentDidMount, "componentDidMount")
 end sub
 
 sub _onStateUpdated()
@@ -158,20 +117,9 @@ sub _updateDOM()
     m.top.setFocus(true)
   end if
 
-  try
-    componentDidUpdate(m._previousProps, m._previousState)
-  catch error
-    _throw(error, "componentDidUpdate")
-  end try
+  _methodCall(componentDidUpdate, "componentDidUpdate", [m._previousProps, m._previousState])
 
   m._previousState = _cloneObject(m.state)
-end sub
-
-sub _throw(error as Object, failingComponentMethod as String)
-  componentDidCatch(error, {
-    componentMethod: failingComponentMethod,
-    componentName: m.top.subtype(),
-  })
 end sub
 
 sub _clearDOM()
@@ -187,3 +135,39 @@ function _cloneObject(obj as Object) as Object
 
   return newObj
 end function
+
+sub _methodCall(func as Function, methodName as String, args = [] as Object, context = Invalid as Object)
+  if (m._enabledErrorHandling)
+    try
+      _functionCall(func, args, context)
+    catch error
+      _throw(error, methodName)
+    end try
+  else
+    _functionCall(func, args, context)
+  end if
+end sub
+
+sub _functionCall(func as Function, args = [] as Object, context = Invalid as Object)
+  if (context = Invalid) then context = GetGlobalAA()
+
+  argumentsNumber = args.count()
+  context["$$functionCall"] = func
+
+  if (argumentsNumber = 0)
+    context["$$functionCall"]()
+  else if (argumentsNumber = 1)
+    context["$$functionCall"](args[0])
+  else if (argumentsNumber = 2)
+    context["$$functionCall"](args[0], args[1])
+  end if
+
+  context.delete("$$functionCall")
+end sub
+
+sub _throw(error as Object, failingComponentMethod as String)
+  componentDidCatch(error, {
+    componentMethod: failingComponentMethod,
+    componentName: m.top.subtype(),
+  })
+end sub
