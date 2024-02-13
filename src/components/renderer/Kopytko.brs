@@ -96,7 +96,7 @@ end sub
 sub _mountComponent()
   m._virtualDOM = render()
 
-  _methodCall(m._kopytkoDOM.renderElement, "setComponentMounted", [m._virtualDOM, m.top], m._kopytkoDOM)
+  _methodCall(m._kopytkoDOM.renderElement, "renderElement", [m._virtualDOM, m.top], m._kopytkoDOM)
   _methodCall(m._kopytkoUpdater.setComponentMounted, "setComponentMounted", [m.state], m._kopytkoUpdater)
   _methodCall(componentDidMount, "componentDidMount")
 end sub
