@@ -182,6 +182,9 @@ these methods are called lifecycle methods:
       ' The info object containing
       ' componentMethod - component method where the error has been thrown
       ' componentName - node name that extends KopytkoGroup or KopytkoLayoutGroup
+      ' componentProps - current component properties
+      ' componentState - current component state
+      ' componentVirtualDOM - current component virtual DOM
       ?info
     end sub
   ```

@@ -156,5 +156,8 @@ sub _throw(error as Object, failingComponentMethod as String)
   componentDidCatch(error, {
     componentMethod: failingComponentMethod,
     componentName: m.top.subtype(),
+    componentProps: m.top.getFields(),
+    componentState: m.state,
+    componentVirtualDOM: m._virtualDOM,
   })
 end sub
