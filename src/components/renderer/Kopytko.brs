@@ -4,12 +4,7 @@ sub init()
   m.state = {}
   m.elementToFocus = Invalid
 
-  m._enabledErrorCatching = false
-  #if enableKopytkoComponentDidCatch
-    m._enabledErrorCatching = true
-  #end if
-  m._enabledErrorCatching = m._enabledErrorCatching AND Type(componentDidCatch) <> "<uninitialized>"
-
+  m._enabledErrorCatching = _isComponentDidCatchEnabled()
   m._isInitialized = false
   m._previousProps = {}
   m._previousState = {}
@@ -141,6 +136,16 @@ function _cloneObject(obj as Object) as Object
   newObj.append(obj)
 
   return newObj
+end function
+
+function _isComponentDidCatchEnabled() as Boolean
+  isComponentDidCatchEnabled = false
+
+  #if enableKopytkoComponentDidCatch
+    isComponentDidCatchEnabled = true
+  #end if
+
+  return isComponentDidCatchEnabled AND Type(componentDidCatch) <> "<uninitialized>"
 end function
 
 sub _methodCall(func as Function, methodName as String, args = [] as Object, context = Invalid as Object)
