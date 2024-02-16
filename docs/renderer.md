@@ -174,6 +174,9 @@ these methods are called lifecycle methods:
   ```
 
 - `componentDidCatch(error as Object, info as Object)` - called when a component method has thrown an error
+
+  IMPORTANT: This catch will only work with **bs_const** `enableKopytkoComponentDidCatch: true` in the **manifest** file.
+
   ```brightscript
     sub componentDidCatch(error as Object, info as Object)
       ' The Roku exception object

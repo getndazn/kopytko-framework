@@ -4,7 +4,12 @@ sub init()
   m.state = {}
   m.elementToFocus = Invalid
 
-  m._enabledErrorCatching = Type(componentDidCatch) <> "<uninitialized>"
+  m._enabledErrorCatching = false
+  #if enableKopytkoComponentDidCatch
+    m._enabledErrorCatching = true
+  #end if
+  m._enabledErrorCatching = m._enabledErrorCatching AND Type(componentDidCatch) <> "<uninitialized>"
+
   m._isInitialized = false
   m._previousProps = {}
   m._previousState = {}
