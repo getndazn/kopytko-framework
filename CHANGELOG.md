@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/getndazn/kopytko-framework/compare/v2.1.5...v3.0.0) (2024-02-16)
+
+
+* feat!: add componentDidCatch for error handling (#60) ([ea32b0e](https://github.com/getndazn/kopytko-framework/commit/ea32b0e994980727bd5b1d103040db3d71be6ac3)), closes [#60](https://github.com/getndazn/kopytko-framework/issues/60)
+
+
+### BREAKING CHANGES
+
+* Add enableKopytkoComponentDidCatch bs_const to the manifest file
+
 ## [2.1.5](https://github.com/getndazn/kopytko-framework/compare/v2.1.4...v2.1.5) (2023-12-05)
 
 
