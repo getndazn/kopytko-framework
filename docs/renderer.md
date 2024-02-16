@@ -173,6 +173,25 @@ these methods are called lifecycle methods:
     end sub
   ```
 
+- `componentDidCatch(error as Object, info as Object)` - called when a component method has thrown an error
+
+  IMPORTANT: This catch will only work with **bs_const** `enableKopytkoComponentDidCatch: true` in the **manifest** file.
+
+  ```brightscript
+    sub componentDidCatch(error as Object, info as Object)
+      ' The Roku exception object
+      ' https://developer.roku.com/docs/references/brightscript/language/error-handling.md#the-exception-object
+      ?error
+      ' The info object containing
+      ' componentMethod - component method where the error has been thrown
+      ' componentName - node name that extends KopytkoGroup or KopytkoLayoutGroup
+      ' componentProps - current component properties
+      ' componentState - current component state
+      ' componentVirtualDOM - current component virtual DOM
+      ?info
+    end sub
+  ```
+
 Creating a tree of elements results in calling `constructor` method starting from the parent to children
 and then `componentDidMount` in the opposite order - from children to the parent.
 

@@ -1,7 +1,10 @@
+' @import /components/functionCall.brs from @dazn/kopytko-utils
+
 sub init()
   m.state = {}
   m.elementToFocus = Invalid
 
+  m._enabledErrorCatching = _isComponentDidCatchEnabled()
   m._isInitialized = false
   m._previousProps = {}
   m._previousState = {}
@@ -21,7 +24,8 @@ sub initKopytko(dynamicProps = {} as Object, componentsMapping = {} as Object)
   m.top.observeFieldScoped("focusedChild", "focusDidChange")
   m.top.update(dynamicProps)
 
-  constructor()
+  _methodCall(constructor, "constructor")
+
   m._previousState = _cloneObject(m.state) ' required because of setting default state in constructor()
 
   _mountComponent()
@@ -32,7 +36,7 @@ end sub
 sub destroyKopytko(data = {} as Object)
   if (NOT m._isInitialized) then return
 
-  componentWillUnmount()
+  _methodCall(componentWillUnmount, "componentWillUnmount")
 
   if (m["$$eventBus"] <> Invalid)
     m["$$eventBus"].clear()
@@ -41,7 +45,8 @@ sub destroyKopytko(data = {} as Object)
   m.state = {}
   m._previousState = {}
   m.top.unobserveFieldScoped("focusedChild")
-  m._kopytkoUpdater.destroy()
+
+  _methodCall(m._kopytkoUpdater.destroy, "destroyKopytko", [], m._kopytkoUpdater)
 
   _clearDOM()
 
@@ -73,15 +78,15 @@ sub focusDidChange(event as Object)
 end sub
 
 sub setState(partialState as Object, callback = Invalid as Dynamic)
-  m._kopytkoUpdater.enqueueStateUpdate(partialState, callback)
+  _methodCall(m._kopytkoUpdater.enqueueStateUpdate, "setState", [partialState, callback], m._kopytkoUpdater)
 end sub
 
 sub forceUpdate()
-  m._kopytkoUpdater.forceStateUpdate()
+  _methodCall(m._kopytkoUpdater.forceStateUpdate, "forceUpdate", [], m._kopytkoUpdater)
 end sub
 
 sub enqueueUpdate()
-  m._kopytkoUpdater.enqueueStateUpdate()
+  _methodCall(m._kopytkoUpdater.enqueueStateUpdate, "enqueueUpdate", [], m._kopytkoUpdater)
 end sub
 
 sub updateProps(props = {} as Object)
@@ -92,10 +97,10 @@ end sub
 
 sub _mountComponent()
   m._virtualDOM = render()
-  m._kopytkoDOM.renderElement(m._virtualDOM, m.top)
 
-  m._kopytkoUpdater.setComponentMounted(m.state)
-  componentDidMount()
+  _methodCall(m._kopytkoDOM.renderElement, "renderElement", [m._virtualDOM, m.top], m._kopytkoDOM)
+  _methodCall(m._kopytkoUpdater.setComponentMounted, "setComponentMounted", [m.state], m._kopytkoUpdater)
+  _methodCall(componentDidMount, "componentDidMount")
 end sub
 
 sub _onStateUpdated()
@@ -114,7 +119,8 @@ sub _updateDOM()
     m.top.setFocus(true)
   end if
 
-  componentDidUpdate(m._previousProps, m._previousState)
+  _methodCall(componentDidUpdate, "componentDidUpdate", [m._previousProps, m._previousState])
+
   m._previousState = _cloneObject(m.state)
 end sub
 
@@ -131,3 +137,37 @@ function _cloneObject(obj as Object) as Object
 
   return newObj
 end function
+
+function _isComponentDidCatchEnabled() as Boolean
+  isComponentDidCatchEnabled = false
+
+  #if enableKopytkoComponentDidCatch
+    isComponentDidCatchEnabled = true
+  #end if
+
+  return isComponentDidCatchEnabled AND Type(componentDidCatch) <> "<uninitialized>"
+end function
+
+sub _methodCall(func as Function, methodName as String, args = [] as Object, context = Invalid as Object)
+  if (m._enabledErrorCatching)
+    try
+      functionCall(func, args, context)
+    catch error
+      _throw(error, methodName)
+    end try
+
+    return
+  end if
+
+  functionCall(func, args, context)
+end sub
+
+sub _throw(error as Object, failingComponentMethod as String)
+  componentDidCatch(error, {
+    componentMethod: failingComponentMethod,
+    componentName: m.top.subtype(),
+    componentProps: m.top.getFields(),
+    componentState: m.state,
+    componentVirtualDOM: m._virtualDOM,
+  })
+end sub
