@@ -71,6 +71,7 @@ Request options structure allowed to be returned by `getRequestOptions` function
 - `headers` - associative array - headers fields
 - `method` - string - HTTP method
 - `body` - associative array - request body
+- `bodyString` - string - request body string, alternative for `body`
 - `queryParams` - associative array - with  query params
 - `compression` - (defalt: true) boolean - indicating if the request should be compressed
 - `timeout` - integer - time after which request should be aborted
