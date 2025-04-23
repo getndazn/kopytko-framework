@@ -1,5 +1,6 @@
 ' @import /components/buildUrl.brs from @dazn/kopytko-utils
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
+' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/Timespan.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/UrlTransfer.brs from @dazn/kopytko-utils
 ' @import /components/ternary.brs from @dazn/kopytko-utils
@@ -52,7 +53,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
       m._urlTransfer.initClientCertificates()
     end if
 
-    if (Type(m._options.headers) = "roAssociativeArray")
+    if (getType(m._options.headers) = "roAssociativeArray")
       m._headers.append(m._options.headers)
     end if
 
@@ -80,7 +81,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
       if (m._options.body <> Invalid)
         body = FormatJSON(m._options.body)
-      else if (m._options.bodyString <> Invalid)
+      else if (getType(m._options.bodyString) = "roString")
         body = m._options.bodyString
       end if
 
