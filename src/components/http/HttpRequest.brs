@@ -13,6 +13,7 @@
 ' @property {Object} headers
 ' @property {Integer} timeout
 ' @property {Object} body
+' @property {String} bodyString
 
 ' Request logic.
 ' @class
@@ -79,6 +80,8 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
 
       if (m._options.body <> Invalid)
         body = FormatJSON(m._options.body)
+      else if (m._options.bodyString <> Invalid)
+        body = m._options.bodyString
       end if
 
       m._urlTransfer.asyncPostFromString(body)
