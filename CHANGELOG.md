@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/getndazn/kopytko-framework/compare/v3.0.0...v3.1.0) (2025-04-25)
+
+
+### Features
+
+* add bodyString to the http request options ([#62](https://github.com/getndazn/kopytko-framework/issues/62)) ([5bac8eb](https://github.com/getndazn/kopytko-framework/commit/5bac8ebf3d6cca92773d74cd9f563556147bd356))
+
 # [3.0.0](https://github.com/getndazn/kopytko-framework/compare/v2.1.5...v3.0.0) (2024-02-16)
 
 
