@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/getndazn/kopytko-framework/compare/v3.1.0...v3.2.0) (2025-09-26)
+
+
+### Features
+
+* add PATCH method for http ([#65](https://github.com/getndazn/kopytko-framework/issues/65)) ([054e267](https://github.com/getndazn/kopytko-framework/commit/054e267ce784b05b3f616478c96e14619d975a7e))
+
 # [3.1.0](https://github.com/getndazn/kopytko-framework/compare/v3.0.0...v3.1.0) (2025-04-25)
 
 
