@@ -6,31 +6,25 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+        uses: actions/checkout@v5
       - name: Semantic Release
         id: release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: codfish/semantic-release-action@v5
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          NPM_TOKEN: ${{ secrets.OSS_NPM_TOKEN }}
         with:
-          extra_plugins: |
-            @semantic-release/changelog@6
-            @semantic-release/git@10
-      - name: Teams notification
-        uses: toko-bifrost/ms-teams-deploy-card@3.1.2
-        if: always()
-        with:
-          github-token: ${{ github.token }}
-          webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URI }}
-          show-on-start: false
-          card-layout-exit: complete
-
+          plugins: |
+            [
+              '@semantic-release/commit-analyzer',
+              '@semantic-release/release-notes-generator',
+              '@semantic-release/changelog@6',
+              '@semantic-release/git@10',
+              ['@semantic-release/npm', { npmPublish: true, provenance: true }],
+              '@semantic-release/github'
+            ]
