@@ -23,8 +23,7 @@ jobs:
             [
               '@semantic-release/commit-analyzer',
               '@semantic-release/release-notes-generator',
-              '@semantic-release/changelog@6',
-              '@semantic-release/git@10',
+              '@semantic-release/changelog',
               ['@semantic-release/npm', { npmPublish: true, provenance: true }],
-              '@semantic-release/github'
+              '@semantic-release/git'
             ]
