@@ -32,11 +32,16 @@ sub handleResponse(response as Object)
   result = CreateObject("roSGNode", "HttpRequestResultModel")
   result.isSuccess = response.isSuccess
 
-  if (response.isSuccess)
-    result.data = parseResponse(response)
-  else
-    result.data = generateErrorData(response)
-  end if
+  try
+    if (response.isSuccess)
+      result.data = parseResponse(response)
+    else
+      result.data = generateErrorData(response)
+    end if
+  catch error
+    result.isSuccess = false
+    result.data = generateParseErrorData(response, error)
+  end try
 
   m.top.result = result
 end sub

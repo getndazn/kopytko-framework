@@ -42,6 +42,11 @@ function generateErrorData(response as Object) as Object
   return response
 end function
 
+' Override by child for returning a specific data structure and/or node type
+function generateParseErrorData(response as Object, _error as Object) as Object
+  return response
+end function
+
 sub _onDataChange(event as Object)
   data = event.getData()
 
