@@ -67,7 +67,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
   prototype.send = function () as Object
     method = m.getMethod()
 
-    if (method <> "PATCH" AND method <> "POST" AND method <> "PUT") then m._headers.delete("Content-Type")
+    if (method <> "PATCH" AND method <> "POST" AND method <> "PUT" AND method <> "DELETE") then m._headers.delete("Content-Type")
     m._urlTransfer.setHeaders(m._headers)
 
     for each interceptor in m._httpInterceptors
