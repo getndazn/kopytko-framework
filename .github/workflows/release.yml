@@ -14,17 +14,21 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Semantic Release
-        id: release
-        uses: codfish/semantic-release-action@v5
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: actions/checkout@v6
         with:
-          plugins: |
-            [
-              '@semantic-release/commit-analyzer',
-              '@semantic-release/release-notes-generator',
-              ['@semantic-release/npm', { npmPublish: true, provenance: true }],
-              '@semantic-release/github'
-            ]
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
