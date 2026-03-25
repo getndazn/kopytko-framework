@@ -19,7 +19,6 @@ function TestSuite__HttpResponse_Main() as Object
       id: props.id,
       isSuccess: true,
       raw: { data: props.rawData },
-      rawData: props.rawData,
     })
 
     ' When
@@ -45,7 +44,6 @@ function TestSuite__HttpResponse_Main() as Object
       failureReason: props.failureReason,
       headers: props.headers,
       raw: { data: props.rawData },
-      rawData: props.rawData,
     })
 
     ' When

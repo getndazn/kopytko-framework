@@ -9,7 +9,6 @@
 ' @param {String} responseData.failureReason
 ' @param {Object} responseData.headers
 ' @param {Integer} responseData.httpStatusCode
-' @param {Object} responseData.rawData
 ' @param {Object} responseData.requestOptions
 ' @param {Integer} [responseData.time]
 function HttpResponse(responseData as Object) as Object
@@ -46,7 +45,6 @@ function HttpResponse(responseData as Object) as Object
       isSuccess: m._isSuccess(),
       maxAge: m.getMaxAge(),
       raw: { data: m._rawData },
-      rawData: m._rawData,
       requestOptions: m._requestOptions,
     })
 
