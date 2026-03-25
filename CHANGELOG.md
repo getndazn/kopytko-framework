@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/getndazn/kopytko-framework/compare/v3.3.3...v3.4.0) (2026-03-25)
+
+
+### Features
+
+* remove rawdata deprecated field ([#76](https://github.com/getndazn/kopytko-framework/issues/76)) ([6bcb029](https://github.com/getndazn/kopytko-framework/commit/6bcb0291b92937a6d82c2ab9be88fcecc7869639))
+
 ## [3.3.3](https://github.com/getndazn/kopytko-framework/compare/v3.3.2...v3.3.3) (2026-03-24)
 
 
