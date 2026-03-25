@@ -25,12 +25,12 @@
     "test": "node node_modules/@dazn/kopytko-unit-testing-framework/scripts/test.js"
   },
   "dependencies": {
-    "@dazn/kopytko-utils": "^2.4.0"
+    "@dazn/kopytko-utils": "^2.4.2"
   },
   "devDependencies": {
     "@dazn/eslint-plugin-kopytko": "^2.1.0",
-    "@dazn/kopytko-packager": "^1.4.0",
-    "@dazn/kopytko-unit-testing-framework": "^2.5.0",
+    "@dazn/kopytko-packager": "^1.4.2",
+    "@dazn/kopytko-unit-testing-framework": "^2.5.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^12.0.6",

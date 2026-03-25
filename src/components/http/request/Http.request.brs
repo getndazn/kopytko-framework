@@ -59,7 +59,7 @@ end function
 ' @returns {Node}
 function parseResponse(response as Object) as Object
   parsedData = CreateObject("roSGNode", "Node")
-  parsedData.addFields(response.rawData)
+  parsedData.addFields(response.raw.data)
 
   return parsedData
 end function
