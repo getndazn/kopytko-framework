@@ -248,6 +248,31 @@ function TestSuite__KopytkoUpdater()
     return ts.assertEqual(m.__state, { test: "value", another: "value" })
   end function)
 
+  ts.addTest("setComponentMounted schedules a re-render in the next tick if setState was called before mount", function (ts as Object) as String
+    ' Given
+    updater = KopytkoUpdater(baseStateUpdatedCallback)
+    updater.enqueueStateUpdate({ test: "value" })
+
+    ' When
+    updater.setComponentMounted(m.__state)
+    m.__clock.tick()
+
+    ' Then
+    return ts.assertMethodWasCalled("baseStateUpdatedCallback", {}, { times: 1 })
+  end function)
+
+  ts.addTest("setComponentMounted does not schedule a re-render if no setState was called before mount", function (ts as Object) as String
+    ' Given
+    updater = KopytkoUpdater(baseStateUpdatedCallback)
+
+    ' When
+    updater.setComponentMounted(m.__state)
+    m.__clock.tick()
+
+    ' Then
+    return ts.assertMethodWasNotCalled("baseStateUpdatedCallback")
+  end function)
+
   ts.addTest("destroy cancels all enqueued state update callbacks", function (ts as Object) as String
     ' Given
     updater = KopytkoUpdater(baseStateUpdatedCallback)

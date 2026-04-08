@@ -95,8 +95,13 @@ The `setState` method accepts also a callback function argument with the code to
 and re-rendered.
 
 Please note that in an edge case, because children event listeners are set before the parent component is mounted,
-it is possible that the `setState` method is called before the component was mounted. In such case, state update
-will be delayed right after the `componentDidMount` lifecycle method call.
+it is possible that the `setState` method is called before the component was mounted. A common trigger is Roku's
+`observeFieldScoped` platform behaviour: if a field already holds a non-default value at the time the observation
+is registered, the callback fires **synchronously** in the same call stack. This can happen when a child component
+fetches data from cache and sets a result field before the parent has finished mounting.
+
+In this case the partial state is queued internally, applied to the component state in `setComponentMounted`, and a
+re-render is scheduled automatically on the next processor tick — after `componentDidMount` has returned.
 
 An example usage of the component state in the render() method:
 ```brightscript

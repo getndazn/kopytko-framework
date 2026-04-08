@@ -31,12 +31,19 @@ function KopytkoUpdater(baseStateUpdatedCallback as Function)
   prototype.setComponentMounted = sub (state as Object)
     m._state = state ' can't be passed in Updater constructor because it's assigned in constructor of Kopytko component
 
+    hasPendingStates = m._pendingPartialStates.count() > 0
     for each partialState in m._pendingPartialStates
       m._state.append(partialState)
     end for
 
     m._pendingPartialStates.clear()
-    ' No need to setup _onStateUpdated because it will be called in the next tick if there was any state update enqueued
+
+    ' If setState was called before mount (e.g. a child fired an observeFieldScoped callback synchronously
+    ' during renderElement), enqueueStateUpdate returned early and never scheduled a re-render.
+    ' Schedule one now so the component renders with the correct initial state.
+    if (hasPendingStates AND NOT m._isUpdating())
+      m._stateUpdateTimeoutId = setTimeoutCore(m._onStateUpdated, 0, m)
+    end if
   end sub
 
   prototype.destroy = sub ()
