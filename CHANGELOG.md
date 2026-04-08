@@ -1,3 +1,10 @@
+## [3.4.1](https://github.com/getndazn/kopytko-framework/compare/v3.4.0...v3.4.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* schedule re-render when setState is called before component mount ([#77](https://github.com/getndazn/kopytko-framework/issues/77)) ([6aa25ee](https://github.com/getndazn/kopytko-framework/commit/6aa25eeccea16325e83151e63dfef317f4def182))
+
 # [3.4.0](https://github.com/getndazn/kopytko-framework/compare/v3.3.3...v3.4.0) (2026-03-25)
 
 
