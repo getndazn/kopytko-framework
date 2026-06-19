@@ -1,4 +1,5 @@
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
+
 function ThemeFacade() as Object
   return Mock({
     testComponent: m,

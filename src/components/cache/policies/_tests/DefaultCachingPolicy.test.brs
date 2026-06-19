@@ -1,9 +1,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function TestSuite__DefaultCachingPolicy() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "DefaultCachingPolicy"
 
-  ts.addTest("applyWritingRules - it is defined function", function (ts as Object) as String
+  ts.addTest("applyWritingRules - it is defined function", function (_ts as Object) as String
     ' Given
     policy = DefaultCachingPolicy()
     cacheItem = CreateObject("roSGNode", "CacheItem")
@@ -13,12 +14,10 @@ function TestSuite__DefaultCachingPolicy() as Object
     policy.applyWritingRules(cacheItem, options)
 
     ' Then
-    expected = "roFunction"
-
     return ""
   end function)
 
-  ts.addTest("applyReadingRules - it is defined function", function (ts as Object) as String
+  ts.addTest("applyReadingRules - it is defined function", function (_ts as Object) as String
     ' Given
     policy = DefaultCachingPolicy()
     cacheItem = CreateObject("roSGNode", "CacheItem")

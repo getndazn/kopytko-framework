@@ -1,4 +1,5 @@
 ' @import /components/Assert.brs from @dazn/kopytko-utils
+
 function KopytkoDiffUtility() as Object
   prototype = {}
   prototype._assert = Assert()
@@ -48,6 +49,7 @@ function KopytkoDiffUtility() as Object
       return
     end if
 
+    ' kopytko-disable-next-line identifier/undefined-variable
     if (Type(currentVirtualDOM) <> Type(newVirtualDOM))
       print "DOM type should not be changed"
 

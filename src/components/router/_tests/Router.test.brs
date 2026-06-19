@@ -275,7 +275,7 @@ function TestSuite__Router() as Object
   return ts
 end function
 
-sub RouterTestSuite__TearDown(ts as Object)
+sub RouterTestSuite__TearDown(_ts as Object)
   m.top.activatedRoute = CreateObject("roSGNode", "ActivatedRoute")
   m.top.previousRoute = Invalid
   m.top.url = "/"

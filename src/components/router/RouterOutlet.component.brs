@@ -1,5 +1,6 @@
 ' @import /components/router/Routes.brs
 ' @import /components/router/utils/buildPath.brs
+
 sub constructor()
   ' dependencies
   m._router = Invalid
@@ -16,7 +17,7 @@ sub constructor()
   }
 end sub
 
-sub componentDidMount(data = {} as Object)
+sub componentDidMount(_data = {} as Object)
   m._router = m.global.router
   m._router.observeFieldScoped("url", "_onUrlChange")
 
@@ -30,7 +31,7 @@ sub componentWillUnmount()
   m._router.unobserveFieldScoped("url")
 end sub
 
-sub focusDidChange(event as Object)
+sub focusDidChange(_event as Object)
   if (m.top.hasFocus())
     ' RouterOutlet can be focused when activating route is in progress (not rendered yet)
     ' It has to be remembered that focus should be restored when it's done

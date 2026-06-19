@@ -1,8 +1,8 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/rokuComponents/_mocks/Event.mock.brs from @dazn/kopytko-utils
-' @mock /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/http/_mocks/UrlEvent.mock.brs
-' @import /components/http/cache/_mocks/CachedHttpResponse.mock.brs
+' @mock /components/getType.brs from @dazn/kopytko-utils
+' @mock /components/http/cache/CachedHttpResponse.brs
 ' @mock /components/http/cache/HttpCache.brs
 ' @mock /components/http/HttpInterceptor.brs
 ' @mock /components/http/HttpRequest.brs
@@ -12,11 +12,11 @@
 function HttpServiceTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  beforeEach(sub (_ts)
-    mockFunction("cachedHttpResponse.getHeaders").returnValue({})
-    mockFunction("cachedHttpResponse.hasExpired").returnValue(false)
-    mockFunction("cachedHttpResponse.toNode").returnValue(Invalid)
-    mockFunction("getType").implementation(function (params, _m)
+  beforeEach(sub (_ts as Object)
+    mockFunction("CachedHttpResponse.getHeaders").returnValue({})
+    mockFunction("CachedHttpResponse.hasExpired").returnValue(false)
+    mockFunction("CachedHttpResponse.toNode").returnValue(Invalid)
+    mockFunction("getType").implementation(function (params as Object, _m as Object)
       value = params.value
 
       if (value <> Invalid AND value.eventScheme <> Invalid)
@@ -25,20 +25,20 @@ function HttpServiceTestSuite() as Object
 
       return Type(value)
     end function)
-    mockFunction("httpCache.read").returnValue(Invalid)
-    mockFunction("httpCache.prolong").returnValue(Invalid)
-    mockFunction("httpRequest.isTimedOut").returnValue(false)
-    mockFunction("httpRequest.getEscapedUrl").returnValue("")
-    mockFunction("httpRequest.getId").returnValue("id")
-    mockFunction("httpRequest.getMethod").returnValue("GET")
-    mockFunction("httpRequest.getOptions").implementation(function (_params, m)
+    mockFunction("HttpCache.read").returnValue(Invalid)
+    mockFunction("HttpCache.prolong").returnValue(Invalid)
+    mockFunction("HttpRequest.isTimedOut").returnValue(false)
+    mockFunction("HttpRequest.getEscapedUrl").returnValue("")
+    mockFunction("HttpRequest.getId").returnValue("id")
+    mockFunction("HttpRequest.getMethod").returnValue("GET")
+    mockFunction("HttpRequest.getOptions").implementation(function (_params as Object, m as Object)
       return m.__params
     end function)
-    mockFunction("httpRequest.isCachingEnabled").returnValue(false)
-    mockFunction("httpRequest.send").returnValue(Invalid)
-    mockFunction("httpRequest.setMessagePort").returnValue(Invalid)
-    mockFunction("httpResponseCreator.create").returnValue(HttpResponse({ id: "any", requestOptions: {} }))
-    mockFunction("kopytkoWait").implementation(function (_params, m)
+    mockFunction("HttpRequest.isCachingEnabled").returnValue(false)
+    mockFunction("HttpRequest.send").returnValue(Invalid)
+    mockFunction("HttpRequest.setMessagePort").returnValue(Invalid)
+    mockFunction("HttpResponseCreator.create").returnValue(HttpResponse({ id: "any", requestOptions: {} }))
+    mockFunction("kopytkoWait").implementation(function (_params as Object, m as Object)
       return m.__portMessage
     end function)
 

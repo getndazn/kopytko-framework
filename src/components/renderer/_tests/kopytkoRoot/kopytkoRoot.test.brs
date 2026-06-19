@@ -1,5 +1,3 @@
-' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
-' @import /components/_testUtils/fakeClock.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/Timer.brs from @dazn/kopytko-utils
 
@@ -7,7 +5,7 @@ function TestSuite__kopytkoRoot()
   ts = KopytkoFrameworkTestSuite()
   ts.name = "kopytkoRoot"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
   end sub)
 

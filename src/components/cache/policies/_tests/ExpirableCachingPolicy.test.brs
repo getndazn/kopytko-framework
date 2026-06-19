@@ -1,11 +1,12 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @mock /components/cache/policies/DefaultCachingPolicy.brs
+
 function TestSuite__ExpirableCachingPolicy() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "ExpirableCachingPolicy"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.dateTime = {
       asSeconds: {},
@@ -38,7 +39,7 @@ function TestSuite__ExpirableCachingPolicy() as Object
     m.__policy.applyReadingRules(cacheItem)
 
     ' Then
-    return ts.assertMethodWasCalled("DefaultCachingPolicy.applyReadingRules", { cacheItem: cacheItem })
+    return ts.assertMethodWasCalled("DefaultCachingPolicy.applyReadingRules", { _cacheItem: cacheItem })
   end function)
 
   ts.addTest("isItemStale - it returns true if current timestamp is greater than expiration timestamp", function (ts as Object) as String

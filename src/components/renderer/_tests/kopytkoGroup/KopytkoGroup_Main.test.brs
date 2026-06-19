@@ -1,4 +1,4 @@
-function TestSuite__KopytkoGroup_Main()
+function TestSuite__KopytkoGroup_Main() as Object
   ts = KopytkoGroupTestSuite()
   ts.name = "KopytkoGroup - Main"
 
@@ -64,6 +64,7 @@ function TestSuite__KopytkoGroup_Main()
   ts.addTest("it does not call KopytkoDOM's updateDOM() method immediately when enqueueUpdate() is called", function (ts as Object) as String
     ' When
     initKopytko()
+    ' kopytko-disable-next-line identifier/undefined-function
     enqueueUpdate()
 
     ' Then
@@ -75,8 +76,11 @@ function TestSuite__KopytkoGroup_Main()
   ts.addTest("it calls KopytkoDOM's updateDOM() method once in the next tick when enqueueUpdate() is called multiple times", function (ts as Object) as String
     ' When
     initKopytko()
+    ' kopytko-disable-next-line identifier/undefined-function
     enqueueUpdate()
+    ' kopytko-disable-next-line identifier/undefined-function
     enqueueUpdate()
+    ' kopytko-disable-next-line identifier/undefined-function
     enqueueUpdate()
     m.__clock.tick()
 
@@ -99,6 +103,7 @@ function TestSuite__KopytkoGroup_Main()
     initKopytko()
 
     ' When
+    ' kopytko-disable-next-line identifier/undefined-function
     setState({ value2: "new value2" })
 
     ' Then

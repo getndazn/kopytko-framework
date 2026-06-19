@@ -1,8 +1,9 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function RouterOutletTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.global.setFields({
       router: CreateObject("roSGNode", "Router"),
     })
@@ -11,10 +12,10 @@ function RouterOutletTestSuite() as Object
   return ts
 end function
 
-function TestUtil_initializeRouterOutlet()
+sub TestUtil_initializeRouterOutlet()
   initKopytko({})
   forceUpdate()
-end function
+end sub
 
 sub TestUtil_changeUrl(url as String)
   urlChangeEvent = {
@@ -27,8 +28,7 @@ sub TestUtil_changeUrl(url as String)
   forceUpdate()
 end sub
 
-function TestUtil_getRenderedChildViewName()
-  renderedChildViewName = ""
+function TestUtil_getRenderedChildViewName() as String
   child = m.top.getChild(0)
   if (child <> Invalid)
     return child.subtype()

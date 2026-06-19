@@ -2,7 +2,6 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/promise/Promise.brs from @dazn/kopytko-utils
 ' @import /components/promise/PromiseReject.brs from @dazn/kopytko-utils
-' @import /components/promise/PromiseResolve.brs from @dazn/kopytko-utils
 
 ' @todo as we can pass task instance as a param now, this function should be renamed to e.g. sendRequest
 function createRequest(task as Dynamic, data = {} as Object, options = {} as Object) as Object

@@ -2,9 +2,8 @@ function TestSuite__StoreFacade_subscribeOnce() as Object
   ts = StoreFacadeTestSuite()
   ts.name = "StoreFacade_subscribeOnce"
 
-  it("should add 1 subscriber", function (_ts)
+  it("should add 1 subscriber", function (_ts as Object)
     ' Given
-    expectedResult = 1
     store = StoreFacade()
 
     ' When
@@ -14,9 +13,8 @@ function TestSuite__StoreFacade_subscribeOnce() as Object
     return expect(store._subscriptions.count()).toBe(1)
   end function)
 
-  it("should add 2 subscribers", function (_ts)
+  it("should add 2 subscribers", function (_ts as Object)
     ' Given
-    expectedResult = 2
     store = StoreFacade()
 
     ' When
@@ -27,7 +25,7 @@ function TestSuite__StoreFacade_subscribeOnce() as Object
     return expect(store._subscriptions.count()).toBe(2)
   end function)
 
-  it("should call callback only once", function (_ts)
+  it("should call callback only once", function (_ts as Object)
     ' Given
     store = StoreFacade()
 
@@ -40,7 +38,7 @@ function TestSuite__StoreFacade_subscribeOnce() as Object
     return expect(m.__spy.subscriber.calledTimes).toBe(1)
   end function)
 
-  it("should call callback with the given context when it is provided", function (_ts)
+  it("should call callback with the given context when it is provided", function (_ts as Object)
     ' Given
     context = { __spy: { contextSubscriber: { calledTimes: 0 } } }
     store = StoreFacade()

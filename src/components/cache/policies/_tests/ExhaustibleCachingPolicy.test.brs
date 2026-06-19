@@ -1,10 +1,11 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/cache/policies/DefaultCachingPolicy.brs
+
 function TestSuite__ExhaustibleCachingPolicy() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "ExhaustibleCachingPolicy"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__policy = ExhaustibleCachingPolicy()
   end sub)
 

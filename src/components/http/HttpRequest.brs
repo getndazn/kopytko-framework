@@ -80,7 +80,7 @@ function HttpRequest(options as Object, httpInterceptors = [] as Object) as Obje
       body = ""
 
       if (m._options.body <> Invalid)
-        body = FormatJSON(m._options.body)
+        body = FormatJson(m._options.body)
       else if (getType(m._options.bodyString) = "roString")
         body = m._options.bodyString
       end if

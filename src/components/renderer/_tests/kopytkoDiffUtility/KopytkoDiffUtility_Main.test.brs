@@ -1,4 +1,4 @@
-function TestSuite__KopytkoDiffUtility_Main()
+function TestSuite__KopytkoDiffUtility_Main() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "KopytkoDiffUtility - diffDOM"
   ts.kopytkoDiffUtility = KopytkoDiffUtility()
@@ -236,7 +236,7 @@ function TestSuite__KopytkoDiffUtility_Main()
     ])
 
     newVNode = TestUtil_createRootElementWithChildren([
-      Invalid
+      Invalid,
       {
         name: "Label",
         props: { id: "label1" },

@@ -1,4 +1,5 @@
 ' @import /components/padStart.brs from @dazn/kopytko-utils
+
 sub setAppTheme(appTheme as Object)
   if (NOT m.global.hasField("theme"))
     m.top.addFields(appTheme)
@@ -27,7 +28,7 @@ end function
 
 function rgba(options as Object) as String
   baseColor = Left(options.color, 8)
-  alphaValue = UCase(padStart(StrI(Cint(options.opacity * 255), 16), 2, "0"))
+  alphaValue = UCase(padStart(StrI(CInt(options.opacity * 255), 16), 2, "0"))
 
   return baseColor + alphaValue
 end function

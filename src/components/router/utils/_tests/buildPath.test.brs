@@ -1,4 +1,5 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function TestSuite__buildPath() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "buildPath"
@@ -7,7 +8,6 @@ function TestSuite__buildPath() as Object
     ' Given
     base = "/"
     subPath = ""
-
     ' When
     result = buildPath(base, subPath)
 
@@ -19,7 +19,6 @@ function TestSuite__buildPath() as Object
     ' Given
     base = "/"
     subPath = "example-path"
-
     ' When
     result = buildPath(base, subPath)
 
@@ -31,7 +30,6 @@ function TestSuite__buildPath() as Object
     ' Given
     base = "/base-path"
     subPath = "example-path"
-
     ' When
     result = buildPath(base, subPath)
 
@@ -43,7 +41,6 @@ function TestSuite__buildPath() as Object
     ' Given
     base = "/base/long/path"
     subPath = "example-path"
-
     ' When
     result = buildPath(base, subPath)
 

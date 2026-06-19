@@ -1,6 +1,7 @@
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/DateTime.brs from @dazn/kopytko-utils
 ' @import /components/http/HttpResponse.brs
+
 function CachedHttpResponse(responseData as Object) as Object
   prototype = HttpResponse(responseData)
 

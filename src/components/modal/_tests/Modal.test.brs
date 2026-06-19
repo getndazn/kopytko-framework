@@ -1,9 +1,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function TestSuite__Modal() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "Modal"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m._eventBus = EventBusFacade()
     m._modalEvents = ModalEvents()
   end sub)

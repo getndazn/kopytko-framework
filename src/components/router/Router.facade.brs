@@ -1,4 +1,3 @@
-' @import /components/ternary.brs from @dazn/kopytko-utils
 function RouterFacade() as Object
   prototype = {}
 

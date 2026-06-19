@@ -103,7 +103,6 @@ function TestSuite__RouterOutlet_urlChange() as Object
     forceUpdate()
 
     ' Then
-    renderedChildViewName = TestUtil_getRenderedChildViewName()
     activatedRoute = m.global.router.activatedRoute
 
     return ts.assertEqual(activatedRoute.renderedUrl, "/another-path")

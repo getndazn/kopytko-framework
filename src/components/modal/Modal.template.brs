@@ -19,7 +19,7 @@ function render() as Object
       children: [
         _renderInnerElement(),
       ],
-    }
+    },
   ]
 end function
 

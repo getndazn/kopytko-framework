@@ -7,7 +7,7 @@ function HttpInterceptor() as Object
   ' @abstract
   ' @param {HttpRequest} request
   ' @param {Object} urlTransfer
-  prototype.interceptRequest = sub (request as Object, urlTransfer as Object)
+  prototype.interceptRequest = sub (_request as Object, _urlTransfer as Object)
   end sub
 
   ' Used to catch request options and urlEvent - roUrlEvent object
@@ -15,7 +15,7 @@ function HttpInterceptor() as Object
   ' @abstract
   ' @param {HttpRequest} request
   ' @param {Object} urlTransfer
-  prototype.interceptResponse = sub (request as Object, urlEvent as Object)
+  prototype.interceptResponse = sub (_request as Object, _urlEvent as Object)
   end sub
 
   return prototype

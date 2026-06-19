@@ -1,4 +1,5 @@
 ' @import /components/router/utils/buildPath.brs
+
 function Routes(parentPath as String) as Object
   prototype = {}
   ' dependencies
