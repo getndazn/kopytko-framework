@@ -1,11 +1,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
-' @import /components/getType.brs from @dazn/kopytko-utils
 ' @mock /components/utils/KopytkoGlobalNode.brs
 
 function StoreFacadeTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  beforeEach(sub (_ts)
+  beforeEach(sub (_ts as Object)
     m._store = Invalid
     m.__spy = {
       subscriber: {

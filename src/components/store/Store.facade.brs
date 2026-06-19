@@ -1,6 +1,7 @@
 ' @import /components/getType.brs from @dazn/kopytko-utils
 ' @import /components/uuid.brs from @dazn/kopytko-utils
 ' @import /components/utils/KopytkoGlobalNode.brs
+
 function StoreFacade() as Object
   if (m._store <> Invalid)
     return m._store

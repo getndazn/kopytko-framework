@@ -1,17 +1,18 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/cache/policies/CachingPolicies.const.brs
 ' @mock /components/cache/policies/getCachingPolicies.brs
+
 function TestSuite__resolveCachingPolicy() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "resolveCachingPolicy"
 
-  ts.setBeforeEach(sub (ts as Object)
-    cachingPolicies = CachingPolicies()
+  ts.setBeforeEach(sub (_ts as Object)
+    cachingPolicy = CachingPolicies()
 
     policies = {}
-    policies[cachingPolicies.DEFAULT] = { type: cachingPolicies.DEFAULT }
-    policies[cachingPolicies.EXPIRABLE] = { type: cachingPolicies.EXPIRABLE }
-    policies[cachingPolicies.EXHAUSTIBLE] = { type: cachingPolicies.EXHAUSTIBLE }
+    policies[cachingPolicy.DEFAULT] = { type: cachingPolicy.DEFAULT }
+    policies[cachingPolicy.EXPIRABLE] = { type: cachingPolicy.EXPIRABLE }
+    policies[cachingPolicy.EXHAUSTIBLE] = { type: cachingPolicy.EXHAUSTIBLE }
 
     m.__mocks = {}
     m.__mocks.getCachingPolicies = {

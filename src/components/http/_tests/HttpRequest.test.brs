@@ -3,11 +3,12 @@
 ' @mock /components/rokuComponents/Timespan.brs from @dazn/kopytko-utils
 ' @mock /components/rokuComponents/UrlTransfer.brs from @dazn/kopytko-utils
 ' @mock /components/http/HttpInterceptor.brs
+
 function TestSuite__HttpRequest() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "HttpRequest"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.buildUrl = {
       returnValue: "",
@@ -97,7 +98,7 @@ function TestSuite__HttpRequest() as Object
     }
 
     ' When
-    request = HttpRequest(options)
+    HttpRequest(options)
     result = {
       url: m.__mocks.urlTransfer.setUrl.calls[0].params.url,
       method: m.__mocks.urlTransfer.setRequest.calls[0].params.request,
@@ -202,7 +203,7 @@ function TestSuite__HttpRequest() as Object
     m.__mocks.buildUrl.returnValue = expectedResult
 
     ' When
-    request = HttpRequest(options)
+    HttpRequest(options)
     result = m.__mocks.urlTransfer.setUrl.calls[0].params.url
 
     ' Then

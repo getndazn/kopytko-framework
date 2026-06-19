@@ -2,7 +2,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
   ts = HttpServiceTestSuite()
   ts.name = "HttpService_storeCachedResponse"
 
-  it("stores successful reusable response for GET request", function (_ts)
+  it("stores successful reusable response for GET request", function (_ts as Object)
     ' Given
     headers = {}
     headers["Cache-Control"] = "max-age=300"
@@ -22,7 +22,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     ]
   end function)
 
-  it("does not store unsuccessful response for GET request", function (_ts)
+  it("does not store unsuccessful response for GET request", function (_ts as Object)
     ' Given
     headers = {}
     headers["Cache-Control"] = "max-age=300"
@@ -36,7 +36,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     return expect("HttpCache.store").toHaveBeenCalledTimes(0)
   end function)
 
-  it("does not store successful reusable response for non-GET request", function (_ts)
+  it("does not store successful reusable response for non-GET request", function (_ts as Object)
     ' Given
     mockFunction("httpRequest.getMethod").returnValue("POST")
     headers = {}
@@ -51,7 +51,7 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     return expect("HttpCache.store").toHaveBeenCalledTimes(0)
   end function)
 
-  it("does not store successful non-reusable response for GET request", function (_ts)
+  it("does not store successful non-reusable response for GET request", function (_ts as Object)
     ' Given
     response = HttpResponse({ id: "testId", httpStatusCode: 200, requestOptions: {} })
     mockFunction("httpResponseCreator.create").returnValue(response)
@@ -63,12 +63,12 @@ function TestSuite__HttpService_storeCachedResponse() as Object
     return expect("HttpCache.store").toHaveBeenCalledTimes(0)
   end function)
 
-  it("prolongs 304 HTTP response", function (_ts)
+  it("prolongs 304 HTTP response", function (_ts as Object)
     ' Given
     mockFunction("httpRequest.isCachingEnabled").returnValue(true)
 
     expectedResult = CreateObject("roSGNode", "Node")
-    expectedResult.addFields({ expected: "result "})
+    expectedResult.addFields({ expected: "result " })
     mockFunction("cachedHttpResponse.hasExpired").returnValue(true)
     mockFunction("cachedHttpResponse.toNode").returnValue(expectedResult)
 

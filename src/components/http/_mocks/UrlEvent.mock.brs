@@ -15,35 +15,35 @@ function UrlEvent(eventScheme as Object) as Object
   prototype = {}
   prototype.eventScheme = eventScheme
 
-  prototype.getFailureReason = function() as String
+  prototype.getFailureReason = function () as String
     return m.eventScheme.failureReason
   end function
 
-  prototype.getInt = function() as Integer
+  prototype.getInt = function () as Integer
     return m.eventScheme.int
   end function
 
-  prototype.getResponseCode = function() as Integer
+  prototype.getResponseCode = function () as Integer
     return m.eventScheme.responseCode
   end function
 
-  prototype.getResponseHeaders = function() as Object
+  prototype.getResponseHeaders = function () as Object
     return m.eventScheme.responseHeaders
   end function
 
-  prototype.getResponseHeadersArray = function() as Object
+  prototype.getResponseHeadersArray = function () as Object
     return m.eventScheme.responseHeadersArray
   end function
 
-  prototype.getSourceIdentity = function() as Integer
+  prototype.getSourceIdentity = function () as Integer
     return m.eventScheme.sourceIdentity
   end function
 
-  prototype.getString = function() as String
+  prototype.getString = function () as String
     return m.eventScheme.bodyString
   end function
 
-  prototype.getTargetIpAddress = function() as String
+  prototype.getTargetIpAddress = function () as String
     return m.eventScheme.targetIpAddress
   end function
 

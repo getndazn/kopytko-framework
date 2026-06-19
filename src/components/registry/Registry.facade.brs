@@ -1,6 +1,7 @@
 ' @import /components/getProperty.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/AppInfo.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/RegistrySection.brs from @dazn/kopytko-utils
+
 function RegistryFacade() as Object
   prototype = {}
 
@@ -19,7 +20,7 @@ function RegistryFacade() as Object
     section = m._getRegistrySection()
 
     if (section.exists(key))
-      parsedValue = ParseJSON(section.read(key))
+      parsedValue = ParseJson(section.read(key))
 
       return getProperty(parsedValue, "value")
     end if
@@ -32,7 +33,7 @@ function RegistryFacade() as Object
   ' @returns {Boolean}
   prototype.set = function (key as String, value as Dynamic) as Boolean
     section = m._getRegistrySection()
-    wrappedValue = FormatJSON({ value: value })
+    wrappedValue = FormatJson({ value: value })
 
     return (section.write(key, wrappedValue) AND section.flush())
   end function

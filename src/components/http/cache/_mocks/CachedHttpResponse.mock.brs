@@ -1,4 +1,5 @@
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
+
 ' Required because Kopytko Unit Testing Framework doesn't mock inherited methods
 function CachedHttpResponse(responseData as Object) as Object
   return Mock({

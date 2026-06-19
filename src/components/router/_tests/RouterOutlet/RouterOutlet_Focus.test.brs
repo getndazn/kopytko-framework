@@ -2,7 +2,7 @@ function TestSuite__RouterOutlet_focus() as Object
   ts = RouterOutletTestSuite()
   ts.name = "RouterOutlet_Focus"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.global.router.routing = [{ path: "a-path", view: "TestExampleView" }]
     TestUtil_initializeRouterOutlet()
   end sub)

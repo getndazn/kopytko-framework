@@ -3,26 +3,27 @@
 ' @mock /components/cache/generateCacheKey.brs
 ' @mock /components/cache/policies/DefaultCachingPolicy.brs
 ' @mock /components/cache/policies/resolveCachingPolicy.brs
+
 function TestSuite__CacheCleaner() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "CacheCleaner"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.generateCacheKey = {
-      getReturnValue: function (params as Object, m as Object) as Object
+      getReturnValue: function (params as Object, _m as Object) as Object
         return params.keyData.key
       end function,
     }
     m.__mocks.defaultCachingPolicy = {
       isItemStale: {
-        getReturnValue: function (params as Object, m as Object) as Object
-          return params.cacheItem.cachingPolicyType = "stale"
+        getReturnValue: function (params as Object, _m as Object) as Object
+          return params._cacheItem.cachingPolicyType = "stale"
         end function,
       },
     }
     m.__mocks.resolveCachingPolicy = {
-      getReturnValue: function (params as Object, m as Object) as Object
+      getReturnValue: function (_params as Object, _m as Object) as Object
         return DefaultCachingPolicy()
       end function,
     }

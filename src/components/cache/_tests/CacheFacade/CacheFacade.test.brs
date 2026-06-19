@@ -3,10 +3,11 @@
 ' @mock /components/cache/CacheReader.brs
 ' @mock /components/cache/CacheWriter.brs
 ' @mock /components/utils/KopytkoGlobalNode.brs
+
 function CacheFacadeTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.kopytkoGlobalNode = {
       fields: {

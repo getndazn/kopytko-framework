@@ -1,4 +1,5 @@
 ' @import /components/uuid.brs from @dazn/kopytko-utils
+
 ' @deprecated - this file will be detached from Request.xml file and deleted
 sub init()
   m._id = uuid()
@@ -25,7 +26,7 @@ sub initRequest()
 end sub
 
 ' Override by child to setup request options
-function getRequestOptions(data as Object) as Object
+function getRequestOptions(_data as Object) as Object
   return {}
 end function
 

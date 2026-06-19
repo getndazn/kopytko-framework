@@ -31,7 +31,7 @@ function HttpResponseCreator() as Object
     content = urlEvent.getString()
     if (content = "") then return {}
 
-    data = ParseJSON(content)
+    data = ParseJson(content)
     if (data = Invalid) then return {}
 
     return data

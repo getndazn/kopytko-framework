@@ -1,9 +1,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function TestSuite__Theme() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "Theme"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.global.delete("theme")
     setAppTheme({
       fonts: { regular: __createFont("example.ttf") },

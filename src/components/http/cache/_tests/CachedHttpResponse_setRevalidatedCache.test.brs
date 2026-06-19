@@ -10,7 +10,7 @@ function TestSuite__CachedHttpResponse_setRevalidatedCache() as Object
     { given: "max-age=777", expected: "max-age=777" },
     { given: "max-age=10, public", expected: "max-age=777, public" },
     { given: "public, max-age=10", expected: "public, max-age=777" },
-  ], "adds max-age to or overwrites the value of the cache-control header", function (_ts, cacheControl as Object)
+  ], "adds max-age to or overwrites the value of the cache-control header", function (_ts as Object, cacheControl as Object)
     ' Given
     props = {
       id: "123456",
@@ -27,7 +27,7 @@ function TestSuite__CachedHttpResponse_setRevalidatedCache() as Object
     return expect(response.getHeaders()["Cache-Control"]).toBe(cacheControl.expected)
   end function)
 
-  it("removes Expires header", function (_ts)
+  it("removes Expires header", function (_ts as Object)
     ' Given
     props = {
       id: "123456",

@@ -3,14 +3,15 @@
 ' @mock /components/cache/generateCacheKey.brs
 ' @mock /components/cache/policies/DefaultCachingPolicy.brs
 ' @mock /components/cache/policies/resolveCachingPolicy.brs
+
 function TestSuite__CacheReader() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "CacheReader"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.generateCacheKey = {
-      getReturnValue: function (params as Object, m as Object) as Object
+      getReturnValue: function (params as Object, _m as Object) as Object
         return params.keyData.key
       end function,
     }
@@ -21,7 +22,7 @@ function TestSuite__CacheReader() as Object
       },
     }
     m.__mocks.resolveCachingPolicy = {
-      getReturnValue: function (params as Object, m as Object) as Object
+      getReturnValue: function (_params as Object, _m as Object) as Object
         return DefaultCachingPolicy()
       end function,
     }
@@ -56,11 +57,11 @@ function TestSuite__CacheReader() as Object
     __addCacheItem(keyData.key, scopeName, data)
 
     ' When
-    actual = m.__reader.read(keyData, scopeName)
+    m.__reader.read(keyData, scopeName)
 
     ' Then
     expectedParams = {
-      cacheItem: { data: data },
+      _cacheItem: { data: data },
     }
 
     return ts.assertMethodWasCalled("defaultCachingPolicy.applyReadingRules", expectedParams)
@@ -140,7 +141,7 @@ function TestSuite__CacheReader() as Object
     __addCacheItem(keyData.key, scopeName, data)
 
     ' When
-    actual = m.__reader.read(keyData, scopeName)
+    m.__reader.read(keyData, scopeName)
 
     ' Then
     expectedParams = {

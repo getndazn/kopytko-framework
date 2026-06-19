@@ -3,11 +3,11 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/Timer.brs from @dazn/kopytko-utils
 
-function TestSuite__KopytkoUpdater()
+function TestSuite__KopytkoUpdater() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "KopytkoUpdater"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__clock = fakeClock(m)
     m.__state = {}

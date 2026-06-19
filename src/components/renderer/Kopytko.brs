@@ -33,7 +33,7 @@ sub initKopytko(dynamicProps = {} as Object, componentsMapping = {} as Object)
   m._isInitialized = true
 end sub
 
-sub destroyKopytko(data = {} as Object)
+sub destroyKopytko(_data = {} as Object)
   if (NOT m._isInitialized) then return
 
   _methodCall(componentWillUnmount, "componentWillUnmount")
@@ -65,13 +65,13 @@ end sub
 sub componentDidMount()
 end sub
 
-sub componentDidUpdate(prevProps as Object, prevState as Object)
+sub componentDidUpdate(_prevProps as Object, _prevState as Object)
 end sub
 
 sub componentWillUnmount()
 end sub
 
-sub focusDidChange(event as Object)
+sub focusDidChange(_event as Object)
   if (m.top.hasFocus() AND m.elementToFocus <> Invalid)
     m.elementToFocus.setFocus(true)
   end if
@@ -145,6 +145,7 @@ function _isComponentDidCatchEnabled() as Boolean
     isComponentDidCatchEnabled = true
   #end if
 
+  ' kopytko-disable-next-line identifier/undefined-variable
   return isComponentDidCatchEnabled AND Type(componentDidCatch) <> "<uninitialized>"
 end function
 
@@ -163,6 +164,7 @@ sub _methodCall(func as Function, methodName as String, args = [] as Object, con
 end sub
 
 sub _throw(error as Object, failingComponentMethod as String)
+  ' kopytko-disable-next-line identifier/undefined-function
   componentDidCatch(error, {
     componentMethod: failingComponentMethod,
     componentName: m.top.subtype(),

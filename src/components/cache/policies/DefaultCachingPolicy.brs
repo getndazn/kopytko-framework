@@ -10,19 +10,19 @@ function DefaultCachingPolicy() as Object
 
   ' @abstract
   ' @param {Object} cacheItem
-  prototype.applyReadingRules = sub (cacheItem as Object)
+  prototype.applyReadingRules = sub (_cacheItem as Object)
     ' no reading rules be default
   end sub
 
   ' @abstract
   ' @param {Object} cacheItem
-  prototype.applyWritingRules = sub (cacheItem as Object, options as Object)
+  prototype.applyWritingRules = sub (_cacheItem as Object, _options as Object)
     ' no writing rules be default
   end sub
 
   ' @abstract
   ' @param {Object} cacheItem
-  prototype.isItemStale = function (cacheItem as Object) as Boolean
+  prototype.isItemStale = function (_cacheItem as Object) as Boolean
     return false
   end function
 

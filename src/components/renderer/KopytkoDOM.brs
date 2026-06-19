@@ -118,7 +118,7 @@ function KopytkoDOM() as Object
   prototype._destroyKopytkoElement = sub (element as Object)
     if (m._isKopytkoBasedType(element))
       element.callFunc("destroyKopytko", {})
-    ' this check is done to avoid getting children of SceneGraph's internal nodes (e.g. MonospaceLabel, Clock, etc.)
+      ' this check is done to avoid getting children of SceneGraph's internal nodes (e.g. MonospaceLabel, Clock, etc.)
     else if (element.subtype() = "Group" OR element.isSubtype("Group"))
       for each child in element.getChildren(element.getChildCount(), 0)
         m._destroyKopytkoElement(child)
@@ -227,7 +227,6 @@ function KopytkoDOM() as Object
     subtype = element.subtype()
     while (subtype <> "Group")
       subtype = element.parentSubtype(subtype)
-
       if (subtype.instr("Kopytko") = 0)
         return true
       end if

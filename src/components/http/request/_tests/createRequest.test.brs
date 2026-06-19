@@ -1,14 +1,12 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @import /components/promise/Promise.brs from @dazn/kopytko-utils
-' @import /components/promise/PromiseReject.brs from @dazn/kopytko-utils
-' @import /components/promise/PromiseResolve.brs from @dazn/kopytko-utils
 ' @import /components/rokuComponents/_mocks/Event.mock.brs from @dazn/kopytko-utils
 
 function TestSuite__createRequest() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "createRequest"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__returnedResponse = {}
     m._requests = {}
   end sub)

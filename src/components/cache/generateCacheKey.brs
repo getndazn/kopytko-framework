@@ -7,7 +7,7 @@ function generateCacheKey(keyData as Object) as String
   keyDataType = getType(keyData)
   if (keyDataType = "roAssociativeArray")
     ' @todo implement some kind of hash code generation instead
-    return FormatJSON(keyData)
+    return FormatJson(keyData)
   else if (GetInterface(keyData, "ifToStr") <> Invalid)
     return keyData.toStr()
   else

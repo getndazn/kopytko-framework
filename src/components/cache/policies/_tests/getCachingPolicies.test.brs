@@ -3,11 +3,12 @@
 ' @mock /components/cache/policies/DefaultCachingPolicy.brs
 ' @mock /components/cache/policies/ExhaustibleCachingPolicy.brs
 ' @mock /components/cache/policies/ExpirableCachingPolicy.brs
+
 function TestSuite__getCachingPolicies() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "getCachingPolicies"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m._registeredCachingPolicies = Invalid
     m.__mocks = {
       defaultCachingPolicy: {
@@ -48,11 +49,11 @@ function TestSuite__getCachingPolicies() as Object
     getCachingPolicies()
 
     ' When
-    policies = getCachingPolicies()
+    getCachingPolicies()
 
     ' Then
     for each policyType in CachingPolicies()
-      if ( m.__mocks[policyType + "CachingPolicy"].constructorCalls.count() > 1)
+      if (m.__mocks[policyType + "CachingPolicy"].constructorCalls.count() > 1)
         return ts.fail("Caching policy '" + policyType + "' was created more than one")
       end if
     end for

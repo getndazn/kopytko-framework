@@ -2,7 +2,7 @@ function TestSuite__EventBusFacade_Trigger() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "EventBus - Trigger"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m._eventBus = EventBusFacade()
 
     m.__mocks = {}
@@ -11,10 +11,10 @@ function TestSuite__EventBusFacade_Trigger() as Object
   ts.addTest("it calls all the callbacks attached to the triggered event", function (ts as Object) as Object
     ' Given
     event = "hatersHated"
-    m._eventBus.on(event, sub (payload as Object)
+    m._eventBus.on(event, sub (_payload as Object)
       m.__mocks.firstEventCalled = true
     end sub)
-    m._eventBus.on(event, sub (payload as Object)
+    m._eventBus.on(event, sub (_payload as Object)
       m.__mocks.secondEventCalled = true
     end sub)
     m.__mocks.firstEventCalled = false

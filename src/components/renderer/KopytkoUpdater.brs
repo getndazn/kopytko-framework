@@ -1,6 +1,7 @@
 ' @import /components/timers/clearTimeoutCore.brs from @dazn/kopytko-utils
 ' @import /components/timers/setTimeoutCore.brs from @dazn/kopytko-utils
-function KopytkoUpdater(baseStateUpdatedCallback as Function)
+
+function KopytkoUpdater(baseStateUpdatedCallback as Function) as Object
   prototype = {}
 
   prototype._pendingPartialStates = []

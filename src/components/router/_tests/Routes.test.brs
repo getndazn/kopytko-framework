@@ -1,9 +1,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
-function TestSuite__Routes()
+
+function TestSuite__Routes() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "Routes"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.global.setFields({
       router: CreateObject("roSGNode", "Router"),
     })

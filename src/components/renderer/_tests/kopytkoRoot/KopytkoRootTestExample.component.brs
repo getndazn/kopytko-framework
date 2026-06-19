@@ -1,5 +1,7 @@
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
+' kopytko-disable-next-line import/unused
 ' @import /components/renderer/kopytkoRoot.brs
+
 sub init()
   m.__mocks = {
     initKopytko: Invalid,

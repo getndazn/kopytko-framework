@@ -1,4 +1,5 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
+
 function TestSuite__generateCacheKey() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "generateCacheKey"

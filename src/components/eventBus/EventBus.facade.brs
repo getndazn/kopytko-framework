@@ -57,7 +57,7 @@ function EventBusFacade() as Object
     end function, handlerToRemove)
   end sub
 
-  prototype.clear = sub()
+  prototype.clear = sub ()
     for each eventName in m._eventsMap
       m._eventsMap.delete(eventName)
       m._eventBus.unobserveFieldScoped(eventName)

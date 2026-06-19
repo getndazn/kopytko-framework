@@ -2,7 +2,7 @@ function TestSuite__EventBusFacade_On() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "EventBus - On"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m._eventBus = EventBusFacade()
 
     m.__mocks = {}
@@ -11,7 +11,7 @@ function TestSuite__EventBusFacade_On() as Object
   ts.addTest("it registers a callback to the given event", function (ts as Object) as Object
     ' Given
     event = "bagnoHappened"
-    m._eventBus.on(event, sub (payload as Object)
+    m._eventBus.on(event, sub (_payload as Object)
       m.__mocks.eventCalled = true
     end sub)
     m.__mocks.eventCalled = false
@@ -27,7 +27,7 @@ function TestSuite__EventBusFacade_On() as Object
     ' Given
     event = "hatersHated"
     callbackHolder = { callbackCalled: false }
-    callbackHolder.callback = sub (payload as Object)
+    callbackHolder.callback = sub (_payload as Object)
       m.callbackCalled = true
     end sub
     m._eventBus.on(event, callbackHolder.callback, callbackHolder)

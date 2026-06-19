@@ -14,12 +14,12 @@ sub redirect(navigationData as Object, resetHistory = false as Boolean)
   ' @todo use setTimeout
   m._timer = CreateObject("roSGNode", "Timer")
   m._timer.duration = 0
-  m._timer.observeField("fire", "_onSetTimeoutCallback")
+  m._timer.observeFieldScoped("fire", "_onSetTimeoutCallback")
   m._timer.control = "START"
 end sub
 
 ' @private
-sub _onSetTimeoutCallback(event as Object)
+sub _onSetTimeoutCallback(_event as Object)
   m.global.router.activatedRoute.shouldSkip = true
   m.global.router.callFunc("navigate", m._redirectionData)
   if (m._resetHistory)

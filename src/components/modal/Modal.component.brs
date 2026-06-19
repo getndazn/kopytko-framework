@@ -41,7 +41,7 @@ sub _handleOpenRequest(payload as Object)
   end sub)
 end sub
 
-sub _handleCloseRequest(payload as Object)
+sub _handleCloseRequest(_payload as Object)
   _dismiss()
 end sub
 

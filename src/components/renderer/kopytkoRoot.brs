@@ -8,6 +8,7 @@ sub initKopytkoRoot(dynamicProps as Object)
     dynamicPropsValues[prop] = m.top[prop]
   end for
 
+  ' kopytko-disable-next-line identifier/undefined-function
   initKopytko(dynamicPropsValues)
 
   for each prop in dynamicProps
@@ -16,7 +17,7 @@ sub initKopytkoRoot(dynamicProps as Object)
 end sub
 
 sub destroyKopytkoRoot()
-  if m._dynamicProps <> Invalid
+  if (m._dynamicProps <> Invalid)
     for each prop in m._dynamicProps
       m.top.unobserveFieldScoped(prop)
     end for
@@ -24,11 +25,13 @@ sub destroyKopytkoRoot()
     m._dynamicProps = Invalid
   end if
 
+  ' kopytko-disable-next-line identifier/undefined-function
   destroyKopytko()
 end sub
 
 sub kopytkoRoot_dynamicPropChanged(event as Object)
   props = {}
   props[event.getField()] = event.getData()
+  ' kopytko-disable-next-line identifier/undefined-function
   updateProps(props)
 end sub

@@ -1,6 +1,6 @@
 ' @import /components/CacheFS.brs from @dazn/kopytko-utils
-' @import /components/ternary.brs from @dazn/kopytko-utils
 ' @import /components/http/cache/CachedHttpResponse.brs
+
 function HttpCache() as Object
   prototype = {}
 

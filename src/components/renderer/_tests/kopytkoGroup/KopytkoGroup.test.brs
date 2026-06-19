@@ -2,10 +2,10 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/Timer.brs from @dazn/kopytko-utils
 
-function KopytkoGroupTestSuite()
+function KopytkoGroupTestSuite() as Object
   ts = KopytkoFrameworkTestSuite()
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     ' Props set in init() needed to be cleared
     m.state.clear()
     m.elementToFocus = Invalid
@@ -34,10 +34,11 @@ function KopytkoGroupTestSuite()
         updateDOMCalls: [],
         renderElementCalls: [],
       },
+      ' kopytko-disable-next-line identifier/undefined-function
       __super: KopytkoDOM(),
       componentsMapping: {},
       renderElement: sub (vNode as Object, parentElement = Invalid as Object)
-        m.__spy.renderElementCalls.push([virtualDOM, parentElement])
+        m.__spy.renderElementCalls.push([vNode, parentElement])
         m.__super.renderElement(vNode, parentElement)
       end sub,
       updateDOM: sub (diffResult as Object)
@@ -51,7 +52,7 @@ function KopytkoGroupTestSuite()
     m._kopytkoUpdater._stateUpdateTimeoutId = Invalid
   end sub)
 
-  ts.setAfterEach(sub (ts as Object)
+  ts.setAfterEach(sub (_ts as Object)
     m.top.removeChildrenIndex(m.top.getChildCount(), 0)
   end sub)
 
@@ -88,11 +89,12 @@ sub componentWillUnmount()
   m.__spy.componentWillUnmountCalls.push(Invalid)
 end sub
 
-sub _onChildMounted(event as Object)
+sub _onChildMounted(_event as Object)
   m.__spy.onChildMountedCalls.push({
     wasComponentDidMountCalled: (NOT m.__spy.componentDidMountCalls.isEmpty()),
   })
 
+  ' kopytko-disable-next-line identifier/undefined-function
   setState({ test: "_onChildMounted" })
 
   stateCopy = {}

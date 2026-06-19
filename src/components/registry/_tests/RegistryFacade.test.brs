@@ -1,11 +1,12 @@
 ' @import /components/KopytkoFrameworkTestSuite.brs from @dazn/kopytko-unit-testing-framework
 ' @mock /components/rokuComponents/AppInfo.brs from @dazn/kopytko-utils
 ' @mock /components/rokuComponents/RegistrySection.brs from @dazn/kopytko-utils
+
 function TestSuite__RegistryFacade() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "RegistryFacade_Main"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m.__mocks = {}
     m.__mocks.appInfo = getAppInfoMockConfig()
     m.__mocks.registrySection = {
@@ -22,9 +23,9 @@ function TestSuite__RegistryFacade() as Object
 
   ts.addTest("it returns saved value in registry", function (ts as Object) as String
     ' Given
-    m.__mocks.registrySection.read.getReturnValue = function (params as Object, m as Object) as Dynamic
+    m.__mocks.registrySection.read.getReturnValue = function (params as Object, _m as Object) as Dynamic
       if (params.key = "somekey")
-        return FormatJSON({ value: "some value" })
+        return FormatJson({ value: "some value" })
       end if
 
       return Invalid
@@ -60,7 +61,7 @@ function TestSuite__RegistryFacade() as Object
     ' Then
     return ts.assertMethodWasCalled("RegistrySection.write", {
       key: key,
-      value: FormatJSON({
+      value: FormatJson({
         value: "some value",
       }),
     })

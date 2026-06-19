@@ -1,4 +1,4 @@
-function TestSuite__KopytkoDOM_updateDOM()
+function TestSuite__KopytkoDOM_updateDOM() as Object
   ts = KopytkoDOMTestSuite()
   ts.name = "KopytkoDOM - updateDOM"
 
@@ -102,7 +102,7 @@ function TestSuite__KopytkoDOM_updateDOM()
       {
         name: "LayoutGroup",
         props: { id: "child2" },
-      }
+      },
     ]
 
     diffResult = {
@@ -190,7 +190,7 @@ function TestSuite__KopytkoDOM_updateDOM()
               {
                 name: "KopytkoTestExample",
                 props: { id: "child2" },
-              }
+              },
             ],
           },
         ],

@@ -1,4 +1,4 @@
-function TestSuite__KopytkoDOM_renderElement()
+function TestSuite__KopytkoDOM_renderElement() as Object
   ts = KopytkoDOMTestSuite()
   ts.name = "KopytkoDOM - renderElement"
 

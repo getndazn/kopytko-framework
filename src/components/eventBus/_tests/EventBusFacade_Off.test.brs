@@ -2,7 +2,7 @@ function TestSuite__EventBusFacade_Off() as Object
   ts = KopytkoFrameworkTestSuite()
   ts.name = "EventBus - Off"
 
-  ts.setBeforeEach(sub (ts as Object)
+  ts.setBeforeEach(sub (_ts as Object)
     m._eventBus = EventBusFacade()
 
     m.__mocks = {}
@@ -13,7 +13,7 @@ function TestSuite__EventBusFacade_Off() as Object
     event = "cykaBlyated"
     m.__mocks.callbackCalled = false
     callbackHolder = {
-      callback: sub (payload as Object)
+      callback: sub (_payload as Object)
         m.__mocks.callbackCalled = true
       end sub,
     }
@@ -32,10 +32,10 @@ function TestSuite__EventBusFacade_Off() as Object
     event = "cykaBlyated"
     m.__mocks.callbacksInfo = { firstCallbackCalled: false, secondCallbackCalled: false }
     callbacksHolder = {
-      firstCallback: sub (payload as Object)
+      firstCallback: sub (_payload as Object)
         m.__mocks.callbacksInfo.firstCallbackCalled = true
       end sub,
-      secondCallback: sub (payload as Object)
+      secondCallback: sub (_payload as Object)
         m.__mocks.callbacksInfo.secondCallbackCalled = true
       end sub,
     }

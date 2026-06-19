@@ -1,4 +1,5 @@
 ' @import /components/_mocks/Mock.brs from @dazn/kopytko-unit-testing-framework
+
 sub init()
   m._mock = Mock({
     testComponent: m,
@@ -15,6 +16,6 @@ sub initKopytko(dynamicProps as Object)
   m._mock.initKopytko(dynamicProps)
 end sub
 
-function getMock(data as Object) as Object
+function getMock(_data as Object) as Object
   return m.__mocks.kopytkoGroup
 end function
