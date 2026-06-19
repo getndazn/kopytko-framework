@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/getndazn/kopytko-framework/compare/v3.4.1...v3.4.2) (2026-06-19)
+
+
+### Bug Fixes
+
+* add formatter and linter ([#78](https://github.com/getndazn/kopytko-framework/issues/78)) ([07f7e2e](https://github.com/getndazn/kopytko-framework/commit/07f7e2ed33ed121236498ce70cd5f11450a699a7))
+
 ## [3.4.1](https://github.com/getndazn/kopytko-framework/compare/v3.4.0...v3.4.1) (2026-04-08)
 
 
