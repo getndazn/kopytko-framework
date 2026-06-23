@@ -6,10 +6,12 @@ function RouterFacade() as Object
   ' Changes path in global Router service
   ' @param {String} path - URL
   ' @param {Object} [params={}] - query params, allow to pass additional values when changing the route
-  prototype.navigate = sub (path as String, params = {} as Object)
+  ' @param {Object} [skipInHistory=false] - flag indicating if user should be able to use this route as a back journey
+  prototype.navigate = sub (path as String, params = {} as Object, skipInHistory = false as Boolean)
     m._router.callFunc("navigate", {
       path: path,
       params: params,
+      skipInHistory: skipInHistory,
     })
   end sub
 

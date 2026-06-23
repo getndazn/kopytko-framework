@@ -6,6 +6,7 @@
     "editor.defaultFormatter": "bchelkowski.vscode-kopytko"
   },
   "brightscript.languageServer.enabled": false,
+  "kopytko.imports.sourceDir": "src",
   "kopytko.imports.resolveModules": true,
   "kopytko.casing.keyword": "lower-case",
   "kopytko.casing.type": "pascal-case",
