@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/getndazn/kopytko-framework/compare/v3.4.2...v3.5.0) (2026-06-23)
+
+
+### Features
+
+* Router.navigate should be able to skip navigation in history ([#79](https://github.com/getndazn/kopytko-framework/issues/79)) ([67a1b94](https://github.com/getndazn/kopytko-framework/commit/67a1b9482675b4f27924f91bb67b93b2afd23c8e))
+
 ## [3.4.2](https://github.com/getndazn/kopytko-framework/compare/v3.4.1...v3.4.2) (2026-06-19)
 
 
