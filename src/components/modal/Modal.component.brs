@@ -1,5 +1,6 @@
 ' @import /components/eventBus/EventBus.facade.brs
 ' @import /components/modal/ModalEvents.const.brs
+
 sub constructor()
   m._eventBus = EventBusFacade()
   m._modalEvents = ModalEvents()

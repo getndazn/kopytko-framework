@@ -3,7 +3,12 @@
 <component name="Theme" extends="Node">
   <interface>
     <function name="getFont" />
+    <function name="getScaledFont" />
     <function name="rgba" />
+    <function name="scaleSize" />
+    <function name="scaleUniform" />
+    <function name="scaleX" />
+    <function name="scaleY" />
     <function name="setAppTheme" />
   </interface>
 

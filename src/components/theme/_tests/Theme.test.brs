@@ -6,6 +6,9 @@ function TestSuite__Theme() as Object
 
   ts.setBeforeEach(sub (_ts as Object)
     m.global.delete("theme")
+    if (m.top.hasField("resolution"))
+      m.top.removeField("resolution")
+    end if
     setAppTheme({
       fonts: { regular: __createFont("example.ttf") },
     })
@@ -57,6 +60,88 @@ function TestSuite__Theme() as Object
     return ts.assertEqual(expectedOptions, resultOptions)
   end function)
 
+  ts.addTest("should scale x values using resolution width", function (ts as Object) as String
+    ' Given
+    __setResolution(1280, 720)
+
+    ' When
+    result = scaleX({ value: 1920 })
+
+    ' Then
+    return ts.assertEqual(1280, result)
+  end function)
+
+  ts.addTest("should scale y values using resolution height", function (ts as Object) as String
+    ' Given
+    __setResolution(1280, 720)
+
+    ' When
+    result = scaleY({ value: 1080 })
+
+    ' Then
+    return ts.assertEqual(720, result)
+  end function)
+
+  ts.addTest("should scale uniform values using smaller axis", function (ts as Object) as String
+    ' Given
+    __setResolution(1280, 720)
+
+    ' When
+    result = scaleUniform({ value: 48 })
+
+    ' Then
+    return ts.assertEqual(32, result)
+  end function)
+
+  ts.addTest("should return original values for fhd scale", function (ts as Object) as String
+    ' Given
+    __setResolution(1920, 1080)
+
+    ' When
+    result = scaleSize({ size: [960, 540] })
+
+    ' Then
+    return ts.assertEqual([960, 540], result)
+  end function)
+
+  ts.addTest("should scale size arrays per axis", function (ts as Object) as String
+    ' Given
+    __setResolution(1280, 720)
+
+    ' When
+    result = scaleSize({ size: [960, 540] })
+
+    ' Then
+    return ts.assertEqual([640, 360], result)
+  end function)
+
+  ts.addTest("should fallback to fhd when resolution is missing", function (ts as Object) as String
+    ' When
+    result = scaleUniform({ value: 48 })
+
+    ' Then
+    return ts.assertEqual(48, result)
+  end function)
+
+  ts.addTest("should create scaled font using uniform mode by default", function (ts as Object) as String
+    ' Given
+    __setResolution(1280, 720)
+    expectedOptions = {
+      uri: "pkg:/fonts/example.ttf",
+      size: 32,
+    }
+
+    ' When
+    font = getScaledFont({ fontName: "regular", sizeInPixels: 48 })
+    resultOptions = {
+      uri: font.uri,
+      size: font.size,
+    }
+
+    ' Then
+    return ts.assertEqual(expectedOptions, resultOptions)
+  end function)
+
   ts.addTest("should set opacity to FF when given 1 as opacity parameter", function (ts as Object) as String
     ' Given
     color = "0xF2000000"
@@ -98,6 +183,21 @@ function TestSuite__Theme() as Object
 
   return ts
 end function
+
+sub __setResolution(width as Integer, height as Integer)
+  m.global.delete("theme")
+  if (m.top.hasField("fonts"))
+    m.top.removeField("fonts")
+  end if
+  if (m.top.hasField("resolution"))
+    m.top.removeField("resolution")
+  end if
+
+  setAppTheme({
+    fonts: { regular: __createFont("example.ttf") },
+    resolution: { height: height, width: width },
+  })
+end sub
 
 function __createFont(fontFileName as String) as Object
   font = CreateObject("roSGNode", "Font")
