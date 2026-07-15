@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/getndazn/kopytko-framework/compare/v3.5.0...v3.6.0) (2026-07-15)
+
+
+### Features
+
+* add scaling methods to the Theme ([#80](https://github.com/getndazn/kopytko-framework/issues/80)) ([2eb0018](https://github.com/getndazn/kopytko-framework/commit/2eb00180be21d67c51027d5d990ed9e595fdc35f))
+
 # [3.5.0](https://github.com/getndazn/kopytko-framework/compare/v3.4.2...v3.5.0) (2026-06-23)
 
 
