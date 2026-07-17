@@ -9,7 +9,15 @@ function KopytkoDOM() as Object
   ' @param {Object} vNode - The virtual node
   ' @param {Object} parentElement - The parent element where the element will be rendered
   prototype.renderElement = sub (vNode as Object, parentElement = Invalid as Object)
-    if (Type(vNode) = "roArray")
+    vNodeType = Type(vNode)
+
+    if (vNodeType = "roArray")
+      m._renderElementChildren(vNode, parentElement)
+
+      return
+    end if
+
+    if (vNodeType = "roAssociativeArray" AND vNode.name = Invalid)
       m._renderElementChildren(vNode, parentElement)
 
       return
@@ -150,15 +158,31 @@ function KopytkoDOM() as Object
 
   ' @private
   prototype._renderElementChildren = sub (children as Object, parentElement as Object)
-    if (children = Invalid)
-      return
-    end if
+    if (children = Invalid) then return
 
-    for each vChildNode in children
-      if (vChildNode <> Invalid)
+    if (Type(children) = "roAssociativeArray")
+      ' Sort by order field before rendering — guarantees correct insertChild sequence
+      ' since roAssociativeArray does not preserve iteration order
+      orderedChildren = []
+
+      for each childId in children
+        child = children[childId]
+        if (child <> Invalid) then orderedChildren.push(child)
+      end for
+
+      orderedChildren.sortBy("order")
+
+      for each vChildNode in orderedChildren
         m.renderElement(vChildNode, parentElement)
-      end if
-    end for
+      end for
+    else
+      ' Fallback — roArray (e.g. during first render before normalisation propagates)
+      for each vChildNode in children
+        if (vChildNode <> Invalid)
+          m.renderElement(vChildNode, parentElement)
+        end if
+      end for
+    end if
   end sub
 
   ' @private
@@ -168,8 +192,14 @@ function KopytkoDOM() as Object
 
   ' @private
   prototype._isVNodeValid = function (vNode as Object) as Boolean
-    if (Type(vNode) = "roAssociativeArray" AND vNode.count() = 0)
-      return false ' Let render empty component without printing any warning
+    if (Type(vNode) <> "roAssociativeArray")
+      print "vNode must be an AssociativeArray, got: " + Type(vNode)
+
+      return false
+    end if
+
+    if (vNode.count() = 0)
+      return false
     end if
 
     if (vNode.name = Invalid)

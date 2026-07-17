@@ -96,11 +96,12 @@ sub updateProps(props = {} as Object)
 end sub
 
 sub _mountComponent()
-  m._virtualDOM = render()
-
-  _methodCall(m._kopytkoDOM.renderElement, "renderElement", [m._virtualDOM, m.top], m._kopytkoDOM)
+  rawVirtualDOM = render()
+  _methodCall(m._kopytkoDOM.renderElement, "renderElement", [rawVirtualDOM, m.top], m._kopytkoDOM)
   _methodCall(m._kopytkoUpdater.setComponentMounted, "setComponentMounted", [m.state], m._kopytkoUpdater)
   _methodCall(componentDidMount, "componentDidMount")
+
+  m._virtualDOM = m._kopytkoDiffUtility._normaliseVNode(rawVirtualDOM)
 end sub
 
 sub _onStateUpdated()
@@ -110,7 +111,7 @@ end sub
 sub _updateDOM()
   newVirtualDOM = render()
   diffResult = m._kopytkoDiffUtility.diffDOM(m._virtualDOM, newVirtualDOM)
-  m._virtualDOM = newVirtualDOM
+  m._virtualDOM = diffResult.normalisedVirtualDOM
   wasInFocusChain = m.top.isInFocusChain()
 
   m._kopytkoDOM.updateDOM(diffResult)
