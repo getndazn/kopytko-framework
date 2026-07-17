@@ -17,7 +17,7 @@ function KopytkoDOM() as Object
       return
     end if
 
-    if (vNodeType = "roAssociativeArray" AND vNode.name = Invalid)
+    if (vNodeType = "roAssociativeArray" AND vNode.__childrenMap = true)
       m._renderElementChildren(vNode, parentElement)
 
       return
@@ -161,13 +161,13 @@ function KopytkoDOM() as Object
     if (children = Invalid) then return
 
     if (Type(children) = "roAssociativeArray")
-      ' Sort by order field before rendering — guarantees correct insertChild sequence
-      ' since roAssociativeArray does not preserve iteration order
-      orderedChildren = []
+      if (children.__childrenMap <> true) then return
 
-      for each childId in children
-        child = children[childId]
-        if (child <> Invalid) then orderedChildren.push(child)
+      ' roAssociativeArray does not preserve the authored order - sort by the "order" field
+      ' assigned during normalisation to guarantee the correct insertChild sequence
+      orderedChildren = []
+      for each childId in children.byId
+        orderedChildren.push(children.byId[childId])
       end for
 
       orderedChildren.sortBy("order")
@@ -175,8 +175,12 @@ function KopytkoDOM() as Object
       for each vChildNode in orderedChildren
         m.renderElement(vChildNode, parentElement)
       end for
-    else
-      ' Fallback — roArray (e.g. during first render before normalisation propagates)
+
+      return
+    end if
+
+    ' Raw (not yet normalised) array of children
+    if (Type(children) = "roArray")
       for each vChildNode in children
         if (vChildNode <> Invalid)
           m.renderElement(vChildNode, parentElement)

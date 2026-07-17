@@ -6,12 +6,13 @@ function KopytkoDiffUtility() as Object
 
   ' Diffs the current virtual DOM against the new one, returning an object with the elements that need to be
   ' updated, rendered or removed.
-  ' @param {Object} currentVirtualDOM - The current virtual DOM
-  ' @param {Object} newVirtualDOM - The new virtual DOM
+  ' @param {Object} currentVirtualDOM - The current virtual DOM (normalised or raw)
+  ' @param {Object} newVirtualDOM - The new virtual DOM (raw render() output; normalised in place)
   ' @returns {Object} diffResult - The diff result object
   ' @returns {Object} diffResult.elementsToUpdate - vNodes containing the props that needs to be updated
   ' @returns {Object[]} diffResult.elementsToRender - A list of vNodes to render
   ' @returns {String[]} diffResult.elementsToRemove - A list of the IDs of elements to remove from the DOM
+  ' @returns {Object} diffResult.normalisedVirtualDOM - The normalised new virtual DOM to be stored for the next diff
   prototype.diffDOM = function (currentVirtualDOM as Object, newVirtualDOM as Object) as Object
     m._diffResult = {
       elementsToUpdate: {},
@@ -19,14 +20,13 @@ function KopytkoDiffUtility() as Object
       elementsToRemove: [],
     }
 
-    normalisedNew = m._normaliseVNode(newVirtualDOM)
-    currentIsCollection = m._isChildrenCollection(currentVirtualDOM)
-    newIsCollection = m._isChildrenCollection(normalisedNew)
+    normalisedCurrent = m.normaliseVNode(currentVirtualDOM)
+    normalisedNew = m.normaliseVNode(newVirtualDOM)
 
-    if (currentIsCollection AND newIsCollection)
-      m._diffElementChildren(currentVirtualDOM, normalisedNew)
+    if (m._isChildrenCollection(normalisedCurrent) AND m._isChildrenCollection(normalisedNew))
+      m._diffElementChildren(normalisedCurrent, normalisedNew)
     else
-      m._diffElement(currentVirtualDOM, normalisedNew)
+      m._diffElement(normalisedCurrent, normalisedNew)
     end if
 
     diffResult = m._diffResult
@@ -36,11 +36,38 @@ function KopytkoDiffUtility() as Object
     return diffResult
   end function
 
+  ' Normalises a render() output in place - every array of children becomes a { __childrenMap: true, byId: {} }
+  ' structure keyed by props.id, with an "order" field on each child preserving the array position.
+  ' Already normalised structures are returned unchanged, so the method is idempotent.
+  ' @param {Object} vNode - A single vNode, an array of vNodes, a normalised children map or Invalid
+  ' @returns {Object} The normalised vNode
+  prototype.normaliseVNode = function (vNode as Object) as Object
+    if (vNode = Invalid) then return Invalid
+
+    ' render() returned a top-level array of vNodes
+    if (Type(vNode) = "roArray")
+      return m._normaliseChildArray(vNode)
+    end if
+
+    if (Type(vNode) <> "roAssociativeArray") then return vNode
+
+    ' Already normalised children map
+    if (vNode.__childrenMap = true) then return vNode
+
+    ' Single vNode - normalise its children if still an array
+    if (vNode.children <> Invalid AND Type(vNode.children) = "roArray")
+      vNode.children = m._normaliseChildArray(vNode.children)
+    end if
+
+    return vNode
+  end function
+
   ' @private
   prototype._isChildrenCollection = function (vNode as Object) as Boolean
     if (vNode = Invalid) then return true
     if (Type(vNode) = "roArray") then return true
     if (Type(vNode) <> "roAssociativeArray") then return false
+    if (vNode.__childrenMap = true) then return true
 
     return (vNode.name = Invalid)
   end function
@@ -80,7 +107,11 @@ function KopytkoDiffUtility() as Object
       newElement.dynamicProps = {}
     end if
 
-    m._diffElementProps(currentId, currentElement.dynamicProps, newElement.dynamicProps)
+    ' Props updates are keyed by the element id, so they can only be tracked for elements that have one
+    if (currentId <> Invalid)
+      m._diffElementProps(currentId, currentElement.dynamicProps, newElement.dynamicProps)
+    end if
+
     m._diffElementChildren(currentElement.children, newElement.children, newId)
   end sub
 
@@ -98,95 +129,98 @@ function KopytkoDiffUtility() as Object
     end for
   end sub
 
+  ' @todo Support elements reordering
   ' @private
   prototype._diffElementChildren = sub (currentChildren as Object, newChildren as Object, parentElementId = Invalid as Dynamic)
-    if (newChildren = Invalid) then newChildren = {}
+    currentById = m._getChildrenById(currentChildren)
+    newById = m._getChildrenById(newChildren)
 
-    if (Type(currentChildren) = "roArray")
-      currentChildren = m._normaliseChildArray(currentChildren)
-    end if
+    for each childId in newById
+      newChild = newById[childId]
+      newChild.index = newChild.order
+      newChild.parentId = parentElementId
 
-    for each childId in newChildren
-      newChild = newChildren[childId]
-      if (newChild <> Invalid AND Type(newChild) = "roAssociativeArray")
-        newChild.index = newChild.order
-        newChild.parentId = parentElementId
-
-        currentChild = Invalid
-        if (currentChildren <> Invalid) then currentChild = currentChildren[childId]
-        m._diffElement(currentChild, newChild)
-      end if
+      m._diffElement(currentById[childId], newChild)
     end for
 
-    if (currentChildren <> Invalid)
-      for each childId in currentChildren
-        currentChild = currentChildren[childId]
-        if (newChildren[childId] = Invalid AND currentChild <> Invalid AND Type(currentChild) = "roAssociativeArray")
-          m._markElementToBeRemoved(currentChild)
-        end if
-      end for
-    end if
+    for each childId in currentById
+      if (newById[childId] = Invalid)
+        m._markElementToBeRemoved(currentById[childId])
+      end if
+    end for
   end sub
 
   ' @private
-  prototype._markElementToBeRemoved = sub (element as Object)
-    if (element = Invalid OR Type(element) <> "roAssociativeArray") then return
-    if (element.props = Invalid OR element.props.id = Invalid) then return
+  ' Accepts Invalid, a raw vNode array or a normalised children map; returns an id-keyed AA of the vNodes
+  prototype._getChildrenById = function (children as Object) as Object
+    if (children = Invalid) then return {}
+    if (Type(children) = "roArray") then return m._normaliseChildArray(children).byId
+    if (Type(children) = "roAssociativeArray" AND children.__childrenMap = true) then return children.byId
 
-    m._diffResult.elementsToRemove.push(element.props.id)
-
-    if (element.children = Invalid OR element.children.count() = 0) then return
-
-    if (Type(element.children) = "roAssociativeArray")
-      for each childId in element.children
-        m._markElementToBeRemoved(element.children[childId])
-      end for
-    else
-      for each child in element.children
-        if (child <> Invalid)
-          m._markElementToBeRemoved(child)
-        end if
-      end for
-    end if
-  end sub
-
-  ' @private
-  prototype._normaliseVNode = function (vNode as Object) as Object
-    if (vNode = Invalid) then return Invalid
-
-    ' render() returned a top-level array of vNodes
-    if (Type(vNode) = "roArray")
-      return m._normaliseChildArray(vNode)
-    end if
-
-    if (Type(vNode) <> "roAssociativeArray") then return vNode
-
-    ' Single vNode — normalise its children if still an array
-    if (vNode.children <> Invalid AND Type(vNode.children) = "roArray")
-      vNode.children = m._normaliseChildArray(vNode.children)
-    end if
-
-    return vNode
+    return {}
   end function
 
   ' @private
+  prototype._markElementToBeRemoved = sub (element as Object)
+    if (element = Invalid) then return
+
+    if (Type(element) = "roArray")
+      for each child in element
+        m._markElementToBeRemoved(child)
+      end for
+
+      return
+    end if
+
+    if (Type(element) <> "roAssociativeArray") then return
+
+    if (element.__childrenMap = true)
+      for each childId in element.byId
+        m._markElementToBeRemoved(element.byId[childId])
+      end for
+
+      return
+    end if
+
+    ' The id may be missing (e.g. when the whole render output shape changed) - children still have to be removed
+    if (element.props <> Invalid AND element.props.id <> Invalid)
+      m._diffResult.elementsToRemove.push(element.props.id)
+    end if
+
+    m._markElementToBeRemoved(element.children)
+  end sub
+
+  ' @private
+  ' The "order" field is only incremented for children added to the map, so it always matches the element's
+  ' final position between its siblings and can safely be used as the insertChild index.
   prototype._normaliseChildArray = function (children as Object) as Object
-    result = {}
+    byId = {}
     order = 0
+
     for each child in children
       if (child <> Invalid AND Type(child) = "roAssociativeArray")
-        if (child.props <> Invalid AND child.props.id <> Invalid)
-          child.order = order
+        if (child.props = Invalid OR child.props.id = Invalid)
+          print "Kopytko renderer: a child vNode has no props.id defined - it will not be rendered"
+        else
+          previousChild = byId[child.props.id]
+          if (previousChild <> Invalid)
+            print "Kopytko renderer: duplicated child vNode id '" + child.props.id + "' - only the last occurrence will be rendered"
+            child.order = previousChild.order
+          else
+            child.order = order
+            order++
+          end if
+
           if (child.children <> Invalid AND Type(child.children) = "roArray")
             child.children = m._normaliseChildArray(child.children)
           end if
-          result[child.props.id] = child
+
+          byId[child.props.id] = child
         end if
       end if
-      order++
     end for
 
-    return result
+    return { __childrenMap: true, byId: byId }
   end function
 
   return prototype

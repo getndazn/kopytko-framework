@@ -169,6 +169,71 @@ function TestSuite__KopytkoDOM_renderElement() as Object
     return ts.assertTrue(bothLabelsAreNotInvalid, "The array elements were not properly rendered")
   end function)
 
+  ts.addTest("it renders normalised map children in the order defined by their order field", function (ts as Object) as String
+    ' Given
+    ' The ids are chosen so that the alphabetical roAssociativeArray iteration order differs from the authored order
+    vNode = {
+      name: "LayoutGroup",
+      props: { id: "root" },
+      children: {
+        __childrenMap: true,
+        byId: {
+          zebraLabel: {
+            name: "Label",
+            props: { id: "zebraLabel" },
+            order: 0,
+          },
+          alphaLabel: {
+            name: "Label",
+            props: { id: "alphaLabel" },
+            order: 1,
+          },
+        },
+      },
+    }
+    parentElement = CreateObject("roSGNode", "Group")
+
+    ' When
+    ts.kopytkoDOM.renderElement(vNode, parentElement)
+
+    ' Then
+    rootElement = parentElement.findNode("root")
+    actualChildrenIds = [rootElement.getChild(0).id, rootElement.getChild(1).id]
+    expectedChildrenIds = ["zebraLabel", "alphaLabel"]
+
+    return ts.assertEqual(actualChildrenIds, expectedChildrenIds, "The normalised map children were not rendered in the authored order")
+  end function)
+
+  ts.addTest("it renders all elements of a top-level normalised children map", function (ts as Object) as String
+    ' Given
+    vNode = {
+      __childrenMap: true,
+      byId: {
+        label1: {
+          name: "Label",
+          props: { id: "label1" },
+          order: 0,
+        },
+        label2: {
+          name: "Label",
+          props: { id: "label2" },
+          order: 1,
+        },
+      },
+    }
+    parentElement = CreateObject("roSGNode", "Group")
+
+    ' When
+    ts.kopytkoDOM.renderElement(vNode, parentElement)
+
+    ' Then
+    label1 = parentElement.findNode("label1")
+    label2 = parentElement.findNode("label2")
+    bothLabelsAreNotInvalid = (label1 <> Invalid AND label2 <> Invalid)
+
+    return ts.assertTrue(bothLabelsAreNotInvalid, "The children map elements were not properly rendered")
+  end function)
+
   ts.addTest("it inits kopytko based element with its dynamic props", function (ts as Object) as String
     ' Given
     vNode = {
