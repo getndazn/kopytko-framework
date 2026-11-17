@@ -49,7 +49,8 @@ It must return 1 of 3 values:
 
 The Element interface:
 - `name` - name of the component to be rendered (required),
-- `props` - defines static fields and custom props of the element; any change of these values won't update the element
+- `props` - defines static fields and custom props of the element; any change of these values won't update the element;
+  `props.id` is required and must be unique between siblings - children without it (or repeating a sibling's id) are skipped with a warning printed in the debug console,
 - `dynamicProps` - defines fields and custom props with dynamic values, their every change will trigger `componentDidUpdate` lifecycle method,
 - `events` - defines callbacks to the component field changes
 - `children` - array of objects implementing this Element interface.

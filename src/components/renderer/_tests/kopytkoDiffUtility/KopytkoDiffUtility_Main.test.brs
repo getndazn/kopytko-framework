@@ -19,7 +19,7 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
     diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
 
     ' Then
-    expectedKeys = ["elementsToUpdate", "elementsToRender", "elementsToRemove"]
+    expectedKeys = ["elementsToUpdate", "elementsToRender", "elementsToRemove", "normalisedVirtualDOM"]
 
     return ts.assertAAHasKeys(diffResult, expectedKeys, "The diff result does not have the expected keys")
   end function)
@@ -48,6 +48,7 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
       elementsToUpdate: {},
       elementsToRender: [],
       elementsToRemove: [],
+      normalisedVirtualDOM: newVNode,
     }
 
     return ts.assertEqual(diffResult, expectedResult, "The diff result is different than expected")
@@ -182,6 +183,7 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
       name: "Label",
       props: { id: "label2" },
       parentid: "root",
+      order: 1,
       index: 1,
     }
 
@@ -217,6 +219,7 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
       name: "Label",
       props: { id: "label2" },
       parentid: "root",
+      order: 1,
       index: 1,
     }
 
@@ -275,8 +278,9 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
     diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
     expectedResult = {
       elementsToUpdate: {},
-      elementsToRender: [newVNode.children[0]],
+      elementsToRender: [newVNode.children.byId.newLabel],
       elementsToRemove: ["label1"],
+      normalisedVirtualDOM: newVNode,
     }
 
     ' Then
@@ -303,8 +307,9 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
     diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
     expectedResult = {
       elementsToUpdate: {},
-      elementsToRender: [newVNode.children[0]],
+      elementsToRender: [newVNode.children.byId.button1],
       elementsToRemove: ["label1"],
+      normalisedVirtualDOM: newVNode,
     }
 
     ' Then
@@ -331,8 +336,9 @@ function TestSuite__KopytkoDiffUtility_Main() as Object
     diffResult = ts.kopytkoDiffUtility.diffDOM(vNode, newVNode)
     expectedResult = {
       elementsToUpdate: {},
-      elementsToRender: [newVNode.children[0]],
+      elementsToRender: [newVNode.children.byId.child1],
       elementsToRemove: ["child1"],
+      normalisedVirtualDOM: newVNode,
     }
 
     ' Then

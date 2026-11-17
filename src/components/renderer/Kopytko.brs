@@ -96,7 +96,9 @@ sub updateProps(props = {} as Object)
 end sub
 
 sub _mountComponent()
-  m._virtualDOM = render()
+  ' The virtual DOM has to be normalised and stored before componentDidMount is called - a synchronous
+  ' forceUpdate() triggered from there diffs against m._virtualDOM and would re-render the whole tree otherwise
+  m._virtualDOM = m._kopytkoDiffUtility.normaliseVNode(render())
 
   _methodCall(m._kopytkoDOM.renderElement, "renderElement", [m._virtualDOM, m.top], m._kopytkoDOM)
   _methodCall(m._kopytkoUpdater.setComponentMounted, "setComponentMounted", [m.state], m._kopytkoUpdater)
@@ -110,7 +112,7 @@ end sub
 sub _updateDOM()
   newVirtualDOM = render()
   diffResult = m._kopytkoDiffUtility.diffDOM(m._virtualDOM, newVirtualDOM)
-  m._virtualDOM = newVirtualDOM
+  m._virtualDOM = diffResult.normalisedVirtualDOM
   wasInFocusChain = m.top.isInFocusChain()
 
   m._kopytkoDOM.updateDOM(diffResult)
